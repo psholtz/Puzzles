@@ -28,10 +28,36 @@ OptParser::~OptParser()
 }
 
 void
+OptParser::prepare_to_start_attributes()
+{
+	append_to_usage("");
+}
+
+void 
+OptParser::prepare_to_end_attributes()
+{
+	append_to_usage("");
+}
+
+/*************************************
+ * Dump usage information to console.
+ *************************************/
+void
 OptParser::usage()
 {
 	for ( int i=0; i < _usage.size(); ++i ) 
 		cout << _usage[i] << endl;
+}
+
+/********************************************
+ * Add the string to the usage information.
+ * 
+ * @Paramter: s - string to add to usage.
+ ********************************************/
+void 
+OptParser::append_to_usage(string s)
+{
+	_usage.push_back(s);	
 }
 
 /***************************************************************
@@ -76,6 +102,9 @@ int
 main(int argc, char* argv[])
 {
 	OptParser b(argc,argv);
+	b.prepare_to_start_attributes();
+	b.prepare_to_end_attributes();
+
 	b.usage();
 
 	return 0;
