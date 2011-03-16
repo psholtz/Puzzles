@@ -3,11 +3,11 @@
 require 'optparse'
 
 # =========================================================================
-# Class Maze implements a simple recursive back-tracking algorithm
-# to draw ASCII mazes. The algorithms works as a "depth-first" search
-# of the "tree" or "graph" representing the maze.
-# 
-# A possible optimization might be to implement a "breadth-first" search.
+# Class Maze defines basic behavior to which a maze should conform.
+# It provides basic initialization/construction for the maze class, 
+# and provides a method for drawing ASCII mazes. 
+#
+# Specific "maze-carving" techniques are implemented in subclasses.
 # =========================================================================
 class Maze
 	# +++++++++++++++++++++++++++
@@ -46,9 +46,6 @@ class Maze
 	# Draw the grid, starting in the upper-left hand corner.
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw
-		# map where the passages exist
-		create_passage_from(0,0)
-
 		#
 		# Draw the "top" line.
 		#
@@ -77,6 +74,30 @@ class Maze
 		# Output maze metadata.
 		#
 		puts "#{$0} #{@width} #{@height}  #{@seed}"
+	end
+end
+
+# =========================================================================
+# Class BackTracker implements a simple recursive back-tracking algorithm
+# to draw ASCII mazes. The algorithms works as a "depth-first" search
+# of the "tree" or "graph" representing the maze.
+# 
+# A possible optimization might be to implement a "breadth-first" search.
+# =========================================================================
+class BackTracker < Maze
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Initialize a new 2D maze with the given width and height.
+	#
+	# Default seed value will give "random" behavior.
+	# User-supplied seed value will give "deterministic behavior.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def initialize(w=10,h=10,s=10)
+		# invoke super-constructor
+		super
+
+		# carve the grid
+		create_passage_from(0,0)
 	end
 
 	def create_passage_from(x,y)
@@ -124,7 +145,8 @@ if __FILE__ == $0
   		end
 
 		if good
-			Maze.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s]).draw
+			# build and draw a new back-tracking maze
+			BackTracker.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s]).draw
 		else
 			puts o
 		end
