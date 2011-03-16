@@ -18,8 +18,14 @@ public:
 	//
 	// "Main" methods of this class.
 	//
-	void parse();
+	bool parse();
 	void usage();
+
+	//
+	// Obtain information supplied on command line.
+	//
+	int get_integer_attribute(std::string key);
+	std::string get_string_attribute(std::string key);
 
 	static std::vector<std::string> split(const std::string &s, char delim);
 

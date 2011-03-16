@@ -39,6 +39,19 @@ OptParser::prepare_to_end_attributes()
 	append_to_usage("");
 }
 
+/*********************************************************************
+ *  Once the attributes have been configured, and the object
+ *  has been initialized with the information form the command
+ *  line, parse this information into discrete data structures.
+ *
+ * @Returns: bool - true indicates successful parse, false otherwise
+ *********************************************************************/
+bool
+OptParser::parse()
+{
+	return true; 
+}
+
 /*************************************
  * Dump usage information to console.
  *************************************/
