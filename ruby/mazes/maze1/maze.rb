@@ -2,13 +2,13 @@
 
 require 'optparse'
 
-# =========================================================================
+# ===================================================================
 # Class Maze defines basic behavior to which a maze should conform.
 # It provides basic initialization/construction for the maze class, 
 # and provides a method for drawing ASCII mazes. 
 #
 # Specific "maze-carving" techniques are implemented in subclasses.
-# =========================================================================
+# ====================================================================
 class Maze
 	# +++++++++++++++++++++++++++
 	# Configure class variables.
