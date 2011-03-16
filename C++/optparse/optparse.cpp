@@ -4,6 +4,28 @@
 
 using namespace std;
 
+/****************************************************
+ * Constructor. 
+ * 
+ * @Parameter: argc - argument passed into main()
+ * @Parameter: argv[] - argument passed into main()
+ ****************************************************/
+OptParser::OptParser(int argc, char *argv[]) 
+{
+	if ( argc >= 1 ) {
+		//
+		// (1) Obtain the script name
+		//
+		vector<string> a = OptParser::split(string(argv[0]),'/');
+		_scriptName = a[a.size()-1];
+	}
+}
+
+OptParser::~OptParser()
+{
+
+}
+
 /***************************************************************
  * Designed to provide services similar to string.split() 
  * available on platforms like Ruby or Python.
@@ -46,8 +68,8 @@ int
 main(int argc, char* argv[])
 {
 	vector<string> a = OptParser::split("this:that",':');
-	cout << a.size() << endl;
-	cout << a[0] << endl;
-	cout << a[1] << endl;
+
+	OptParser b(argc,argv);
+
 	return 0;
 }
