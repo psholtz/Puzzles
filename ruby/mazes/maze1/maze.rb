@@ -2,6 +2,10 @@
 
 require 'optparse'
 
+DEFAULT_WIDTH = 10
+DEFAULT_HEIGHT = 10
+DEFAULT_SEED = rand(0xFFFF_FFFF)
+
 # ===================================================================
 # Class Maze defines basic behavior to which a maze should conform.
 # It provides basic initialization/construction for the maze class, 
@@ -32,7 +36,7 @@ class Maze
 	# Default seed value will give "random" behavior.
 	# User-supplied seed value will give "deterministic behavior.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	def initialize(w=10,h=10,s=rand(0xFFFF_FFFF))
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED )
 		@width = w
 		@height = h
 		@seed = s
@@ -92,7 +96,7 @@ class BackTracker < Maze
 	# Default seed value will give "random" behavior.
 	# User-supplied seed value will give "deterministic behavior.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	def initialize(w=10,h=10,s=10)
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED )
 		#
 		# Invoke super-constructor
 		#
