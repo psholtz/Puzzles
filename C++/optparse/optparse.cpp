@@ -13,9 +13,7 @@ using namespace std;
 OptParser::OptParser(int argc, char *argv[]) 
 {
 	if ( argc >= 1 ) {
-		//
 		// (1) Obtain the script name
-		//
 		vector<string> a = OptParser::split(string(argv[0]),'/');
 		_scriptName = a[a.size()-1];
 	}
@@ -67,8 +65,6 @@ OptParser::split(const string &s, char delim, vector<string> &elems)
 int
 main(int argc, char* argv[])
 {
-	vector<string> a = OptParser::split("this:that",':');
-
 	OptParser b(argc,argv);
 
 	return 0;
