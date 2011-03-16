@@ -16,12 +16,22 @@ OptParser::OptParser(int argc, char *argv[])
 		// (1) Obtain the script name
 		vector<string> a = OptParser::split(string(argv[0]),'/');
 		_scriptName = a[a.size()-1];
+
+		// (2) Begin building the usage string
+		_usage.push_back("Usage: " + _scriptName + " [options]");
 	}
 }
 
 OptParser::~OptParser()
 {
 
+}
+
+void
+OptParser::usage()
+{
+	for ( int i=0; i < _usage.size(); ++i ) 
+		cout << _usage[i] << endl;
 }
 
 /***************************************************************
@@ -66,6 +76,7 @@ int
 main(int argc, char* argv[])
 {
 	OptParser b(argc,argv);
+	b.usage();
 
 	return 0;
 }
