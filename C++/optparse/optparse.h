@@ -38,6 +38,8 @@ protected:
 	std::map<std::string,int> _attrInt;
 	std::map<std::string,std::string> _attrString;
 	std::map<std::string,std::string> _mapLongToShort;
+	std::vector<std::string> _args;
+	std::map<std::string,std::string> _desc;
 
 private:
 	static std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
