@@ -127,9 +127,9 @@ end
 # Command line code goes here
 # ============================
 OPTIONS  = {
-	:w => 10,
-	:h => 10,
-	:s => rand(0xFFFF_FFFF)
+	:w => DEFAULT_WIDTH,
+	:h => DEFAULT_HEIGHT,
+	:s => DEFAULT_SEED
 }
 
 if __FILE__ == $0
