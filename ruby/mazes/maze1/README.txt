@@ -16,7 +16,7 @@ We assign the following values to "north", "south", "east" and "west" directions
 
  (N,S,E,W) = (1,2,4,8)
 
-Note that this scheme can easily be extended to three dimension, by assigning values 16 and 32 to "up" and "down" respectively.
+Note that this scheme can easily be extended to three dimensions, by assigning values 16 and 32 to "up" and "down" respectively.
 
 The algorithm itself is a simple recursive backtracking scheme:
 
