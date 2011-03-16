@@ -27,12 +27,35 @@ OptParser::~OptParser()
 
 }
 
+/***************************************************************
+ * Call this method before adding attributes to the OptParser.
+ ***************************************************************/
 void
 OptParser::prepare_to_start_attributes()
 {
 	append_to_usage("");
 }
 
+
+void 
+OptParser::add_integer_attribute(string keyShort, string keyLong, string desc, int defaultValue)
+{
+	_attrInt.insert( pair<string,int>(keyShort,defaultValue) );
+	_mapLongToShort.insert( pair<string,string>(keyLong,keyShort) );
+	append_to_usage("\t-" + keyShort + ", --" + keyLong + "=[value] \t" + desc);
+}
+
+void 
+OptParser::add_string_attribute(string keyShort, string keyLong, string desc, string defaultValue)
+{
+	_attrString.insert( pair<string,string>(keyShort,defaultValue) );
+	_mapLongToShort.insert( pair<string,string>(keyLong,keyShort) );
+	append_to_usage("\t-" + keyShort + ", --" + keyLong + "=[value] \t" + desc);
+}
+
+/***************************************************************
+ * Call this method after adding attributes to the OptParser.
+ ***************************************************************/
 void 
 OptParser::prepare_to_end_attributes()
 {
@@ -116,6 +139,9 @@ main(int argc, char* argv[])
 {
 	OptParser b(argc,argv);
 	b.prepare_to_start_attributes();
+	b.add_integer_attribute("w","width","(optional)",10);
+	b.add_integer_attribute("h","height","(optional)",10);
+	b.add_string_attribute("s","string","(optional)","xx");
 	b.prepare_to_end_attributes();
 
 	b.usage();

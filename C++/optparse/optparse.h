@@ -1,3 +1,4 @@
+#include <map>
 #include <string>
 #include <vector>
 
@@ -11,8 +12,8 @@ public:
 	// Attribute management.
 	//
 	void prepare_to_start_attributes();
-	void add_integer_attribute();
-	void add_string_attribute();
+	void add_integer_attribute(std::string keyShort, std::string keyLong, std::string desc, int defaultValue);
+	void add_string_attribute(std::string keyShort, std::string keyLong, std::string desc, std::string defaultValue);
 	void prepare_to_end_attributes();
 
 	//
@@ -34,6 +35,9 @@ protected:
 
 	std::string _scriptName;
 	std::vector<std::string> _usage;
+	std::map<std::string,int> _attrInt;
+	std::map<std::string,std::string> _attrString;
+	std::map<std::string,std::string> _mapLongToShort;
 
 private:
 	static std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
