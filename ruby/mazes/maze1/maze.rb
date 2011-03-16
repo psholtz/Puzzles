@@ -94,12 +94,12 @@ class BackTracker < Maze
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def initialize(w=10,h=10,s=10)
 		#
-		# invoke super-constructor
+		# Invoke super-constructor
 		#
 		super
 
 		#
-		# carve the grid
+		# Carve the grid
 		#
 		create_passage_from(0,0)
 	end
