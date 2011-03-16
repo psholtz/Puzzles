@@ -13,11 +13,11 @@ using namespace std;
 OptParser::OptParser(int argc, char *argv[]) 
 {
 	if ( argc >= 1 ) {
-		// (1) Obtain the script name
+		// (1) obtain the script name
 		vector<string> a = OptParser::split(string(argv[0]),'/');
 		_scriptName = a[a.size()-1];
 
-		// (2) Begin building the usage string
+		// (2) begin building the usage string
 		_usage.push_back("Usage: " + _scriptName + " [options]");
 	}
 }
