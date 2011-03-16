@@ -28,6 +28,9 @@ OptParser::split(const string &s, char delim)
 	return split(s,delim,elems);
 }
 
+/*********************************************
+ * Helper method to the above split() method.
+ *********************************************/
 vector<string> &
 OptParser::split(const string &s, char delim, vector<string> &elems)
 {
