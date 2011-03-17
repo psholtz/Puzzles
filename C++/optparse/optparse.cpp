@@ -280,6 +280,30 @@ OptParser::display_args()
 		cout << i << " => " << _args[i] << endl;
 }
 
+/*********************************************************
+ * Pluck out the int value for the key
+ *
+ * @Parameter: key - key supplied in the arguments
+ * @Returns: int - value that was supplied in arguments
+ *********************************************************/
+int
+OptParser::get_integer_attribute(string key) 
+{
+	return _attrInt[key];
+}
+
+/*********************************************************
+ * Pluck out the int value for the key
+ *
+ * @Parameter: key - key supplied in the arguments
+ * @Returns: int - value that was supplied in arguments
+ *********************************************************/
+string
+OptParser::get_string_attribute(string key)
+{
+	return _attrString[key];
+}
+
 /***************************************************************
  * Designed to provide services similar to string.split() 
  * available on platforms like Ruby or Python.
@@ -328,12 +352,11 @@ main(int argc, char* argv[])
 	b.add_string_attribute("s","string","(optional)","xx");
 	b.prepare_to_end_attributes();
 
-	b.usage();
-
 	if ( b.parse() ) {	
 		cout << "parse good" << endl;
+		cout << "width: " << b.get_integer_attribute("w") << " height: " << b.get_integer_attribute("h") << " string: " << b.get_string_attribute("s") << endl;
 	} else {
-		cout << "parse bad" << endl;
+		b.usage();
 	}
 
 	return 0;
