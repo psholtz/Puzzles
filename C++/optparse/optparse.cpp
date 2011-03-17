@@ -111,9 +111,24 @@ OptParser::parse()
 	for ( int i=0; i < _args.size(); ++i ) {
 		string t = _args[i];
 
-		cout << t << endl;
-		// Test for "short" key
-		continue;
+		//
+		// (1) Test for "short" key - test for the "string" key
+		//
+		for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); it++ ) {
+			if ( t.substr(0,2) == ("-" + (*it).first) ) {
+				if ( t.substr(2).size() > 0 ) {
+					_attrString[(*it).first] = t.substr(2);
+					continue;		
+				} else {
+					//
+					// if the string is length zero, it's not a value argument  
+					//
+					return false;
+				}
+			}
+		}
+	
+		display_attr_string();
 	
 		// If test for "short" key fails, test for "long" key
 
@@ -142,6 +157,17 @@ void
 OptParser::append_to_usage(string s)
 {
 	_usage.push_back(s);	
+}
+
+/***********************************************************
+ * Dump the contents of the _attrString member to console.
+ ***********************************************************/
+void
+OptParser::display_attr_string()
+{
+	for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); it++ ) {
+		cout << (*it).first << " : " << (*it).second << endl;
+	}
 }
 
 /***************************************************************

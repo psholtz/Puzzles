@@ -33,6 +33,8 @@ public:
 protected:
 	void append_to_usage(std::string s);
 
+	void display_attr_string();
+
 	std::string _scriptName;
 	std::vector<std::string> _usage;
 	std::map<std::string,int> _attrInt;
