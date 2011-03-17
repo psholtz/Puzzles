@@ -342,25 +342,3 @@ OptParser::split(const string &s, char delim, vector<string> &elems)
 	return elems;
 }
 
-/*********************************************************
- // AN EXAMPLE OF HOW TO USE THIS CLASS: 
-int
-main(int argc, char* argv[])
-{
-	OptParser b(argc,argv);
-	b.prepare_to_start_attributes();
-	b.add_integer_attribute("w","width","(optional)",10);
-	b.add_integer_attribute("h","height","(optional)",10);
-	b.add_string_attribute("s","string","(optional)","xx");
-	b.prepare_to_end_attributes();
-
-	if ( b.parse() ) {	
-		cout << "parse good" << endl;
-		cout << "width: " << b.get_integer_attribute("w") << " height: " << b.get_integer_attribute("h") << " string: " << b.get_string_attribute("s") << endl;
-	} else {
-		b.usage();
-	}
-
-	return 0;
-}
-************************************************************/
