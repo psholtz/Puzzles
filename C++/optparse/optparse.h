@@ -34,7 +34,7 @@ protected:
 	void append_to_usage(std::string s);
 
 	//
-	// These methods are used mainly for testing
+	// These methods are used mainly for testing and debugging
 	//
 	void display_attr_string();
 	void display_attr_integer();
