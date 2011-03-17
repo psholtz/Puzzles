@@ -45,6 +45,8 @@ class Maze
 
 		@grid = Array.new(h) { Array.new(w,0) }
 	end
+	
+	attr_reader :width, :height, :seed
 
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	# Draw the grid, starting in the upper-left hand corner.
