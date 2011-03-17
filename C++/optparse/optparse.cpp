@@ -341,7 +341,9 @@ OptParser::split(const string &s, char delim, vector<string> &elems)
 	}
 	return elems;
 }
- 
+
+/*********************************************************
+ // AN EXAMPLE OF HOW TO USE THIS CLASS: 
 int
 main(int argc, char* argv[])
 {
@@ -361,3 +363,4 @@ main(int argc, char* argv[])
 
 	return 0;
 }
+************************************************************/
