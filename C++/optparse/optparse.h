@@ -34,6 +34,7 @@ protected:
 	void append_to_usage(std::string s);
 
 	void display_attr_string();
+	void display_attr_integer();
 
 	std::string _scriptName;
 	std::vector<std::string> _usage;

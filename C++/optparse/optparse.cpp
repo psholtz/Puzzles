@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <iostream>
 #include <sstream>
 #include "optparse.h"
@@ -112,9 +113,9 @@ OptParser::parse()
 		string t = _args[i];
 
 		//
-		// (1) Test for "short" key - test for the "string" key
+		// (1a) Test for "short" key - test for the "string" key
 		//
-		for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); it++ ) {
+		for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); ++it ) {
 			if ( t.substr(0,2) == ("-" + (*it).first) ) {
 				if ( t.substr(2).size() > 0 ) {
 					_attrString[(*it).first] = t.substr(2);
@@ -127,10 +128,38 @@ OptParser::parse()
 				}
 			}
 		}
+
+		//
+		// (1b) Test for "short" key -- test for the "integer" key
+ 		//
+		for ( map<string,int>::iterator it = _attrInt.begin(); it != _attrInt.end(); ++it ) {
+			if ( t.substr(0,2) == ("-" + (*it).first) ) {
+				if ( t.substr(2).size() > 0 ) {
+					//
+					// check to make sure we are dealing with digits;
+					// if not, return a false
+					//
+					string s = t.substr(2);	
+					for ( int j=0; j < s.size(); ++j )  
+						if (!isdigit(s[j])) 
+							return false;
+
+					_attrInt[(*it).first] = s;	
+					continue;
+				} else {
+					// 
+					// if the string is length zero, it's not a value argument
+					//
+					return false;
+				}
+			}
+		}
 	
 		display_attr_string();
-	
-		// If test for "short" key fails, test for "long" key
+		display_attr_integer();
+
+		//	
+		// (2) If test for "short" key fails, test for "long" key
 
 		// If both tests fail, return false 
 		return false;
@@ -166,7 +195,19 @@ void
 OptParser::display_attr_string()
 {
 	for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); it++ ) {
-		cout << (*it).first << " : " << (*it).second << endl;
+		cout << (*it).first << " => " << (*it).second << endl;
+	}
+}
+
+
+/***********************************************************
+ * Dump the contents of the _attrInt member to console.
+ ***********************************************************/
+void
+OptParser::display_attr_integer()
+{
+	for ( map<string,int>::iterator it = _attrInt.begin(); it != _attrInt.end(); it++ ) {
+		cout << (*it).first << " => " << (*it).second << endl;
 	}
 }
 
