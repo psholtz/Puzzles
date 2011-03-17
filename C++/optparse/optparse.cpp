@@ -109,17 +109,21 @@ OptParser::prepare_to_end_attributes()
 bool
 OptParser::parse()
 {
+	string s,t;
+	bool good;
+	vector<string> u;
 	for ( int i=0; i < _args.size(); ++i ) {
-		string t = _args[i];
-		cout << t << endl;
+		t = _args[i];
 
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// (1a) Test for "short" key - test for the "string" key
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		good = false;
 		for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); ++it ) {
 			if ( t.substr(0,2) == ("-" + (*it).first) ) {
 				if ( t.substr(2).size() > 0 ) {
 					_attrString[(*it).first] = t.substr(2);
+					good = true;
 					continue;		
 				} else {
 					//
@@ -129,10 +133,12 @@ OptParser::parse()
 				}
 			}
 		}
+		if ( good ) { continue; }
 
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// (1b) Test for "short" key -- test for the "integer" key
  		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		good = false;
 		for ( map<string,int>::iterator it = _attrInt.begin(); it != _attrInt.end(); ++it ) {
 			if ( t.substr(0,2) == ("-" + (*it).first) ) {
 				if ( t.substr(2).size() > 0 ) {
@@ -140,12 +146,13 @@ OptParser::parse()
 					// check to make sure we are dealing with digits;
 					// if not, return a false
 					//
-					string s = t.substr(2);	
+					s = t.substr(2);	
 					for ( int j=0; j < s.size(); ++j )  
 						if (!isdigit(s[j])) 
 							return false;
 
 					_attrInt[(*it).first] = atoi(s.c_str());	
+					good = true;
 					continue;
 				} else {
 					// 
@@ -155,15 +162,42 @@ OptParser::parse()
 				}
 			}
 		}
-	
-		display_attr_string();
-		display_attr_integer();
+		if ( good ) { continue; }
 
-		//	
-		// (2) If test for "short" key fails, test for "long" key
+		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// (2a) If test for "short" key fails, test for "long" key -- test for "string" key
+		// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		good = false;
+		u = split(string(t),'=');	
+		if ( u.size() == 2 ) {
+			for ( map<string,string>::iterator it = _mapLongToShort.begin(); it != _mapLongToShort.end(); ++it ) {
+				if ( u[0].substr(2) == (*it).first ) { 
+					//
+					// Check to make sure this tag is a STRING
+					//
+					bool found = false;				
+					for ( map<string,string>::iterator it2 = _attrString.begin();
+						it2 != _attrString.end(); ++it2 ) {
+						if ( (*it2).first == (*it).second ) {
+							found = true;
+						}					
+					}
+					if ( found ) { 
+						_attrString[(*it).first] = u[1];
+						good = true;
+						continue;
+					}
+				}
+			}
+		}
+		if ( good ) continue;
+
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// (2b) If test for "short" key fails, test for "long" key -- test for "int" key
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 		// If both tests fail, return false 
-		return false;
+		//return false;
 	}
 	return true; 
 }
