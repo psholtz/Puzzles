@@ -41,7 +41,7 @@ protected:
 	void display_args();
 
 	//
-	// Hold the state of the object
+	// Hold the state of the object (using STL)
 	//
 	std::string _scriptName;
 	std::vector<std::string> _usage;
