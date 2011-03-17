@@ -113,9 +113,9 @@ OptParser::parse()
 		string t = _args[i];
 		cout << t << endl;
 
-		//
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// (1a) Test for "short" key - test for the "string" key
-		//
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		for ( map<string,string>::iterator it = _attrString.begin(); it != _attrString.end(); ++it ) {
 			if ( t.substr(0,2) == ("-" + (*it).first) ) {
 				if ( t.substr(2).size() > 0 ) {
@@ -130,9 +130,9 @@ OptParser::parse()
 			}
 		}
 
-		//
+		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// (1b) Test for "short" key -- test for the "integer" key
- 		//
+ 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		for ( map<string,int>::iterator it = _attrInt.begin(); it != _attrInt.end(); ++it ) {
 			if ( t.substr(0,2) == ("-" + (*it).first) ) {
 				if ( t.substr(2).size() > 0 ) {
