@@ -110,7 +110,7 @@ bool
 OptParser::parse()
 {
 	string s,t;
-	bool good;
+	bool good,found;
 	vector<string> u;
 	for ( int i=0; i < _args.size(); ++i ) {
 		t = _args[i];
@@ -175,7 +175,7 @@ OptParser::parse()
 					//
 					// Check to make sure this tag is a STRING
 					//
-					bool found = false;				
+					found = false;				
 					for ( map<string,string>::iterator it2 = _attrString.begin();
 						it2 != _attrString.end(); ++it2 ) {
 						if ( (*it2).first == (*it).second ) {
@@ -183,7 +183,7 @@ OptParser::parse()
 						}					
 					}
 					if ( found ) { 
-						_attrString[(*it).first] = u[1];
+						_attrString[(*it).second] = u[1];
 						good = true;
 						continue;
 					}
@@ -195,9 +195,33 @@ OptParser::parse()
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		// (2b) If test for "short" key fails, test for "long" key -- test for "int" key
 		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		good = false;
+		u = split(string(t),'=');	
+		if ( u.size() == 2 ) {
+			for ( map<string,string>::iterator it = _mapLongToShort.begin(); it != _mapLongToShort.end(); ++it ) {
+				if ( u[0].substr(2) == (*it).first ) {
+					//
+					// Check to make sure this tag is an INTEGER
+					//
+					found = false;
+					for ( map<string,int>::iterator it2 = _attrInt.begin();
+						it2 != _attrInt.end(); ++it2 ) {
+						if ( (*it2).first == (*it).second ) {
+							found = true;
+						}
+					}				
+					if ( found ) {
+						_attrInt[(*it).second] = atoi(u[1].c_str());
+						good = true;
+						continue;
+					}
+				}
+			}
+		}
+		if ( good ) continue;
 
 		// If both tests fail, return false 
-		//return false;
+		return false;
 	}
 	return true; 
 }
