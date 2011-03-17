@@ -6,7 +6,7 @@ class OptParser
 {
 public:
 	OptParser(int argc, char* argv[]);
-	~OptParser();
+	virtual ~OptParser();
 
 	//
 	// Attribute management.
