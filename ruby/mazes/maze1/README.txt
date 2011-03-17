@@ -2,7 +2,7 @@
 + RECURSIVE BACKTRACKING MAZE +
 + =========================== +
 
-Class Maze implements a simple recursive backtracking algorithm to draw simple ASCII mazes. 
+This script implements a simple recursive backtracking algorithm to draw simple ASCII mazes. 
 
 Maze "state" is maintained in a structure called @grid.
 
