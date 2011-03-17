@@ -33,9 +33,16 @@ public:
 protected:
 	void append_to_usage(std::string s);
 
+	//
+	// These methods are used mainly for testing
+	//
 	void display_attr_string();
 	void display_attr_integer();
+	void display_args();
 
+	//
+	// Hold the state of the object
+	//
 	std::string _scriptName;
 	std::vector<std::string> _usage;
 	std::map<std::string,int> _attrInt;

@@ -111,6 +111,7 @@ OptParser::parse()
 {
 	for ( int i=0; i < _args.size(); ++i ) {
 		string t = _args[i];
+		cout << t << endl;
 
 		//
 		// (1a) Test for "short" key - test for the "string" key
@@ -144,7 +145,7 @@ OptParser::parse()
 						if (!isdigit(s[j])) 
 							return false;
 
-					_attrInt[(*it).first] = s;	
+					_attrInt[(*it).first] = atoi(s.c_str());	
 					continue;
 				} else {
 					// 
@@ -209,6 +210,16 @@ OptParser::display_attr_integer()
 	for ( map<string,int>::iterator it = _attrInt.begin(); it != _attrInt.end(); it++ ) {
 		cout << (*it).first << " => " << (*it).second << endl;
 	}
+}
+
+/***********************************************************
+ * Dump the contents of the _args member to console.
+ ***********************************************************/
+void
+OptParser::display_args() 
+{
+	for ( int i=0; i < _args.size(); ++i ) 
+		cout << i << " => " << _args[i] << endl;
 }
 
 /***************************************************************
