@@ -27,6 +27,7 @@ public:
 	virtual ~Maze();
 
 	void draw();
+	void inspect();		// used mainly for testing and debugging
 
 	static std::map<int,int> DX;
 	static std::map<int,int> DY;

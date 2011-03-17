@@ -74,6 +74,23 @@ Maze::draw()
 	cout << " width: " << _width << ", height: " << _height << ", seed: " << _seed << endl;
 }
 
+// =======================================
+// Dump the cell values to console.
+// 
+// Used mainly for debugging and testing.
+// =======================================
+void 
+Maze::inspect()
+{
+	for ( int j=0; j < _height; ++j ) {
+		for ( int i=0; i < _width; ++i ) {
+			cout << _grid[index(i,j)] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
 // ===========================================================
 // Take the (x,y) coordinates for the maze entry,
 // and return the corresponding index into the _grid array.
@@ -85,7 +102,7 @@ Maze::draw()
 int 
 Maze::index(int x, int y)
 {
-	return y * _height + x;
+	return y * _width + x;
 }
 
 // =====================================
@@ -133,7 +150,7 @@ BackTracker::create_passage_from(int x, int y)
 		dy = y + DY[direction];
 		if ( (dy >= 0 && dy <= (_height-1)) && (dx >= 0 && dx <= (_width-1)) &&
 			(_grid[index(dx,dy)] == 0 ) ) {
-			
+
 			_grid[index(x,y)] |= direction;
 			_grid[index(dx,dy)] |= OPPOSITE[direction];
 			create_passage_from(dx,dy);
