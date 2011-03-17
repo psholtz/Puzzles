@@ -1,10 +1,10 @@
-/**
- * Implement a simple back-tacking algorithm for drawing simple ASCII mazes.
+/*****************************************************************************
+ * Implements a simple back-tacking algorithm for drawing simple ASCII mazes.
  * 
  * Maze is a class that define basic behavior that mazes must conform to.
  * 
  * Subclass BackTracker implements the actual back-tracking algorithm.
- */
+ *****************************************************************************/
 #include <time.h>
 #include <map>
 
@@ -24,7 +24,7 @@ public:
 	// Constructors
 	//
 	Maze(int w=DEFAULT_WIDTH, int h=DEFAULT_HEIGHT, int s=DEFAULT_SEED);
-	~Maze();
+	virtual ~Maze();
 
 	void draw();
 
@@ -71,14 +71,14 @@ protected:
 	int index(int x, int y);			// find the array index for point (x,y)
 };
 
-class BackTracker : Maze
+class BackTracker : public Maze
 {
 public:
 	//
 	// Constructors
 	//
 	BackTracker(int w=DEFAULT_WIDTH, int h=DEFAULT_HEIGHT, int s=DEFAULT_SEED);
-	~BackTracker();
+	virtual ~BackTracker();
 
 protected:
 	void create_passage_from(int x, int y);		// carve a passage starting at (x,y)

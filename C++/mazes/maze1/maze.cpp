@@ -88,6 +88,59 @@ Maze::index(int x, int y)
 	return y * _height + x;
 }
 
+// =====================================
+// Constructors
+//
+// @Parameter: w - width of the maze;
+// @Parameter: h - height of the maze;
+// @Parameter: s - used to seed PRNG (use "constant" value for deterministic behavior)
+// =====================================
+BackTracker::BackTracker(int w, int h, int s) : Maze(w, h, s)
+{
+	create_passage_from(0,0);
+}
+
+BackTracker::~BackTracker()
+{
+
+}
+
+// ========================================================
+// Modify values of the grid to represent a "carved"
+// passage through the maze. Uses recursive back-tracking
+// to fill in the mze.
+// 
+// @Parameter: x - x-point of grid to start carving;
+// @Parameter: y - y-point of grid to start carving;
+// ========================================================
+void
+BackTracker::create_passage_from(int x, int y)
+{
+	// Create the directions and shuffle
+	int directions[] = { N, S, E, W };
+	for ( int i=0; i < 4; ++i ) {
+		int r = i + rand() % (4-i);
+		int temp = directions[i];
+		directions[i] = directions[r];
+		directions[r] = temp;
+	}
+
+	// Use recursive backtracking to carve the maze
+	int dx, dy, direction;
+	for ( int i=0; i < 4; ++i ) {
+		direction = directions[i];
+		dx = x + DX[direction];
+		dy = y + DY[direction];
+		if ( (dy >= 0 && dy <= (_height-1)) && (dx >= 0 && dx <= (_width-1)) &&
+			(_grid[index(dx,dy)] == 0 ) ) {
+			
+			_grid[index(x,y)] |= direction;
+			_grid[index(dx,dy)] |= OPPOSITE[direction];
+			create_passage_from(dx,dy);
+		}
+	}
+}
+
 int 
 main(int argc, char* argv[])
 {
@@ -99,10 +152,13 @@ main(int argc, char* argv[])
 	o.prepare_to_end_attributes();
 
 	if ( o.parse() ) {
-		Maze m(o.get_integer_attribute("w"),
-			o.get_integer_attribute("h"),
-			o.get_integer_attribute("s"));
-		m.draw();
+
+		Maze *m = new BackTracker(o.get_integer_attribute("w"),
+					o.get_integer_attribute("h"),
+					o.get_integer_attribute("s"));
+		m->draw();
+		delete m;
+
 	} else {
 		o.usage();
 	}
