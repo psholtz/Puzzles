@@ -110,6 +110,11 @@ class BackTracker < Maze
 		create_passage_from(0,0)
 	end
 
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Recursively carve passages through the maze, starting at (x,y).
+	#
+	# Algorithm halts when all "cells" in the maze have been visited.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def create_passage_from(x,y)
 		directions = [@@N,@@S,@@E,@@W].sort_by{rand}
 		directions.each do |direction|
