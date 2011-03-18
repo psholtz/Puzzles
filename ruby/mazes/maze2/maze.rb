@@ -85,17 +85,29 @@ class Maze
 end
 
 class BinaryTree < Maze
-	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED )
+
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Initialize a new 2D maze with the given width and height.
+	#
+	# Default seed values will give "random" behavior.
+	# User-supplied seed value will give "deterministic" behavior.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE )
 		# 
 		# Invoke super-constructor
 		#
-		super
+		super(w,h,s)
 
 		# 
-		# Carve the grid
+		# Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
 		#
-		carve_passages
+		@animate = a
+		if not @animate
+			carve_passages
+		end
 	end
+
+	attr_reader :animate
 
 	def carve_passages
 		@height.times do |y|
@@ -110,6 +122,14 @@ class BinaryTree < Maze
 					@grid[dy][dx] |= @@OPPOSITE[dir]
 				end	
 			end
+		end
+	end
+
+	def draw
+		if not @animate
+			super
+		else
+			super
 		end
 	end
 end
@@ -146,8 +166,8 @@ if __FILE__ == $0
   		end
 
 		if good
-			# build and draw a new back-tracking maze
-			BinaryTree.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s]).draw
+			# build and draw a new binary tree maze
+			BinaryTree.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a]).draw
 		else
 			puts o
 		end
