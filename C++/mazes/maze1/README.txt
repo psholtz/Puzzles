@@ -4,7 +4,7 @@
 
 Class Maze implements a simple recursive backtracking algorithm to draw simple ASCII mazes. 
 
-Maze "state" is maintained in a structure called @grid.
+Maze "state" is maintained in a structure called _grid.
 
 Grid entries can have values between 0 and 15 [ 2^(number-of-walls=4)-1 ]
 
