@@ -107,7 +107,7 @@ class BackTracker < Maze
 		#
 		# Carve the grid
 		#
-		create_passage_from(0,0)
+		carve_passage_from(0,0)
 	end
 
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -115,19 +115,19 @@ class BackTracker < Maze
 	#
 	# Algorithm halts when all "cells" in the maze have been visited.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	def create_passage_from(x,y)
+	def carve_passage_from(x,y)
 		directions = [@@N,@@S,@@E,@@W].sort_by{rand}
 		directions.each do |direction|
 			dx,dy = x + @@DX[direction], y + @@DY[direction]
 			if dy.between?(0,@grid.length-1) && dx.between?(0,@grid[dy].length-1) && @grid[dy][dx] == 0
 				@grid[y][x] |= direction			# "open" the wall from current cell;
 				@grid[dy][dx] |= @@OPPOSITE[direction]		# "open" the wall from adjacent cell;
-				create_passage_from(dx,dy)
+				carve_passage_from(dx,dy)
 			end
 		end
 	end
 
-	protected :create_passage_from
+	protected :carve_passage_from
 end
 
 # ============================
