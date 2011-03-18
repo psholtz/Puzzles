@@ -138,9 +138,9 @@ if __FILE__ == $0
 	ARGV.options do |o|
 		# parse the command line options
 		o.separator ""
-		o.on("-w","--width=[value]", Integer, "(optional)") 		{ |OPTIONS[:w]| }
-		o.on("-h","--height=[value]", Integer, "(optional)")		{ |OPTIONS[:h]| }
-		o.on("-s","--seed=[value]", Integer, "(optional)")		{ |OPTIONS[:s]| }
+		o.on("-w","--width=[value]", Integer, "Width of maze (default: " + DEFAULT_WIDTH.to_s + ")") 		{ |OPTIONS[:w]| }
+		o.on("-h","--height=[value]", Integer, "Height of maze (default: " + DEFAULT_HEIGHT.to_s+ ")")		{ |OPTIONS[:h]| }
+		o.on("-s","--seed=[value]", Integer, "User-defined seed will model deterministic behavior (default: " + DEFAULT_SEED.to_s + ")")	{ |OPTIONS[:s]| }
 		o.separator ""
 		o.parse!
 
