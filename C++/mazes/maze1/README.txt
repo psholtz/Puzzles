@@ -6,8 +6,6 @@ Class Maze implements a simple recursive backtracking algorithm to draw simple A
 
 Maze "state" is maintained in a structure called @grid.
 
-Grid entries are indexed first by "y", then by "x".
-
 Grid entries can have values between 0 and 15 [ 2^(number-of-walls=4)-1 ]
 
 If a grid entry has value 0, this means all four walls are "intact".  This is the condition into which we initialize the maze, but once the algorithm has run and the maze has been created, all entries should have values between 1 and 15.
