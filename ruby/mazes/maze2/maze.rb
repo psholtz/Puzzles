@@ -83,6 +83,36 @@ class Maze
 	end
 end
 
+class BinaryTree < Maze
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED )
+		# 
+		# Invoke super-constructor
+		#
+		super
+
+		# 
+		# Carve the grid
+		#
+		carve_passages
+	end
+
+	def carve_passages
+		@height.times do |y|
+			@width.times do |x|
+				dirs = []
+				dirs << @@N if y > 0
+				dirs << @@W if x > 0
+
+				if ( dir = dirs[rand(dirs.length)] ) 
+					dx,dy = x + @@DX[dir], y + @@DY[dir]
+					@grid[y][x] |= dir
+					@grid[dy][dx] |= @@OPPOSITE[dir]
+				end	
+			end
+		end
+	end
+end
+
 # ============================
 # Command line code goes here
 # ============================
@@ -114,7 +144,7 @@ if __FILE__ == $0
 
 		if good
 			# build and draw a new back-tracking maze
-			Maze.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s]).draw
+			BinaryTree.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s]).draw
 		else
 			puts o
 		end
