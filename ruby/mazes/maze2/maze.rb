@@ -109,9 +109,24 @@ class BinaryTree < Maze
 
 	attr_reader :animate
 
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
+	#
+	# Because we walk down the maze, cell-by-cell, in a linear fashion, this 
+	# algorithm is amenable to animation. Animated version is implemented in the 
+	# overridden draw() method below
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def carve_passages
 		@height.times do |y|
 			@width.times do |x|
+				# 
+				# Render updates of the maze on a "cell-by-cell" basis
+				#
+				if @animate
+					draw(update=true)
+					sleep 0.04
+				end
+
 				dirs = []
 				dirs << @@N if y > 0
 				dirs << @@W if x > 0
@@ -123,13 +138,27 @@ class BinaryTree < Maze
 				end	
 			end
 		end
+
+		#
+		# Make one final call to "update" to display last cell
+		#
+		if @animate
+			draw(update=true)
+		end
 	end
 
-	def draw
-		if not @animate
-			super
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Method only needs to be overridden if we are animated.
+	#
+	# If we are drawing the maze statically, defer to the superclass.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def draw(update=false)
+		if update or not @animate
+			if update; print "\e[H"; end
+			super()
 		else
-			super
+			print "\e[2J"
+			carve_passages
 		end
 	end
 end
