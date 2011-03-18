@@ -5,6 +5,7 @@ require 'optparse'
 DEFAULT_WIDTH = 10
 DEFAULT_HEIGHT = 10
 DEFAULT_SEED = rand(0xFFFF_FFFF)
+DEFAULT_ANIMATE = false
 
 # ====================================================================
 # Class Maze defines basic behavior to which a maze should conform.
@@ -119,16 +120,18 @@ end
 OPTIONS  = {
 	:w => DEFAULT_WIDTH,
 	:h => DEFAULT_HEIGHT,
-	:s => DEFAULT_SEED
+	:s => DEFAULT_SEED,
+	:a => DEFAULT_ANIMATE
 }
 
 if __FILE__ == $0
 	ARGV.options do |o|
 		# parse the command line options
 		o.separator ""
-		o.on("-w","--width=[value]", Integer, "(optional)") 		{ |OPTIONS[:w]| }
-		o.on("-h","--height=[value]", Integer, "(optional)")		{ |OPTIONS[:h]| }
-		o.on("-s","--seed=[value]", Integer, "(optional)")		{ |OPTIONS[:s]| }
+		o.on("-w","--width=[value]", Integer, "Width of maze (default: " + DEFAULT_WIDTH.to_s + ")") 		{ |OPTIONS[:w]| }
+		o.on("-h","--height=[value]", Integer, "Height of maze (default: " + DEFAULT_HEIGHT.to_s + ")")		{ |OPTIONS[:h]| }
+		o.on("-s","--seed=[value]", Integer, "User-defined seed will model deterministic behavior (default: " + DEFAULT_SEED.to_s + ")")	{ |OPTIONS[:s]| }
+		o.on("-a","--[no-]animated", true.class, "Animate rendering (default: " + DEFAULT_ANIMATE.to_s + ")")		{ |OPTIONS[:a]| }
 		o.separator ""
 		o.parse!
 
