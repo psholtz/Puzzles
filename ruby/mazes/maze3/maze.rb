@@ -130,10 +130,20 @@ class Prim < Maze
 		# Keep going until there is no frontier.
 		#
 		until @frontier.empty?
+
+			# 
+			# Randomly select a frontier point, and 
+			# randomly selected one of the neighboring
+			# points to that frontier point.
+			#
 			x, y = @frontier.delete_at( rand(@frontier.length) )
 			n = neighbors(x, y)
 			nx, ny = n[ rand(n.length) ]
 
+			#
+			# "Knock down" the wall between the selected
+			# frontier point and its neighbor.
+			#
 			dir = direction(x, y, nx, ny)
 			@grid[y][x] |= dir
 			@grid[ny][nx] |= @@OPPOSITE[dir]
