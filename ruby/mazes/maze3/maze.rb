@@ -126,9 +126,6 @@ class Prim < Maze
 	end
 
 	def add_to_frontier(x, y)
-		#print "x: " + x.to_s + ", y: " + y.to_s + ", h: " + @height.to_s + ", w: " + @width.to_s + ", grid: " + @grid[y][x].to_s
-		#print ", (8,8): " + @grid[8][8].to_s
-		#puts
 		if x >= 0 && y >= 0 && y < @height && x < @width && @grid[y][x] == 0
 			@grid[y][x] |= @@FRONTIER
 			@frontier << [x,y]
