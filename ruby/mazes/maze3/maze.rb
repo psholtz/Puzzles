@@ -112,6 +112,35 @@ class Prim < Maze
 	def draw
 		if not @animate
 			super()
+		else
+			print "\e[2J"
+			carve_passages
+		end
+	end
+
+	def display
+		print "\e[H"
+		puts " " + "_" * (@width * 2 - 1)	
+		@grid.each_with_index do |row,y|
+			print "|"
+			row.each_with_index do |cell,x|
+				print "\e[41m" if cell == @@FRONTIER
+				if empty?(cell) && y+1 < @height && empty?(@grid[y+1][x])
+					print " "
+				else
+					print((cell & @@S != 0) ? " " : "_")
+				end
+				print "\e[m" if cell == @@FRONTIER
+
+				if empty?(cell) && x+1 < @width && empty?(row[x+1])
+					print((y+1 < @height && (empty?(@grid[y+1][x]) || empty?(@grid[y+1][x+1]))) ? " " : "_")
+				elsif cell & @@E != 0
+					print(((cell | row[x+1]) & @@S != 0) ? " " : "_")
+				else
+					print "|"
+				end
+			end
+			puts
 		end
 	end
 
@@ -148,7 +177,19 @@ class Prim < Maze
 			@grid[y][x] |= dir
 			@grid[ny][nx] |= @@OPPOSITE[dir]
 
+			# 
+			# Recursively mark the newly selected point.
+			#
 			mark(x, y)
+		
+			if @animate
+				display
+				sleep 0.01
+			end
+		end
+
+		if @animate
+			display
 		end
 	end
 
