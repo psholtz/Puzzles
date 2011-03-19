@@ -215,7 +215,7 @@ class Prim < Maze
 		end
 
 		#
-		# If we are animating, display the maze
+		# If we are animating, display the maze (one last time)
 		#
 		if @animate
 			display
