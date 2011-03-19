@@ -26,7 +26,7 @@ Run the maze with default settings:
 Run the maze with custom width and height:
 > ./maze.rb -w20 -h25
 
-Run the maze with preet seed, to model deterministic behavior:
+Run the maze with a preset seed, to model deterministic behavior:
 > ./maze.rb -s100
 
 Run the maze in animation mode (<-- VERY COOL):
