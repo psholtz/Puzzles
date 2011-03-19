@@ -66,15 +66,6 @@ class Maze
 		#
 		puts "#{$0} #{@width} #{@height} #{@seed}"
 	end
-
-	def inspect
-		@height.times do |y|
-			print "|"
-			@width.times do |x|
-				print @grid[y][x]
-			end
-		end
-	end
 end
 
 class Prim < Maze
