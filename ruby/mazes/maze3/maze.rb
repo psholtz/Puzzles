@@ -204,13 +204,19 @@ class Prim < Maze
 			# Recursively mark the newly selected point.
 			#
 			mark(x, y)
-		
+
+			#
+			# If we are animating, display the maze
+			#		
 			if @animate
 				display
 				sleep 0.01
 			end
 		end
 
+		#
+		# If we are animating, display the maze
+		#
 		if @animate
 			display
 		end
