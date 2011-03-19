@@ -16,6 +16,10 @@ The algorithm terminates when there are no more frontier cells to choose from.
 
 The algorithm is straightforward, but it tends to leave an abundance of short cul-de-sacs in the maze.
 
++ ================== +
++ RUNNING THE SCRIPT +
++ ================== +
+
 Run the maze with default settings:
 > ./maze.rb
 
