@@ -104,13 +104,25 @@ class Prim < Maze
 
 	attr_reader :animate
 
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Method only needs to be overridden if we are animating.
+	#
+	# If we are drawing the maze statically, defer to the superclass.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw
 		if not @animate
 			super()
 		end
 	end
-	
+
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Carve the passages in the maze using the Prim algorithm	
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def carve_passages
+
+		# 
+		# Select random pointin the grid to begin carving
+		#
 		mark( rand(@width) , rand(@height) )
 		until @frontier.empty?
 			x, y = @frontier.delete_at( rand(@frontier.length) )
@@ -125,6 +137,10 @@ class Prim < Maze
 		end
 	end
 
+	# ++++++++++++++++++++++++++++++++++++++++++
+	# Add the grid point (x,y) to the frontier 
+	# so long as its within bounds and empty.
+	# ++++++++++++++++++++++++++++++++++++++++++
 	def add_to_frontier(x, y)
 		if x >= 0 && y >= 0 && y < @height && x < @width && @grid[y][x] == 0
 			@grid[y][x] |= @@FRONTIER
@@ -132,6 +148,10 @@ class Prim < Maze
 		end
 	end
 
+	# ++++++++++++++++++++++++++++++++++++++++++++
+	# Add the grind point (x,y) to the maze, and
+	# add its neighboring points to the frontier.
+	# ++++++++++++++++++++++++++++++++++++++++++++
 	def mark(x,y)
 		@grid[y][x] |= @@IN
 
@@ -159,6 +179,10 @@ class Prim < Maze
 		return @@N if fy > ty
 	end
 
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# If the cell is empty (i.e., 0) or has been selected 
+	# as a "frontier" point, we treat it as being empty.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def empty?(cell)
 		cell == 0 || cell == @@FRONTIER
 	end
