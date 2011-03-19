@@ -124,6 +124,11 @@ class Prim < Maze
 		# Select random pointin the grid to begin carving
 		#
 		mark( rand(@width) , rand(@height) )
+
+		# 
+		# Marking an empty matrix creates a frontier. 
+		# Keep going until there is no frontier.
+		#
 		until @frontier.empty?
 			x, y = @frontier.delete_at( rand(@frontier.length) )
 			n = neighbors(x, y)
@@ -161,6 +166,10 @@ class Prim < Maze
 		add_to_frontier( x, y+1 )
 	end
 
+	# +++++++++++++++++++++++++++++++++++++++++++++
+	# Find the points which are inbounds and which 
+	# have not yet been added to the matrix.
+	# +++++++++++++++++++++++++++++++++++++++++++++
 	def neighbors(x, y)
 		n = []
 		
@@ -172,6 +181,11 @@ class Prim < Maze
 		n
 	end
 
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Decide the direction we are moving in.
+	#
+	# Answer will be one of the class variables N, S, E or W.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def direction(fx, fy, tx, ty)
 		return @@E if fx < tx 
 		return @@W if fx > tx
