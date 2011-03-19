@@ -111,19 +111,39 @@ class Prim < Maze
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw
 		if not @animate
+			# 
+			# If we are not animating, invoke the super class method
+			#
 			super()
 		else
+			#
+			# If we are animating, clear the screen and start carving!
+			#
 			print "\e[2J"
 			carve_passages
 		end
 	end
 
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Invoked to render animated version of the ASCII maze
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def display
+		#
+		# Draw the "top row" of the maze
+		#
 		print "\e[H"
 		puts " " + "_" * (@width * 2 - 1)	
+
+		# 
+		# Step through the grid cells of the maze
+		#	
 		@grid.each_with_index do |row,y|
 			print "|"
 			row.each_with_index do |cell,x|
+				
+				# 
+				# Color the cell if its frontier
+				#
 				print "\e[41m" if cell == @@FRONTIER
 				if empty?(cell) && y+1 < @height && empty?(@grid[y+1][x])
 					print " "
@@ -132,6 +152,9 @@ class Prim < Maze
 				end
 				print "\e[m" if cell == @@FRONTIER
 
+				#
+				# Draw the "grid" of the maze
+				#
 				if empty?(cell) && x+1 < @width && empty?(row[x+1])
 					print((y+1 < @height && (empty?(@grid[y+1][x]) || empty?(@grid[y+1][x+1]))) ? " " : "_")
 				elsif cell & @@E != 0
