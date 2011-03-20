@@ -140,11 +140,21 @@ class Kruskal < Maze
 	end
 	
 	def display
+		#
+		# Draw the "top row" of the maze.
+		#
 		print "\e[H"
 		puts " " + "_" * ( @width * 2 - 1)
+		
+		#
+		# Step through the grid/maze, cell-by-cell.
+		#
 		@grid.each_with_index do |row,y|
 			print "|"
 				row.each_with_index do |cell,x|
+					#
+					# Start coloring, if unconnected.
+					#
 					print "\e[47m" if cell == 0
 					print((cell & @@S != 0) ? " " : "_")
 					
@@ -154,6 +164,9 @@ class Kruskal < Maze
 						print "|"
 					end
 					
+					# 
+					# Stop coloring, if unconnected.
+					#
 					print "\e[m" if cell == 0
 				end
 			puts
