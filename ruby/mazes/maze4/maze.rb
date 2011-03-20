@@ -86,7 +86,9 @@ class Kruskal < Maze
 		@sets = Array.new(height) { Array.new(width) { Tree.new } }
 		
 		#
-		# Build the collection of edges and randomize
+		# Build the collection of edges and randomize.
+		# Edges are "north" and "west" sides of cell, 
+		# if index is greater than 0.
 		#
 		@edges = []
 		@height.times do |y|
@@ -100,8 +102,8 @@ class Kruskal < Maze
 		# 
 		# Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
 		#
+		@delay = d		
 		@animate = a
-		@delay = d
 		if not @animate
 			carve_passages
 		end
