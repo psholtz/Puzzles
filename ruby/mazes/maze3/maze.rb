@@ -115,7 +115,7 @@ class Prim < Maze
 		end
 	end
 
-	attr_reader :animate
+	attr_reader :animate, :delay
 
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	# Method only needs to be overridden if we are animating.
