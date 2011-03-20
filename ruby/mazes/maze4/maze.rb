@@ -161,18 +161,30 @@ class Kruskal < Maze
 	end
 	
 	def carve_passages
-		until @edges.empty?
+		until @edges.empty? 
+			#
+			# Select the next edge, and decide which direction we are going in.
+			#
 			x, y, direction = @edges.pop
 			dx, dy = x + @@DX[direction], y + @@DY[direction]
 			
+			#
+			# Pluck out the corresponding sets.
+			#
 			set1, set2 = @sets[y][x], @sets[dy][dx]
 			
 			unless set1.connected?(set2)
+				#
+				# If we are animating, display the maze and pause.
+				#
 				if @animate
 					display
 					sleep(@delay)
 				end
 				
+				#
+				# Connect the two sets and "knock down" the wall between them.
+				#
 				set1.connect(set2)
 				@grid[y][x] |= direction
 				@grid[dy][dx] |= @@OPPOSITE[direction] 
