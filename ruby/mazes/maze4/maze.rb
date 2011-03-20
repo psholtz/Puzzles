@@ -6,7 +6,7 @@ DEFAULT_WIDTH = 10
 DEFAULT_HEIGHT = 10
 DEFAULT_SEED = rand(0xFFFF_FFFF)
 DEFAULT_ANIMATE = false
-DELAY = 0.01
+DEFAULT_DELAY = 0.01
 
 # ==================================================================
 # Class Maze defines basic behavior to which a maze should conform.
@@ -67,13 +67,13 @@ class Maze
 		#
 		# Output maze metadata.
 		#
-		puts "#{$0} #{@width} #{@height} #{@seed}"
+		puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
 	end
 end
 
 class Kruskal < Maze
 
-	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE )
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY )
 		# 
 		# Invoke super-constructor
 		#
@@ -93,6 +93,7 @@ class Kruskal < Maze
 		# Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
 		#
 		@animate = a
+		@delay = d
 		if not @animate
 			carve_passages
 		end
@@ -146,7 +147,7 @@ class Kruskal < Maze
 			unless set1.connected?(set2)
 				if @animate
 					display
-					sleep(DELAY)
+					sleep(@delay)
 				end
 				
 				set1.connect(set2)
@@ -157,6 +158,11 @@ class Kruskal < Maze
 		
 		if @animate
 			display
+			
+			#
+			# Output maze metadata.
+			#
+			puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
 		end
 	end
 end
@@ -188,7 +194,8 @@ OPTIONS  = {
 	:w => DEFAULT_WIDTH,
 	:h => DEFAULT_HEIGHT,
 	:s => DEFAULT_SEED,
-	:a => DEFAULT_ANIMATE
+	:a => DEFAULT_ANIMATE,
+	:d => DEFAULT_DELAY
 }
 
 if __FILE__ == $0
@@ -199,6 +206,7 @@ if __FILE__ == $0
 		o.on("-h","--height=[value]", Integer, "Height of maze (default: " + DEFAULT_HEIGHT.to_s + ")")		{ |OPTIONS[:h]| }
 		o.on("-s","--seed=[value]", Integer, "User-defined seed will model deterministic behavior (default: " + DEFAULT_SEED.to_s + ")")	{ |OPTIONS[:s]| }
 		o.on("-a","--[no-]animated", true.class, "Animate rendering (default: " + DEFAULT_ANIMATE.to_s + ")")		{ |OPTIONS[:a]| }
+		o.on("-d","--delay=[value]", Float, "Animation delay (default: " + DEFAULT_DELAY.to_s + ")")
 		o.separator ""
 		o.parse!
 
@@ -214,7 +222,7 @@ if __FILE__ == $0
 
 		if good
 			# build and draw a new binary tree maze
-			Kruskal.new( w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a] ).draw
+			Kruskal.new( w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d] ).draw
 		else
 			puts o
 		end
