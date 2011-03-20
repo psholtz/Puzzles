@@ -206,7 +206,7 @@ if __FILE__ == $0
 		o.on("-h","--height=[value]", Integer, "Height of maze (default: " + DEFAULT_HEIGHT.to_s + ")")		{ |OPTIONS[:h]| }
 		o.on("-s","--seed=[value]", Integer, "User-defined seed will model deterministic behavior (default: " + DEFAULT_SEED.to_s + ")")	{ |OPTIONS[:s]| }
 		o.on("-a","--[no-]animated", true.class, "Animate rendering (default: " + DEFAULT_ANIMATE.to_s + ")")		{ |OPTIONS[:a]| }
-		o.on("-d","--delay=[value]", Float, "Animation delay (default: " + DEFAULT_DELAY.to_s + ")")
+		o.on("-d","--delay=[value]", Float, "Animation delay (default: " + DEFAULT_DELAY.to_s + ")")	{ |OPTIONS[:d]| } 
 		o.separator ""
 		o.parse!
 
@@ -217,6 +217,8 @@ if __FILE__ == $0
 		elsif OPTIONS[:h] == "" or OPTIONS[:h] == nil 
 			good = false
 		elsif OPTIONS[:s] == "" or OPTIONS[:s] == nil
+			good = false
+		elsif OPTIONS[:d] == "" or OPTIONS[:d] == nil
 			good = false
   		end
 
