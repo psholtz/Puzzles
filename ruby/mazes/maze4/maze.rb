@@ -71,6 +71,17 @@ class Maze
 	end
 end
 
+# ========================================================================
+# Generate a maze using randomized variant of Kruskal's algorithm.
+#
+# Loosely speaking, the algorithm is implemented as follows:
+# 
+# (1) Designate the "walls" between cells as edges.
+# (2) Randomly selected an edge.
+# (3) If the selected edge connects two disjoint trees, join the trees.
+# (4) Otherwise, throw that edge away.
+# (5) Repeat at Step 2.
+# ========================================================================
 class Kruskal < Maze
 
 	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY )
