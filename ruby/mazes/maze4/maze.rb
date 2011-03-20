@@ -79,7 +79,15 @@ class Kruskal < Maze
 		#
 		super(w,h,s)
 		
+		#
+		# Initialize the sets to the same dimension as the maze.
+		# We use Tree objects to represent the sets to be joined.
+		#
 		@sets = Array.new(height) { Array.new(width) { Tree.new } }
+		
+		#
+		# Build the collection of edges and randomize
+		#
 		@edges = []
 		@height.times do |y|
 			@width.times do |x|
