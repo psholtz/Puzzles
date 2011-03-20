@@ -109,8 +109,7 @@ class Kruskal < Maze
 		end
 	end
 
-	attr_reader :delay
-	attr_reader :animate
+	attr_reader :delay, :animate
 	
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	# Method only needs to be overridden if we are animating.
