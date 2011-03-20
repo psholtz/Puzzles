@@ -139,7 +139,13 @@ class Kruskal < Maze
 		end
 	end
 	
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Very similar, in terms of implementation, to the draw()
+	# method in the superclass, the main difference being that
+	# here we will color a cell gray if it remains unconnected.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def display
+	
 		#
 		# Draw the "top row" of the maze.
 		#
@@ -173,6 +179,15 @@ class Kruskal < Maze
 		end
 	end
 	
+	# +++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Implement Kruskal's algorithm:
+	# 
+	# (1) Randomly selected an edge.
+	# (2) If the sets are not already connected, then
+	# (3) Connect the sets, and
+	# (4) Knock down the wall between the sets.
+	# (5) Repeat at Step 1.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++
 	def carve_passages
 		until @edges.empty? 
 			#
