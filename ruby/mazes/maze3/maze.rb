@@ -121,16 +121,23 @@ class Prim < Maze
 	# If we are drawing the maze statically, defer to the superclass.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw
+		# 
+		# Clear the screen.
+		#
+		print "\e[2J"
+
 		if not @animate
+
 			# 
-			# If we are not animating, invoke the super class method
+			# Move to upper left and defer to superclass.			
 			#
+			print "\e[H"
 			super()
+
 		else
 			#
 			# If we are animating, clear the screen and start carving!
 			#
-			print "\e[2J"
 			carve_passages
 		end
 	end
