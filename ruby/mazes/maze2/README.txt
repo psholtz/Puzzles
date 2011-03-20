@@ -30,3 +30,6 @@ Run the maze with a preset seed, to model deterministic behavior:
 
 Run the maze in animation mode (<-- COOL):
 > ./maze.rb -a
+
+Run the maze with a custom animation delay:
+> ./maze.rb -a -d0.1

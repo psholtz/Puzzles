@@ -6,6 +6,7 @@ DEFAULT_WIDTH = 10
 DEFAULT_HEIGHT = 10
 DEFAULT_SEED = rand(0xFFFF_FFFF)
 DEFAULT_ANIMATE = false
+DEFAULT_DELAY = 0.04
 
 # ====================================================================
 # Class Maze defines basic behavior to which a maze should conform.
@@ -80,7 +81,7 @@ class Maze
 		#	
 		# Output maze metadata.
 		#
-		puts "#{$0} #{@width} #{@height}  #{@seed}"
+		puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
 	end
 end
 
@@ -104,7 +105,7 @@ class BinaryTree < Maze
 	# Default seed values will give "random" behavior.
 	# User-supplied seed value will give "deterministic" behavior.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE )
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY )
 		# 
 		# Invoke super-constructor
 		#
@@ -113,13 +114,14 @@ class BinaryTree < Maze
 		# 
 		# Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
 		#
+		@delay = d
 		@animate = a
 		if not @animate
 			carve_passages
 		end
 	end
 
-	attr_reader :animate
+	attr_reader :animate, :delay
 
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	# Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
@@ -136,7 +138,7 @@ class BinaryTree < Maze
 				#
 				if @animate
 					draw(update=true)
-					sleep 0.04
+					sleep @delay
 				end
 
 				dirs = []
@@ -166,7 +168,9 @@ class BinaryTree < Maze
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw(update=false)
 		if update or not @animate
-			if update; print "\e[H"; end
+			#if update; print "\e[H"; end
+			print "\e[H"
+			if not @animate; print "\e[2J"; end
 			super()
 		else
 			print "\e[2J"
@@ -182,7 +186,8 @@ OPTIONS  = {
 	:w => DEFAULT_WIDTH,
 	:h => DEFAULT_HEIGHT,
 	:s => DEFAULT_SEED,
-	:a => DEFAULT_ANIMATE
+	:a => DEFAULT_ANIMATE, 
+	:d => DEFAULT_DELAY
 }
 
 if __FILE__ == $0
@@ -193,6 +198,7 @@ if __FILE__ == $0
 		o.on("-h","--height=[value]", Integer, "Height of maze (default: " + DEFAULT_HEIGHT.to_s + ")")		{ |OPTIONS[:h]| }
 		o.on("-s","--seed=[value]", Integer, "User-defined seed will model deterministic behavior (default: " + DEFAULT_SEED.to_s + ")")	{ |OPTIONS[:s]| }
 		o.on("-a","--[no-]animated", true.class, "Animate rendering (default: " + DEFAULT_ANIMATE.to_s + ")")		{ |OPTIONS[:a]| }
+		o.on("-d","--delay=[value]", Float, "Animation delay (default: " + DEFAULT_DELAY.to_s + ")") { |OPTIONS[:d]| }
 		o.separator ""
 		o.parse!
 
@@ -204,11 +210,13 @@ if __FILE__ == $0
 			good = false
 		elsif OPTIONS[:s] == "" or OPTIONS[:s] == nil
 			good = false
+		elsif OPTIONS[:d] == "" or OPTIONS[:d] == nil
+			good = false
   		end
 
 		if good
 			# build and draw a new binary tree maze
-			BinaryTree.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a]).draw
+			BinaryTree.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d]).draw
 		else
 			puts o
 		end
