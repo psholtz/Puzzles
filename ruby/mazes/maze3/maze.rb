@@ -68,6 +68,17 @@ class Maze
 	end
 end
 
+# =================================================================================================
+# Use randomized variant of Prim's algorithm to generate a maze.
+# 
+# The algorithm is implemented as follows:
+# 
+# (1) Randomly select a grid point, and add it to the maze.
+# (2) Update the set of "frontier" cells (i.e., cells not in the maze, but which border the maze).
+# (3) Randomly select a "frontier" cell, and add it to the maze.
+# (4) "Knock down" the wall between these two cells.
+# (5) Go back to Step 2, and repeat until there are no more frontier cells.
+# =================================================================================================
 class Prim < Maze
 
 	# +++++++++++++++++++++++++++
