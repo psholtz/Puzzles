@@ -109,6 +109,7 @@ class Kruskal < Maze
 		end
 	end
 
+	attr_reader :delay
 	attr_reader :animate
 	
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -117,11 +118,23 @@ class Kruskal < Maze
 	# If we are drawing the maze statically, defer to the superclass.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw
+		# 
+		# Clear the screen.
+		#
 		print "\e[2J"
 		if not @animate
+		
+			#
+			# Move to upper left and defer to superclass.
+			#
 			print "\e[H"
 			super()
+			
 		else
+		
+			#
+			# Carve the passages and animate as we go.
+			#
 			carve_passages
 		end
 	end
@@ -167,6 +180,9 @@ class Kruskal < Maze
 		end
 		
 		if @animate
+			# 
+			# Display the final iteration.
+			#
 			display
 			
 			#
