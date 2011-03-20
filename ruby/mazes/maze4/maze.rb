@@ -193,21 +193,37 @@ class Kruskal < Maze
 	end
 end
 
+# =============================================================== 
+# We will use a tree structure to model the "set" (or "vertex") 
+# that is used in Kruskal to build the graph.
+# ===============================================================
 class Tree
+	#
+	# Build a new tree object
+	#
 	def initialize
 		@parent = nil
 	end
 
 	attr_accessor :parent
 
+	#
+	# If we are joined, return the root. Otherwise return self.
+	#
 	def root
 		@parent ? @parent.root : self
 	end
 
+	# 
+	# Are we connected to this tree?
+	#
 	def connected?(tree)
 		root == tree.root
 	end
 
+	#
+	# Connect to tree
+	#
 	def connect(tree)
 		tree.root.parent = self
 	end
