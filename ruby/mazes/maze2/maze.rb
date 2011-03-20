@@ -84,6 +84,18 @@ class Maze
 	end
 end
 
+# ========================================================================================
+# Class BinaryTree implements a simple binary tree algorithm to draw simple ASCII mazes.
+# 
+# 1. Start in the upper-left cell of the maze.
+# 2. Randomly carve either towards the east or south.
+#
+# And that's it!
+#
+# The algorithm is fast and simple, but has two significant drawbacks: (a) two of the four
+# sides (in this case, the north and west) will be spanned by a single corridor; and (b) 
+# the maze will exhibit a strong diagonal bias (in this case, north-west to south-east).
+# =========================================================================================
 class BinaryTree < Maze
 
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
