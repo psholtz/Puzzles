@@ -9,7 +9,6 @@ DEFAULT_ANIMATE = false
 DEFAULT_DELAY = 0.02
 DEFAULT_MODE = "random"
 
-
 # ==================================================================
 # Class Maze defines basic behavior to which a maze should conform.
 # It provides basic initialization/construction for the maze class,
@@ -76,6 +75,7 @@ end
 class GrowingTree < Maze
 
 	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY, m=DEFAULT_MODE )
+
 		#
 		# Invoke super-constructor
 		#
@@ -155,18 +155,18 @@ class Script
 			# Each subcommand may consist of a "command:weight" pair.
 			# If there is no assigned value, assign the weight to be 100
 			# 
-		    name, weight = element.split(/:/)
-		    weight ||= 100
-		    abort "Commands must be: random, newest, middle or oldest (was #{name.inspect})" unless %w(random r newest n middle m oldest o).include?(name)
+			name, weight = element.split(/:/)
+			weight ||= 100
+			abort "Commands must be: random, newest, middle or oldest (was #{name.inspect})" unless %w(random r newest n middle m oldest o).include?(name)
 		    
-		    #
-		    # Update total weight.
-		    #
-		    total_weight += weight.to_i
+			#
+			# Update total weight.
+			#
+			total_weight += weight.to_i
 		    
-		    #
-		    # Add these symbols to each element of "parts"
-		    #
+			#
+			# Add these symbols to each element of "parts"
+			#
 			{ :name => name.to_sym, :weight => weight }
 		end
 		
