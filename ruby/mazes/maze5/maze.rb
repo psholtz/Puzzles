@@ -129,6 +129,11 @@ class GrowingTree < Maze
 		@grid.each_with_index do |row,y|
 			print "|"
 			row.each_with_index do |cell,x|
+				#
+				# Start coloring, if not in the maze yet
+				#
+				print "\e[47m" if cell == 0
+
 				if cell == 0 && y+1 < @height && @grid[y+1][x] == 0
 					print " "
 				else
@@ -142,6 +147,11 @@ class GrowingTree < Maze
 				else
 					print "|"
 				end
+
+				# 
+				# Stop coloring, if not in the maze yet
+				#
+				print "\e[m" if cell == 0
 			end
 			puts
 		end
@@ -185,6 +195,11 @@ class GrowingTree < Maze
 		#
 		if @animate
 			display
+
+			# 
+			# Output maze metadata.
+			#
+			puts "#{$0} #{@width} #{@height} #{@seed} #{@delay} #{@mode}"
 		end
 	end
 end
