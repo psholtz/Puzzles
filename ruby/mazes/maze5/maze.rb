@@ -21,7 +21,7 @@ class Maze
 	@@DX = { @@E => 1, @@W => -1, @@N => 0, @@S => 0 }
 	@@DY = { @@E => 0, @@W => 0, @@N => -1, @@S => 1 }
 	@@OPPOSITE = { @@E => @@W, @@W => @@E, @@N => @@S, @@S => @@N }
-
+	
 	def self.N; @@N; end
 	def self.S; @@S; end
 	def self.E; @@E; end
@@ -73,7 +73,6 @@ class Maze
 end
 
 class GrowingTree < Maze
-
 	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY, m=DEFAULT_MODE )
 
 		#
@@ -86,6 +85,7 @@ class GrowingTree < Maze
 		#
 		@mode = m.downcase
 		@script = Script.new(@mode)
+		puts @script.to_s.to_s
 		
 		#
 		# Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
@@ -94,43 +94,43 @@ class GrowingTree < Maze
 		@animate = a
 		if not @animate
 			carve_passages
-		end
+		end		
 	end
 	
 	attr_reader :delay, :animate, :mode, :script
-	
+		
 	def draw
 		print "\e[2J"
 		print "\e[H"
 		super()
-	end
-	
-	def display
-	
-	end
-	
+	end		
+		
 	def carve_passages
 		# configure variables
 		cells = []
-		
-		x, y = rand(width), rand(height)
-		cells << [x, y]
-		#until cells.empty?
-		#	index = script.next_index(cells.length)
-			
-			
-		#end
+
+		x, y = rand(@width), rand(@height)
+		cells << [x, y]	
+
+		until cells.empty?
+			index = script.next_index(cells.length)
+
+			print "index: ", index
+			puts
+
+			cells.delete_at(index) if index
+		end
 	end
 end
 
 class Script
 	def initialize(arg)
 		#
-		# User can supply a list of commands, separated by ";", on the command line
-		# Here we split these commands by parsing on the ";" character. 
+		# User can supply a list of commands, separated by ";", on the command line.
+		# Here we split these commands by parsing on the ";" character.
 		#
-		@commands = arg.split(/;/).map { |cmd| parse_command(cmd) }
-		
+		@commands = arg.split(/;/).map { |cmd| parse_command(cmd) }	
+
 		#
 		# Index into the above array.
 		# Initialize it to first element.
@@ -138,50 +138,70 @@ class Script
 		@current = 0
 	end
 	
-	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	# Each command may consist of a comma-delimited list of subcommands.
-	# This method parses out those subcommands.
-	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	def parse_command(cmd)
-	
+
 		total_weight = 0
-		
-		# 
+	
+		#
 		# Parse out the subcommands, in comma-delimited list.
-		# 
+		#	
 		parts = cmd.split(/,/).map do |element|
-		
-			#
-			# Each subcommand may consist of a "command:weight" pair.
-			# If there is no assigned value, assign the weight to be 100
-			# 
 			name, weight = element.split(/:/)
 			weight ||= 100
 			abort "Commands must be: random, newest, middle or oldest (was #{name.inspect})" unless %w(random r newest n middle m oldest o).include?(name)
-		    
+
 			#
 			# Update total weight.
 			#
 			total_weight += weight.to_i
-		    
+
 			#
 			# Add these symbols to each element of "parts"
 			#
-			{ :name => name.to_sym, :weight => weight }
+			{ :name => name.to_sym, :weight => total_weight }
 		end
-		
-		#
+	
+		# 
 		# Add these symbols to "cmd" itself
 		#
 		{ :total => total_weight, :parts => parts }
 	end
-	
+
 	def next_index(ceil)
-		# 
-		# Get the next command, and advance the pointer.
-		#
 		command = @commands[@current]
 		@current = (@current + 1) % @commands.length
+
+		print command[:total]; puts
+		print command[:parts]; puts
+
+		v = rand(command[:total])
+		command[:parts].each do |part|
+			if v < part[:weight]
+				case part[:name]
+					when :random, :r then return rand(ceil)
+					when :newest, :n then return ceil-1
+					when :middle, :m then return ceil/2
+					when :oldest, :o then return 0
+				end
+			end
+		end
+		puts "HERE!!"
+	end
+
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++		
+	# Inform the user of the commands, and subcommands/weights that make up the script.
+	#
+	# Commands are joined by ";"
+	#
+	# Subcommands are represented in a comman-separaated list, with ":" inbetween the 
+	# subcommand and the weight.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def to_s
+		@commands.map do |command|
+			v = 0
+			command[:parts].map { |part| s = "#{part[:name]}:#{(part[:weight])-v}"; v = part[:weight]; s }.join(",")
+		end.join(";")
 	end
 end
 
