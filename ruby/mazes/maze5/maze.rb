@@ -99,10 +99,53 @@ class GrowingTree < Maze
 	attr_reader :delay, :animate, :mode, :script
 		
 	def draw
+		#
+		# Clear the screen.
+		#
 		print "\e[2J"
-		print "\e[H"
-		super()
+		if not @animate
+			#
+			# If we are not animating, defer to the superclass
+			#
+			print "\e[H"
+			super()
+		else
+			# 
+			# Start the display
+			#
+			display
+			sleep @delay
+
+			#
+			# Draw the matrix in realtime
+			#
+			carve_passages
+		end
 	end		
+
+	def display
+		print "\e[H"
+		puts " " + "_" * ( @width * 2 - 1 )
+		@grid.each_with_index do |row,y|
+			print "|"
+			row.each_with_index do |cell,x|
+				if cell == 0 && y+1 < @height && @grid[y+1][x] == 0
+					print " "
+				else
+					print((cell & @@S != 0) ? " " : "_")
+				end
+
+				if cell == 0 && x+1 < @width && row[x+1] == 0
+					print(( y+1 < @height && (@grid[y+1][x] == 0 || @grid[y+1][x+1] == 0)) ? " " : "_")
+				elsif cell & @@E != 0
+					print(((cell | row[x+1]) & @@S != 0) ? " " : "_")
+				else
+					print "|"
+				end
+			end
+			puts
+		end
+	end
 		
 	def carve_passages
 		# configure variables
@@ -123,6 +166,9 @@ class GrowingTree < Maze
 					cells << [dx, dy]
 					index = nil
 
+					#
+					# If animating, draw the maze.
+					#
 					if @animate
 						display
 						sleep @delay
@@ -132,6 +178,13 @@ class GrowingTree < Maze
 			end
 
 			cells.delete_at(index) if index
+		end
+
+		# 
+		# Draw final frame of maze if animating.
+		#
+		if @animate
+			display
 		end
 	end
 end
