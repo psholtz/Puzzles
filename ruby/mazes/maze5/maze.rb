@@ -165,7 +165,27 @@ class GrowingTree < Maze
 			puts
 		end
 	end
-		
+	
+	# ========================================================================================
+	# Implement Growing Tree algorithm;
+	#	
+	# (1) Let C be a list of cells, initially empty.
+	# (2) Add one cell to C, at random
+	# (3) Choose a cell from C, and carve a passage to any unvisited neighbor of that cells, 
+	#     adding that neighbor to C as well. If there are no unvisited neighbords, remove the 
+	#     cell from C.
+	# (4) Repeat (3) until C is empty.
+	#
+	# The interesting part of the algorithm is in how you choose the cells from C, in step #3.
+	# If you always choose the newest cell, you'll get the recursive backtracking algorithm.
+	# If you always choose a cell at random, you'll get Prim's. 
+ 	# 
+	# There is a Script object which models the various ways of choosing a cell in step #3.
+	# 
+	# The four possible ways are: random (Prim's), newest (backtracker), middle and oldest.
+	#
+	# Users can experiment with various other combinations from the command line.
+	# ========================================================================================
 	def carve_passages
 		# configure variables
 		cells = []
