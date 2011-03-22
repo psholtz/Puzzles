@@ -85,7 +85,6 @@ class GrowingTree < Maze
 		#
 		@mode = m.downcase
 		@script = Script.new(@mode)
-		puts @script.to_s.to_s
 		
 		#
 		# Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
@@ -114,9 +113,23 @@ class GrowingTree < Maze
 
 		until cells.empty?
 			index = script.next_index(cells.length)
+			x, y = cells[index]
 
-			print "index: ", index
-			puts
+			[@@N, @@S, @@E, @@W].shuffle.each do |dir|
+				dx, dy = x + @@DX[dir], y + @@DY[dir]
+				if dx >= 0 && dy >= 0 && dx < @width && dy < @height && @grid[dy][dx] == 0
+					@grid[y][x] |= dir
+					@grid[dy][dx] |= @@OPPOSITE[dir]
+					cells << [dx, dy]
+					index = nil
+
+					if @animate
+						display
+						sleep @delay
+					end
+					break
+				end
+			end
 
 			cells.delete_at(index) if index
 		end
@@ -171,9 +184,6 @@ class Script
 		command = @commands[@current]
 		@current = (@current + 1) % @commands.length
 
-		print command[:total]; puts
-		print command[:parts]; puts
-
 		v = rand(command[:total])
 		command[:parts].each do |part|
 			if v < part[:weight]
@@ -185,7 +195,8 @@ class Script
 				end
 			end
 		end
-		puts "HERE!!"
+	
+		abort "[bug] failed to find index (#{v} of #{command.inspect})"
 	end
 
 
@@ -246,7 +257,7 @@ if __FILE__ == $0
 
 		if good
 			# build and draw a new binary tree maze
-			GrowingTree.new( w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d], m=OPTIONS[:m] )#.draw
+			GrowingTree.new( w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d], m=OPTIONS[:m] ).draw
 		else
 			puts o
 		end
