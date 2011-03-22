@@ -76,7 +76,7 @@ end
 # The GrowingTree algorithm adds a bit of versatility to our maze-generating toolkit. 
 #
 # Depending on how it's implemented, users can emulate Prim's algorithm, or the BackTracking 
-# algorithm, or various other variations. 
+# algorithm, or various other variations: 
 #
 # (1) Let C be a list of cells, initially empty.
 # (2) Add one cell to C, at random.
