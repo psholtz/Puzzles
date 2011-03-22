@@ -39,7 +39,12 @@ class Maze
 	end
 
 	attr_reader :width, :height, :seed
-	
+
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Method only needs to be overridden if we are animating.
+	#
+	# If we are drawing the maze statically, defer to the superclass.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	def draw
 		#
 		# Draw the "top" line
@@ -240,7 +245,17 @@ class Script
 		#
 		@current = 0
 	end
-	
+
+	# =========================================================================
+	# Each comment can consist of a list of subcommands, separated by commas, 
+	# and each subcommand can be a name:weight pair, separated by a colon.
+	#
+	# This method parses out any subcommands.
+	#
+	# This method also annotates the structures, by adding :name and :weight
+	# symbols to each subcommand, and adding :total and :parts symbols
+	# to each command.
+	# =========================================================================
 	def parse_command(cmd)
 
 		total_weight = 0
