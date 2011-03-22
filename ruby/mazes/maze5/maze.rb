@@ -40,11 +40,6 @@ class Maze
 
 	attr_reader :width, :height, :seed
 
-	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	# Method only needs to be overridden if we are animating.
-	#
-	# If we are drawing the maze statically, defer to the superclass.
-	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	def draw
 		#
 		# Draw the "top" line
@@ -103,6 +98,11 @@ class GrowingTree < Maze
 	
 	attr_reader :delay, :animate, :mode, :script
 		
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Method only needs to be overridden if we are animating.
+	#
+	# If we are drawing the maze statically, defer to the superclass.
+	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	def draw
 		#
 		# Clear the screen.
