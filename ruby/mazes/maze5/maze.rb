@@ -124,8 +124,12 @@ class GrowingTree < Maze
 	end		
 
 	def display
+		#
+		# Draw the stop row
+		#
 		print "\e[H"
 		puts " " + "_" * ( @width * 2 - 1 )
+
 		@grid.each_with_index do |row,y|
 			print "|"
 			row.each_with_index do |cell,x|
@@ -165,6 +169,9 @@ class GrowingTree < Maze
 		cells << [x, y]	
 
 		until cells.empty?
+			#
+			# Select the next cell to work wiht, form the script
+			#
 			index = script.next_index(cells.length)
 			x, y = cells[index]
 
@@ -204,6 +211,21 @@ class GrowingTree < Maze
 	end
 end
 
+# ===============================================================
+# Wrapper around the arguments supplied by the user, indicating 
+# how to "draw" the matrix. 
+#
+# User may issue one of four commands:
+#
+# (1) random
+# (2) newest
+# (3) middle
+# (4) oldest
+#
+# Commands may also be issued with a "weight", indicating the 
+# relative "weighting" that should be given in deciding whether
+# to select that command.
+# ===============================================================
 class Script
 	def initialize(arg)
 		#
@@ -248,6 +270,9 @@ class Script
 		{ :total => total_weight, :parts => parts }
 	end
 
+	# ===========================================================
+	# Select the next index, based on what the next command is.
+	# ===========================================================
 	def next_index(ceil)
 		command = @commands[@current]
 		@current = (@current + 1) % @commands.length
