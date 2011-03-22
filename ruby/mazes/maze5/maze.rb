@@ -72,6 +72,23 @@ class Maze
 	end
 end
 
+# =============================================================================================
+# The GrowingTree algorithm adds a bit of versatility to our maze-generating toolkit. 
+#
+# Depending on how it's implemented, users can emulate Prim's algorithm, or the BackTracking 
+# algorithm, or various other variations. 
+#
+# (1) Let C be a list of cells, initially empty.
+# (2) Add one cell to C, at random.
+# (3) Choose a cell from C, and carve a passage to any unvisited neighbor of that 
+#     cell, adding that neighbor to cell as well. If there are no unvisited neighbors, 
+#     remove the cell from C.
+# (4) Repeat (3) until C is empty.
+#
+# The interesting part of the algorithm is in how you choose the cells from C, in step #3.
+# If you always choose the newest cell, you'll get the recursive backtracking algorithm.
+# If you always choose a cell at random, you'll get Prim's.
+# =============================================================================================
 class GrowingTree < Maze
 	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY, m=DEFAULT_MODE )
 
@@ -171,7 +188,7 @@ class GrowingTree < Maze
 	#	
 	# (1) Let C be a list of cells, initially empty.
 	# (2) Add one cell to C, at random
-	# (3) Choose a cell from C, and carve a passage to any unvisited neighbor of that cells, 
+	# (3) Choose a cell from C, and carve a passage to any unvisited neighbor of that cell, 
 	#     adding that neighbor to C as well. If there are no unvisited neighbords, remove the 
 	#     cell from C.
 	# (4) Repeat (3) until C is empty.
