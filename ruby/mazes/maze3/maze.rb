@@ -343,7 +343,7 @@ if __FILE__ == $0
   		end
 
 		if good
-			# build and draw a new binary tree maze
+			# build and draw a new maze
 			Prim.new( w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d] ).draw
 		else
 			puts o
