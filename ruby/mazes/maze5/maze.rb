@@ -401,7 +401,7 @@ if __FILE__ == $0
 		end
 
 		if good
-			# build and draw a new binary tree maze
+			# build and draw a new maze
 			GrowingTree.new( w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d], m=OPTIONS[:m] ).draw
 		else
 			puts o
