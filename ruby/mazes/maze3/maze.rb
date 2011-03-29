@@ -50,11 +50,11 @@ class Maze
 			print "|"
 			@width.times do |x|
 				# render "bottom" using "S" switch
-				print ( (@grid[y][x] & @@S != 0) ? " " : "_" )
+				print( (@grid[y][x] & @@S != 0) ? " " : "_" )
 			
 				# render "side" using "E" switch	
 				if @grid[y][x] & @@E != 0
-					print ( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0 ) ? " " : "_" )
+					print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0 ) ? " " : "_" )
 				else
 					print "|"
 				end
@@ -168,7 +168,7 @@ class Prim < Maze
 				if empty?(cell) && y+1 < @height && empty?(@grid[y+1][x])
 					print " "
 				else
-					print((cell & @@S != 0) ? " " : "_")
+					print( (cell & @@S != 0) ? " " : "_" )
 				end
 				print "\e[m" if cell == @@FRONTIER
 
@@ -176,9 +176,9 @@ class Prim < Maze
 				# Draw the "grid" of the maze
 				#
 				if empty?(cell) && x+1 < @width && empty?(row[x+1])
-					print((y+1 < @height && (empty?(@grid[y+1][x]) || empty?(@grid[y+1][x+1]))) ? " " : "_")
+					print( ( y+1 < @height && ( empty?(@grid[y+1][x]) || empty?(@grid[y+1][x+1]) ) ) ? " " : "_" )
 				elsif cell & @@E != 0
-					print(((cell | row[x+1]) & @@S != 0) ? " " : "_")
+					print( ( (cell | row[x+1]) & @@S != 0 ) ? " " : "_" )
 				else
 					print "|"
 				end
