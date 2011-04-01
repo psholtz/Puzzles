@@ -1,4 +1,4 @@
-#!../lua5.1
+#!./lua5.1
 
 --
 -- Make sure we are not doing bitwise operations on floats.
@@ -10,11 +10,26 @@ local function check_int(n)
 end
 
 local function to_bits(n) 
+	-- do checks on the argument
 	check_int(n)
 	if ( n < 0 ) then
-		
+		return to_bits( bit.bnot(math.abs(n)) + 1 )	
 	end
-	return {}
+
+	-- calculate the bits table
+	local tbl = {}
+	local cnt = 1
+	while ( n > 0 ) do
+		local last = math.mod(n,2)
+		if ( last == 1 ) then
+			tbl[cnt] = 1
+		else
+			tbl[cnt] = 0
+		end
+		n = ( n - last ) / 2
+		cnt = cnt + 1
+	end
+	return tbl 
 end
 
 --
@@ -26,6 +41,8 @@ end
 --
 local function tbl_to_number(tbl)
 	local n = table.getn(tbl)
+
+	for i,v in ipairs(tbl) do print(i,v) end
 
 	local rslt = 0
 	local power = 1
@@ -39,7 +56,6 @@ end
 
 local function bit_not( n )
 	local tbl = to_bits(n)
-	print(tbl)
 	print(#tbl)
 	local size = math.max( table.getn(tbl), 32 )
 	for i=1,size do
@@ -49,7 +65,6 @@ local function bit_not( n )
 			tbl[i] = 1
 		end
 	end
-	print("done")
 	return tbl_to_number(tbl)
 end
 
@@ -64,7 +79,8 @@ bit = {
 	bnot = bit_not,
 }
 
---print(bit.bor(3,4))
---print(bit.bor(3.1,4.2))
-print(bit.bnot(4))
-print(bit.bnot(3))
+bit.bnot(0)
+bit.bnot(1)
+bit.bnot(2)
+bit.bnot(3)
+bit.bnot(4)
