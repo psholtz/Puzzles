@@ -42,8 +42,6 @@ end
 local function tbl_to_number(tbl)
 	local n = table.getn(tbl)
 
-	for i,v in ipairs(tbl) do print(i,v) end
-
 	local rslt = 0
 	local power = 1
 	for i=1,n do
