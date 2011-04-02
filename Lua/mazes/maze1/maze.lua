@@ -51,6 +51,10 @@ function Maze:new(width,height,seed)
 
 end
 
+--
+-- Repeated concatenation is both unseemly and, generally speaking, inefficient.
+-- Instead, we will build an array (i.e., table) and push each line onto it.
+--
 function Maze:draw()
 
 	-- draw the top line
