@@ -4,8 +4,7 @@
 -- BITWISE OPERATOR LIBRARY
 --
 -- Lua does not provide native support for bitwise operations.
--- Hence, we have to create our own methods to provide these
--- services.
+-- Here we supply our own methods to provide these services.
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --
