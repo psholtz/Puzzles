@@ -1,4 +1,4 @@
-#!../lua5.1
+#!./lua5.1
 
 --
 -- Default arguments
@@ -6,6 +6,12 @@
 local DEFAULT_WIDTH = 10
 local DEFAULT_HEIGHT = 10
 local DEFAULT_SEED = os.time()
+
+--
+-- Imported required files
+-- (See other Lua libraries in this branch)
+--
+dofile "bit.lua"
 
 --
 -- Class variables needed for calculations
@@ -186,5 +192,3 @@ bit = {
 
 maze = Maze:new(20)
 maze:draw()
-
-print(bit.bor(3,4))
