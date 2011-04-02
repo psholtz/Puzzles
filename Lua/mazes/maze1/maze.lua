@@ -38,9 +38,9 @@ function Maze:new(width,height,seed)
 	_mt.seed = seed or DEFAULT_SEED
 	_mt.grid = {}
 	for j=1,_mt.height do
-		_mt[j] = {}
+		_mt.grid[j] = {}
 		for i=1,_mt.width do
-			_mt[j][i] = 0	
+			_mt.grid[j][i] = 0	
 		end
 	end
 
@@ -64,8 +64,21 @@ function Maze:draw()
 	for j=1,self.height do
 		out = "|"
 		for i=1,self.width do
-			out = out .. "_"
-			out = out .. "|"
+			if ( bit.band(self.grid[j][i],S) ~= 0 ) then
+				out = out .. " "
+			else
+				out = out .. "_"
+			end
+
+			if ( bit.band(self.grid[j][i],E) ~= 0 ) then
+				if ( bit.band(bit.bor(self.grid[j][i],self.grid[j][i+1]),S) ~= 0 ) then
+					out = out .. " "
+				else
+					out = out .. "_"
+				end
+			else
+				out = out .. "|"
+			end
 		end
 		table.insert(lines,out)
 	end
