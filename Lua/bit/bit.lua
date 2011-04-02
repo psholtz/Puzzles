@@ -1,4 +1,12 @@
-#!./lua5.1
+#!./lua5.1 	
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-- BITWISE OPERATOR LIBRARY
+--
+-- Lua does not provide native support for bitwise operations.
+-- Hence, we have to create our own methods to provide these
+-- services.
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 --
 -- Maximum number of supported bits.
