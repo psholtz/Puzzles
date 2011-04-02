@@ -9,7 +9,7 @@ local DEFAULT_SEED = os.time()
 
 --
 -- Imported required files
--- (See other Lua libraries in this branch)
+-- (See other Lua libraries in the Algorithms branch)
 --
 dofile "bit.lua"
 
@@ -75,7 +75,7 @@ function Maze:draw()
 			end
 
 			if ( bit.band(self.grid[j][i],E) ~= 0 ) then
-				if ( bit.band(bit.bor(self.grid[j][i],self.grid[j][i+1]),S) ~= 0 ) then
+				if ( bit.band( bit.bor( self.grid[j][i], self.grid[j][i+1] ), S ) ~= 0 ) then
 					out = out .. " "
 				else
 					out = out .. "_"
