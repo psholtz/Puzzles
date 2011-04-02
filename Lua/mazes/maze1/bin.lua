@@ -1,6 +1,11 @@
 #!./lua5.1
 
 --
+-- Maximum number of supported bits.
+--
+local MAX_BITS = 32
+
+--
 -- Make sure we are not doing bitwise operations on floats.
 --
 local function check_int(n)
@@ -9,6 +14,11 @@ local function check_int(n)
 	end
 end
 
+--
+-- Convert the number n to an array of bits.
+-- For instance, 4 is changed to { 0,0,1 }, 
+-- and 7 is changed to { 1,1,1, }.
+--
 local function to_bits(n) 
 	-- do checks on the argument
 	check_int(n)
@@ -29,6 +39,7 @@ local function to_bits(n)
 		n = ( n - last ) / 2
 		cnt = cnt + 1
 	end
+	
 	return tbl 
 end
 
@@ -52,10 +63,41 @@ local function tbl_to_number(tbl)
 	return rslt
 end
 
+--
+-- Pad the smaller table with "0" and
+-- return two tables of the same size.
+--
+local function expand(tbl_m,tbl_n)
+	-- set the large and small tables
+	local big = {}
+	local small = {}
+	if ( table.getn(tbl_m) > table.getn(tbl_n) ) then
+		big = tbl_m
+		small = tbl_n
+	else
+		big = tbl_n
+		small = tbl_m
+	end
+	
+	-- pad the small table w/ 0s, till its as big as large
+	for i=table.getn(small) + 1, table.getn(big) do
+		small[i] = 0
+	end
+end
+
+--
+-- Convert n to its logical "NOT".
+-- For instance, the number 4, i.e., { 0,0,1,0,... } would
+-- be converted to { 1,1,0,1,...}.
+--
+-- Results are padded out to MAX_BITS.
+--
 local function bit_not( n )
+	-- convert number to bits
 	local tbl = to_bits(n)
-	print(#tbl)
-	local size = math.max( table.getn(tbl), 32 )
+	
+	-- flip-flop each bit to its opposite setting
+	local size = math.max( table.getn(tbl), MAX_BITS )
 	for i=1,size do
 		if ( tbl[i] == 1 ) then
 			tbl[i] = 0
@@ -63,22 +105,69 @@ local function bit_not( n )
 			tbl[i] = 1
 		end
 	end
+	
 	return tbl_to_number(tbl)
 end
 
+-- 
+-- Implement bitwise-or operation.
+--
 local function bit_or( m, n )
+	-- convert to bit table and pad the smaller
 	local tbl_m = to_bits(m)
 	local tbl_n = to_bits(n)
-	return 2
+	expand( tbl_m, tbl_n )
+	
+	-- implement bitwise-or
+	local tbl = {}
+	local size = math.max( #tbl_m, #tbl_n )
+	for i=1,size do
+		if ( tbl_m[i] == 0 and tbl_n[i] == 0 ) then
+			tbl[i] = 0
+		else
+			tbl[i] = 1
+		end
+	end
+	 
+	return tbl_to_number(tbl)
+end
+
+-- 
+-- Implement bitwise-and operation.
+--
+local function bit_and( m, n )
+	-- convert to bit table and pad the smaller
+	local tbl_m = to_bits(m)
+	local tbl_n = to_bits(n)
+	expand( tbl_m, tbl_n )
+	
+	-- implement bitwise-and
+	local tbl = {}
+	local size = math.max( #tbl_m, #tbl_n )
+	for i=1,size do
+		if ( tbl_m[i] == 1 and tbl_n[i] == 1 ) then
+			tbl[i] = 1
+		else
+			tbl[i] = 0
+		end
+	end
+	 
+	return tbl_to_number(tbl)
 end
 
 bit = {
 	bor = bit_or,
 	bnot = bit_not,
+	band = bit_and,
 }
 
-bit.bnot(0)
-bit.bnot(1)
-bit.bnot(2)
-bit.bnot(3)
-bit.bnot(4)
+print(bit.bor(3,4))
+print(bit.bor(4,4))
+print(bit.bor(4,0))
+print(bit.bor(0,0))
+print("")
+print(bit.band(3,4))
+print(bit.band(4,4))
+print(bit.band(4,0))
+print(bit.band(0,0))
+print(bit.band(4,7))
