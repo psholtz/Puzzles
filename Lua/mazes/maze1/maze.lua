@@ -11,7 +11,8 @@ local DEFAULT_SEED = os.time()
 -- Imported required files
 -- (See other Lua libraries in the Algorithms branch)
 --
-dofile "bit.lua"
+dofile "bit.lua"	-- provide bitwise operator services
+dofile "inherits.lua"	-- provide object inheritance services
 
 --
 -- Class variables needed for calculations
@@ -95,5 +96,15 @@ function Maze:draw()
 
 end
 
-maze = Maze:new(20)
+-- 
+-- Implement the recursive backtracking algorithm to draw ASCII mazes
+--
+BackTracker = inheritsFrom( Maze )
+
+function BackTracker:draw()
+	print "here"
+end
+
+
+maze = BackTracker:new(20)
 maze:draw()
