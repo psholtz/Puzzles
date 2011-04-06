@@ -16,6 +16,21 @@ The algorithm is a "depth-first" traversal of the grid. The intuition is that th
 
 A possible "optimization" would be to implement a breadth-first traversal.
 
+Sample maze:
+
+ ___________________
+| |     |   |   |   |
+| |_| |___|___| |_| |
+|_  |_  |  ___|_  | |
+| | |  _|___    |_  |
+|  _| |     | |___| |
+| |  _|_| | | |  ___|
+|___|    _|_  | |   |
+|  ___|_  |  _|___| |
+| |___  | |_|    _| |
+|_______|_____|_____|
+
+
 + ================== +
 + RUNNING THE SCRIPT +
 + ================== +
