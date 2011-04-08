@@ -11,7 +11,7 @@ The algorithm is a "depth-first" traversal of the grid. The intuition is that th
 A possible "optimization" would be to implement a breadth-first traversal.
 
 Running the Script
-==================
+------------------
 
 Run the maze with default settings:
 > ./maze.rb
