@@ -18,7 +18,6 @@ A possible "optimization" would be to implement a breadth-first traversal.
 Sample Maze
 -----------
 [![](http://farm6.static.flickr.com/5023/5599940326_80d2183d6b_m.jpg)](http://farm6.static.flickr.com/5023/5599940326_80d2183d6b_m.jpg)
-
 Running the Script
 ------------------
 
