@@ -3,6 +3,7 @@ Recursive Back-Tracking Maze
 
 This script implements a simple recursive backtracking algorithm to draw simple ASCII mazes:
 
+* Choose a starting point in the grid.
 
 Note that this scheme can easily be extended to three dimensions, by assigning values 16 and 32 to "up" and "down" respectively.
 
