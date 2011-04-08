@@ -18,9 +18,9 @@ A possible "optimization" would be to implement a breadth-first traversal.
 Sample Maze
 -----------
 
- ___________________
-| |     |   |   |   |
-| |_| |___|___| |_| |
+> ___________________
+>| |     |   |   |   |
+>| |_| |___|___| |_| |
 |_  |_  |  ___|_  | |
 | | |  _|___    |_  |
 |  _| |     | |___| |
