@@ -108,8 +108,21 @@ class Maze
 	}
 }
 
+// ==========================================================================
+// Class BackTracker implements a simple recursive back-tracking algorithm
+// to draw ASCII mazes. The algorithm works as a "depth-first" search
+// of the "tree" or "graph" representing the maze.
+//
+// A possible optimization might be to implement a "breadth-first" search.
+// ==========================================================================
 class BackTracker extends Maze
 {
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Initialize a new 2D maze with the given width and height.
+	//
+	// Default seed value will give "random" behavior.
+	// User-supplied seed value will given deterministic behavior.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function __construct($w=NULL, $h=NULL, $s=NULL) {
 		//
 		// Invoke super-constructor
@@ -122,6 +135,11 @@ class BackTracker extends Maze
 		self::carve_passage_from(0,0);
 	}
 
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Recursively carve passages through the maze, starting at (x,y).
+	//
+	// Algorithm halts when all "cells" in the maze have been visited.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function carve_passage_from($x,$y) {
 		// randomize the directions
 		$directions = array(self::$N, self::$S, self::$E, self::$W);
@@ -144,6 +162,7 @@ class BackTracker extends Maze
 	}
 }
 
+// build and draw a new maze
 $maze = new BackTracker();
 $maze->draw();
 ?>
