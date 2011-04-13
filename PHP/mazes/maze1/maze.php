@@ -57,7 +57,6 @@ class Maze
 		$this->height = is_null($h) ? $DEFAULT_HEIGHT : $h;
 		$this->seed = is_null($s) ? $DEFAULT_SEED : $s;
 
-		echo "SEED: " . $this->seed . "\r\n";
 		// seed the PRNG
 		srand($this->seed);
  
@@ -195,7 +194,6 @@ $width = $options->options["width"];
 $height = $options->options["height"];
 $seed = $options->options["seed"];
 
-echo "HERE: " .$seed. "\r\n";
 //
 // Build and draw a new maze
 //
