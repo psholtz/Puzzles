@@ -40,6 +40,12 @@ class Maze
 	// data structure for maze itself
 	protected $grid;
 
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Construct a new 2D maze with the given width and height.
+	//
+	// Default seed value will give "random" behavior.
+	// User-supplied seed value will give deterministic behavior.
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function __construct($w=NULL, $h=NULL, $s=NULL) {
 		// import the global variables
 		global $DEFAULT_WIDTH, $DEFAULT_HEIGHT, $DEFAULT_SEED;
@@ -63,6 +69,9 @@ class Maze
 		}
 	}
 
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Draw the grid, starting in the upper-left hand corner.
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function draw() {
 		// draw the top row
 		$buffer = array();
