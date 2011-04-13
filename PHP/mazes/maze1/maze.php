@@ -1,6 +1,8 @@
 #!/usr/bin/php
 <?php
 
+include_once("optparse.php");	// <-- obtain from philfreo/php-optparse branch on github
+
 $DEFAULT_WIDTH = 10;
 $DEFAULT_HEIGHT = 10;
 $DEFAULT_SEED = make_seed();
@@ -55,6 +57,7 @@ class Maze
 		$this->height = is_null($h) ? $DEFAULT_HEIGHT : $h;
 		$this->seed = is_null($s) ? $DEFAULT_SEED : $s;
 
+		echo "SEED: " . $this->seed . "\r\n";
 		// seed the PRNG
 		srand($this->seed);
  
@@ -99,7 +102,8 @@ class Maze
 		}
 
 		// draw maze metadata + the last row
-		$temp = array($this->width,$this->height,$this->seed);
+		global $argv;
+		$temp = array($argv[0],$this->width,$this->height,$this->seed);
 		array_push($buffer,join($temp," "));
 		array_push($buffer,"");
 
@@ -162,7 +166,39 @@ class BackTracker extends Maze
 	}
 }
 
-// build and draw a new maze
-$maze = new BackTracker();
+// 
+// Parse the arguments
+//
+$option_parser = new OptionParser(array("version" => "BackTracker 1.0", "description" => "Recursive Backtracking Maze"));
+
+$option_parser->add_option(array(
+	"-w","--width",
+	"dest" => "width",
+	"type" => "int"
+));
+
+$option_parser->add_option(array(
+	"-y","--height",		// ** NOTE: "-h" switch is hard-coded to "help" in this optparse implementation
+	"dest" => "height",		// ** We will substitute "y" (as in x,y) for the height variable here.
+	"type" => "int"
+));
+
+$option_parser->add_option(array(
+	"-s","--seed",
+	"dest" => "seed",
+	"type" => "int"
+));
+
+$options = $option_parser->parse_args($argv);
+
+$width = $options->options["width"];
+$height = $options->options["height"];
+$seed = $options->options["seed"];
+
+echo "HERE: " .$seed. "\r\n";
+//
+// Build and draw a new maze
+//
+$maze = new BackTracker($width,$height,$seed);
 $maze->draw();
 ?>
