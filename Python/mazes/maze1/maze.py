@@ -41,40 +41,42 @@ User-supplied seed will give deterministic behavior."""
     self.grid = [[0 for col in range(self.width)] for row in range(self.height)]
 
   def draw(self,):
-    """Draw the grid, starting in the upper-left hand corner."""
+      """Draw the grid, starting in the upper-left hand corner."""
 
-    #
-    # Draw the top line
-    #
-    buffer = []; out = " "
-    for i in range(2*self.width - 1):
-      out += "_" 
-    buffer.append(out)
-
-    #
-    # Draw each of the rows.
-    #
-    for j in range(self.height):
-      out = "|"
-      for i in range(self.width):
-        # draw the "bottom" using S switch
-        out += " " if ((self.grid[j][i] & Maze.S) != 0) else "_"
-
-        # draw the "side" using E switch
-        if (self.grid[j][i] & Maze.E) != 0:
-          out += " " if (((self.grid[j][i] | self.grid[j][i+1]) & Maze.S) != 0) else "_"
-        else:
-          out += "|"
-     
+      #
+      # Draw the top line
+      #
+      buffer = []; out = " "
+      for i in range(2*self.width - 1):
+          out += "_" 
       buffer.append(out)
 
-    # 
-    # Output maze metadata.
-    #
-    out = " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
-    buffer.append(out)
+      #
+      # Draw each of the rows.
+      #
+      for j in range(self.height):
+          out = "|"
+          for i in range(self.width):
+              # draw the "bottom" using S switch
+              out += " " if ((self.grid[j][i] & Maze.S) != 0) else "_"
 
-    print "\r\n".join(buffer)
+              # draw the "side" using E switch
+              if (self.grid[j][i] & Maze.E) != 0:
+                  out += " " if (((self.grid[j][i] | self.grid[j][i+1]) & Maze.S) != 0) else "_"
+              else:
+                  out += "|"
+     
+          buffer.append(out)
+
+      # 
+      # Output maze metadata.
+      #
+      out = " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
+      buffer.append(out)
+
+      print "\r\n".join(buffer)
+
+
 
 class BackTracker(Maze):
     """Class BackTracker implements a simple recursive back-tracking algorithm 
