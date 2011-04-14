@@ -77,28 +77,28 @@ User-supplied seed will give deterministic behavior."""
     print "\r\n".join(buffer)
 
 class BackTracker(Maze):
-  """Class BackTracker implements a simple recursive back-tracking algorithm 
+    """Class BackTracker implements a simple recursive back-tracking algorithm 
 to draw ASCII mazes. The algorithm works as a "depth-first" search
 of the "tree" or "graph" representing the maze.
 
 A possible optimization might be to implement a "breadth-first" search.
 """
 
-  def __init__(self,w=DEFAULT_WIDTH,h=DEFAULT_HEIGHT,s=DEFAULT_SEED):
-    """Initialize a new 2D maze with the given width and height.
+    def __init__(self,w=DEFAULT_WIDTH,h=DEFAULT_HEIGHT,s=DEFAULT_SEED):
+      """Initialize a new 2D maze with the given width and height.
 
 Default seed value will give "random" behavior.
 User-supplied seed value will give "deterministic" behavior.
 """
-    #
-    # Invoke super-constructor.
-    #
-    super(BackTracker,self).__init__(w,h,s)
+      #
+      # Invoke super-constructor.
+      #
+      super(BackTracker,self).__init__(w,h,s)
 
-    #
-    # Carve the grid.
-    #
-    self.carve_passage_from(0,0)
+      #
+      # Carve the grid.
+      #
+      self.carve_passage_from(0,0)
 
   def carve_passage_from(self,x,y):
       """Recursively carve passages through the maze, starting at (x,y).
