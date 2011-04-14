@@ -132,11 +132,16 @@ parser.add_option("-h","--height",dest="height",help="height of maze",metavar="<
 parser.add_option("-s","--seed",dest="seed",help="seed for PRNG generator",metavar="<prng-seed>")
 (options, args) = parser.parse_args()
 
+#
+# Set the arguments we will use
+#
 w = DEFAULT_WIDTH if options.width is None else int(options.width)
 h = DEFAULT_HEIGHT if options.height is None else int(options.height)
 s = DEFAULT_SEED if options.seed is None else int(options.seed)
 
-# build and draw a new maze
+#
+# Build and draw a new maze
+#
 m = BackTracker(w,h,s)
 m.draw()
 
