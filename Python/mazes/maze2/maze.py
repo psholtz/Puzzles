@@ -112,33 +112,33 @@ User-supplied seed value will give "deterministic" behavior.
           BinaryTree.carve_passages(self)
 
   def carve_passages(self,):
-    """Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
+      """Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
 
 Because we walk down the maze, cell-by-cell, in a linear fashion, this
 algorithm is amenable to animation. Animated version is implemented in the 
 overridden draw() method below."""
 
-    for y in range(self.height):
-      for x in range(self.width):
-        if self.animate:
+      for y in range(self.height):
+          for x in range(self.width):
+              if self.animate:
+                  self.draw(True)
+                  time.sleep(self.delay)
+
+              dirs = [] 
+              if y > 0:
+                  dirs.append(Maze.N)
+              if x > 0:
+                  dirs.append(Maze.W)
+
+              if len(dirs) > 0:
+                  dir = dirs[random.randint(0,len(dirs)-1)]
+                  if dir:
+                    dx,dy = x + Maze.DX[dir], y + Maze.DY[dir]
+                    self.grid[y][x] |= dir
+                    self.grid[dy][dx] |= Maze.OPPOSITE[dir]
+
+      if self.animate:
           self.draw(True)
-          time.sleep(self.delay)
-
-        dirs = [] 
-        if y > 0:
-          dirs.append(Maze.N)
-        if x > 0:
-          dirs.append(Maze.W)
-
-        if len(dirs) > 0:
-          dir = dirs[random.randint(0,len(dirs)-1)]
-          if dir:
-            dx,dy = x + Maze.DX[dir], y + Maze.DY[dir]
-            self.grid[y][x] |= dir
-            self.grid[dy][dx] |= Maze.OPPOSITE[dir]
-
-    if self.animate:
-      self.draw(True)
 
   def draw(self,update=False):
       if update or not self.animate:
@@ -149,8 +149,6 @@ overridden draw() method below."""
       else:
           sys.stdout.write("\x1b[2J")
           BinaryTree.carve_passages(self)
-
-  
 
 # 
 # Parse the command line arguments
