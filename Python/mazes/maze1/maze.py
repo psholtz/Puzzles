@@ -85,41 +85,41 @@ A possible optimization might be to implement a "breadth-first" search.
 """
 
     def __init__(self,w=DEFAULT_WIDTH,h=DEFAULT_HEIGHT,s=DEFAULT_SEED):
-      """Initialize a new 2D maze with the given width and height.
+        """Initialize a new 2D maze with the given width and height.
 
 Default seed value will give "random" behavior.
 User-supplied seed value will give "deterministic" behavior.
 """
-      #
-      # Invoke super-constructor.
-      #
-      super(BackTracker,self).__init__(w,h,s)
+        #
+        # Invoke super-constructor.
+        #
+        super(BackTracker,self).__init__(w,h,s)
 
-      #
-      # Carve the grid.
-      #
-      self.carve_passage_from(0,0)
+        #
+        # Carve the grid.
+        #
+        self.carve_passage_from(0,0)
 
-  def carve_passage_from(self,x,y):
-      """Recursively carve passages through the maze, starting at (x,y).
+    def carve_passage_from(self,x,y):
+        """Recursively carve passages through the maze, starting at (x,y).
 
 Algorithm halts when all "cells" in the maze have been visited."""
 
-      # 
-      # Randomly shuffle the directions.
-      #
-      directions = [Maze.N, Maze.S, Maze.E, Maze.W]
-      random.shuffle(directions)    
+        # 
+        # Randomly shuffle the directions.
+        #
+        directions = [Maze.N, Maze.S, Maze.E, Maze.W]
+        random.shuffle(directions)    
 
-      #
-      # Step through the maze, and recursively invoke the procedure.
-      #
-      for direction in directions:
-          dx,dy = x + Maze.DX[direction], y + Maze.DY[direction]
-          if dy >= 0 and dy < self.height and dx >= 0 and dx < self.width and self.grid[dy][dx] == 0:
-              self.grid[y][x] |= direction
-              self.grid[dy][dx] |= Maze.OPPOSITE[direction]
-              self.carve_passage_from(dx,dy)
+        #
+        # Step through the maze, and recursively invoke the procedure.
+        #
+        for direction in directions:
+            dx,dy = x + Maze.DX[direction], y + Maze.DY[direction]
+            if dy >= 0 and dy < self.height and dx >= 0 and dx < self.width and self.grid[dy][dx] == 0:
+                self.grid[y][x] |= direction
+                self.grid[dy][dx] |= Maze.OPPOSITE[direction]
+                self.carve_passage_from(dx,dy)
 
 
 # 
