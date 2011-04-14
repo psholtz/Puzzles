@@ -9,73 +9,72 @@ DEFAULT_HEIGHT = 10
 DEFAULT_SEED = None   # using None will seed PRNG with current system time
 
 class Maze(object):
-  """Class Maze defines basic behavior to which a maze should conform.
+    """Class Maze defines basic behavior to which a maze should conform.
 It provides basic initialization/construction for the maze class, 
 and provides a method for drawing ASCII mazes.
 
 Specific "maze-carving" techniques are implemented in subclasses."""
 
-  #
-  # Configure class variables
-  #
-  N,S,E,W = 1,2,4,8
-  DX = { E:+1, W:-1, N:0, S:0 }
-  DY = { E:0, W:0, N:-1, S:+1 }
-  OPPOSITE = { E:W, W:E, N:S, S:N } 
+    #
+    # Configure class variables
+    #
+    N,S,E,W = 1,2,4,8
+    DX = { E:+1, W:-1, N:0, S:0 }
+    DY = { E:0, W:0, N:-1, S:+1 }
+    OPPOSITE = { E:W, W:E, N:S, S:N } 
 
-  def __init__(self,w=DEFAULT_WIDTH,h=DEFAULT_HEIGHT,s=DEFAULT_SEED):
-    """Initialize a new 2D maze with the given width and height.
+    def __init__(self,w=DEFAULT_WIDTH,h=DEFAULT_HEIGHT,s=DEFAULT_SEED):
+        """Initialize a new 2D maze with the given width and height.
 
 Default seed will give 'random' behavior.
 User-supplied seed will give deterministic behavior."""
 
-    # initialize the instance variables
-    self.width = DEFAULT_WIDTH if w is None else w
-    self.height = DEFAULT_HEIGHT if h is None else h 
-    self.seed = DEFAULT_SEED if s is None else s 
+        # initialize the instance variables
+        self.width = DEFAULT_WIDTH if w is None else w
+        self.height = DEFAULT_HEIGHT if h is None else h 
+        self.seed = DEFAULT_SEED if s is None else s 
 
-    # seed the PRNG
-    random.seed(self.seed)
+        # seed the PRNG
+        random.seed(self.seed)
 
-    # build the grid to hold the maze
-    self.grid = [[0 for col in range(self.width)] for row in range(self.height)]
+        # build the grid to hold the maze
+        self.grid = [[0 for col in range(self.width)] for row in range(self.height)]
 
-  def draw(self,):
-      """Draw the grid, starting in the upper-left hand corner."""
+    def draw(self,):
+        """Draw the grid, starting in the upper-left hand corner."""
 
-      #
-      # Draw the top line
-      #
-      buffer = []; out = " "
-      for i in range(2*self.width - 1):
-          out += "_" 
-      buffer.append(out)
+        #
+        # Draw the top line
+        #
+        buffer = []; out = " "
+        for i in range(2*self.width - 1):
+            out += "_" 
+        buffer.append(out)
 
-      #
-      # Draw each of the rows.
-      #
-      for j in range(self.height):
-          out = "|"
-          for i in range(self.width):
-              # draw the "bottom" using S switch
-              out += " " if ((self.grid[j][i] & Maze.S) != 0) else "_"
+        #
+        # Draw each of the rows.
+        #
+        for j in range(self.height):
+            out = "|"
+            for i in range(self.width):
+                # draw the "bottom" using S switch
+                out += " " if ((self.grid[j][i] & Maze.S) != 0) else "_"
 
-              # draw the "side" using E switch
-              if (self.grid[j][i] & Maze.E) != 0:
-                  out += " " if (((self.grid[j][i] | self.grid[j][i+1]) & Maze.S) != 0) else "_"
-              else:
-                  out += "|"
+                # draw the "side" using E switch
+                if (self.grid[j][i] & Maze.E) != 0:
+                    out += " " if (((self.grid[j][i] | self.grid[j][i+1]) & Maze.S) != 0) else "_"
+                else:
+                    out += "|"
      
-          buffer.append(out)
+            buffer.append(out)
 
-      # 
-      # Output maze metadata.
-      #
-      out = " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
-      buffer.append(out)
+        # 
+        # Output maze metadata.
+        #
+        out = " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
+        buffer.append(out)
 
-      print "\r\n".join(buffer)
-
+        print "\r\n".join(buffer)
 
 
 class BackTracker(Maze):
