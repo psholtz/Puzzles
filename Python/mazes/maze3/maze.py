@@ -174,7 +174,6 @@ User-supplied seed value will give "deterministic" behavior.
             #
             # Output maze metadata.
             #
-            #print
             print Maze.metadata(self,)
 
           
@@ -201,24 +200,14 @@ User-supplied seed value will give "deterministic" behavior.
                 # Color the cell if its frontier
                 #
                 if self.grid[y][x] == Prim.FRONTIER:
-                    #sys.stdout.write("\x1b[41m")
                     out += "\x1b[41m"
   
                 if Prim.empty(self,x,y) and y+1 < self.height and Prim.empty(self,x,y+1):
-                    #print " " 
                     out += " "
                 else:
-                    """
-                    if ( self.grid[y][x] & Maze.S ) != 0:
-                        print " "
-                    else:
-                        print "_"
-                    """
-                    #out += (self.grid[y][x] & Maze.S) != 0 ? " " : "_"
                     out += " " if (self.grid[y][x] & Maze.S) != 0 else "_"
 
                 if self.grid[y][x] == Prim.FRONTIER:
-                    #sys.stdout.write("\x1b[m")
                     out += "\x1b[m"
 
                 # Draw the "grid" of the maze
@@ -230,7 +219,7 @@ User-supplied seed value will give "deterministic" behavior.
                     out += "|"
 
             buffer.append(out)
-        #print "\r\n".join(buffer)
+
         buffer.append("")
         sys.stdout.write("\r\n".join(buffer))
     
