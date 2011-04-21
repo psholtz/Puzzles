@@ -18,7 +18,6 @@ end
 --[[
 	Reserved attribute names
 ]]
-
 local reserved = 
 {
 	__index 		= true,
