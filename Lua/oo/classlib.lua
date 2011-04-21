@@ -13,6 +13,36 @@ local ambiguous
 
 if keep_ambiguous then
 
+	ambiguous = { _type = 'ambiguous' }
+
+	local function invalid(operation)
+		return function()
+			error('Invalid ' .. operation .. ' on ambiguous')
+		end
+	end
+	
+	-- Make ambiguous complain about everything except tostring()
+	local ambiguous_mt =
+	{
+		__add = invalid('addition'),
+		__sub = invalid('subtraction'),
+		__mul = invalid('multiplication'),
+		__div = invalid('division'),
+		__mod = invalid('modulus operation'),
+		__pow = invalid('exponentiation'),
+		__unm = invalid('unary minus'),
+		__concat = invalid('concatenation'),
+		__len = invalid('length operation'),
+		__eq = invalid('equality comparison'),
+		__lt = invalid('less than'),
+		__le = invalid('less or equal'),
+		__index = invalid('indexing'),
+		__newindex = invalid('new indexing'),
+		__call = invalid('call'),
+		__tostring = invalid(''),
+		__tonumber = invalid('conversion to number'),
+	}
+	setmetatable(ambiguous, ambiguous_mt)
 end
 
 --[[
