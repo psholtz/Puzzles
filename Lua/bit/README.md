@@ -1,5 +1,5 @@
 LUA BITWISE OPERATOR LIBRARY
-============================ 
+----------------------------
 
 Lua does not provide native support for bitwise operations. 
 

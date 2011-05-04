@@ -1,5 +1,5 @@
 Lua Class Inheritance Library
-=============================
+-----------------------------
 
 Lua does not provide native support for basic object orientation or class inheritance.
 
