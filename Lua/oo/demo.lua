@@ -1,6 +1,12 @@
 #!./lua5.1
 
-dofile '../../oo/classlib.lua'
+dofile 'classlib.lua'
+
+--[[
+	Sample code that demonstrates 
+	how to use the (hacked-on)
+	OO features of Lua.
+]]
 
 -- 
 -- Class definitions
