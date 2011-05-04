@@ -50,6 +50,7 @@ function Maze:__init(w,h,s)
 			self.grid[j][i] = 0
 		end
 	end
+
 end
 
 --[[
@@ -95,6 +96,7 @@ function Maze:draw()
 	table.insert(lines,out)
 
 	print(table.concat(lines,"\r\n"))
+
 end
 
 -- Accessor: width
@@ -108,6 +110,10 @@ end
 -- Accessor: seed
 function Maze:seed()
 	return self.seed
+end
+-- Accessor: grid
+function Maze:grid()
+	return self.grid
 end
 
 --[[
@@ -124,12 +130,32 @@ function BackTracker:__init(w,h,s)
 	self.Maze:__init(w,h,s)
 
 	-- carve the maze grid
-	self.carve_passage_from(0,0)
+	self.carve_passage_from(self,1,1)
 
 end
 
-function BackTracker:carve_passage_from(x,y)
-	print("carving")
+function BackTracker:carve_passage_from(x,y)	
+	
+	-- randomize the direction array
+	directions = { N,S,E,W }
+	for i = 4, 2, -1 do
+		local r = math.random(i)
+		directions[i], directions[r] = directions[r], directions[i]	
+	end
+
+	-- step through the randomized directions
+	for i = 1, 4 do
+		direction = directions[i]
+		dx = x + DX[direction]
+		dy = y + DY[direction]	
+		g = self.grid(self)
+		if (dy > 0) and (dy <= self.height(self)) and (dx > 0) and (dx <= self.width(self)) and (g[dy][dx] == 0) then
+			g[y][x] = bit.bor( g[y][x], direction )
+			g[dy][dx] = bit.bor( g[dy][dx], OPPOSITE[direction] )
+			self.carve_passage_from(self,dx,dy)
+		end
+	end
+
 end
 
 --[[
@@ -137,3 +163,4 @@ end
 ]]
 maze = BackTracker(10,10,DEFAULT_SEED)
 maze:draw()
+
