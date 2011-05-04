@@ -3,9 +3,8 @@
 dofile 'classlib.lua'
 
 --[[
-	Sample code that demonstrates 
-	how to use the (hacked-on)
-	OO features of Lua.
+	Sample code that demonstrates how to
+	use the (hacked-on) OO features of Lua.
 ]]
 
 -- 
@@ -22,12 +21,6 @@ function B:__init(s,sl)
 end
 function B:ps1() print(self.sl) end
 
-class.C(B)
-function C:__init(s,s1,s2)
- 	self.B:__init(s,s1)
-	self.s2 = s2
-end
-
 --
 -- Test methods
 --
@@ -35,32 +28,18 @@ print "---------"
 print "A methods"
 print "---------"
 a = A("s")
-a:ps()
-print(a:is_a(A))
-print(a.is_a(B))
+a:ps()			-- should print "s"
+print(a:is_a(A))	-- should print true 
+print(a.is_a(B))	-- should print false
 print("")
 
 print "---------"
 print "B methods"
 print "---------"
 b = B("one","two")
-b:ps()
-print(b:is_a(A))
-print(b:is_a(B))
+b:ps()			-- should print "one"
+b:ps1()			-- should print "two"
+print(b:is_a(A))	-- should print true
+print(b:is_a(B))	-- should print true
 print("")
-
-print "----------"
-print "C1 methods"
-print "----------"
-c1 = C("one")
-c1:ps()
-c1:ps1()
-print("")
-
-print "----------"
-print "C2 methods"
-print "----------"
-c2 = C("one","two")
-c2:ps()
-c2:ps1()
 
