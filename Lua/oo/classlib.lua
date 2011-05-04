@@ -287,3 +287,146 @@ end
 function implements(value, class)
 	return classof(value) and value:implements(class) or false
 end
+
+function is_a(value, class)
+	return classof(value) and value:is_a(class) or false
+end
+
+--[[
+	Use a table to control class creation and naming.
+]]
+
+class = {}
+local mt = {}
+setmetatable(class,mt)
+
+--[[
+	Create a named or unnamed class by calling class([name,] ...).
+	Arguments are an optional string to set the class name and the classes or
+	shared classes to be derived from.
+]]
+function mt:__call(...)
+	
+	local arg = {...}
+
+	-- Create a new class
+	local c = 
+	{
+		__type = 'class',
+		__bases = {},
+		__shared = {}
+	}
+	c.__class = c
+	c.__index = c
+
+	-- A first string argument sets the name of the class.
+	if type(arg[1]) == 'string' then
+		c.__name = arg[1]
+		table.remove(arg,1)
+	else
+		c.__name = c
+	end
+
+	-- Repository of inherited attributes
+	local inherited = {}
+	local from = {}
+
+	-- List of ambiguous keys
+	local ambiguous_keys = {}
+
+	-- Inherit from the base classes
+	for i = 1, #arg do
+		local base = arg[i]
+
+		-- Get the base and whether it is inherited in shared mode
+		local basetype = typeof(base)
+		local shared = basetype == 'share'
+		assert(basetype == 'class' or shared,
+			'Base ' .. i .. ' is not a class or shared class')
+		if shared then base = base.__class end
+
+		-- Just in case, check that this base is not repeated
+		assert(c.__shared[base] == nil, 'Base ' .. i .. ' is duplicated')
+
+		-- Accept it
+		c.__bases[i] = base
+		c.__shared[bases] = shared
+
+		-- Get methods that could be inherited from this base
+		for k, v in pairs(base) do
+
+			-- Skip reserved and ambiguous methods
+			if type(v) == 'function' and not reserved[k] and not ambiguous_keys[k] then
+
+				-- Where does this method come from?
+				local new_from
+
+				-- Check if the method was inherited by the base
+				local base_inherited = base.__inherited[k]
+				if base_inherited then
+					
+					-- If it has been redefined, cancel this inheritance 
+					if base_inherited ~= v then
+						base.__inherited[k] = nil
+						base.__from[k] = nil
+					else
+						new_from = base.__from[k]
+					end
+				end
+
+				-- If it is not inherited by the base, it originates there
+				new_from = new_from or { class = base, shared = shared }
+
+				-- Accept a first-time inheritance
+				local current_from = from[k]
+				if not current_from then
+					from[k] = new_from
+					local origin = new_from.class
+
+					-- We assume this is an instance method (called with
+					-- self as first argument) and wrap it so that it will
+					-- receive the correct base object as self. For class
+					-- functions this code is unusable.
+					inherited[k] = function(self,...)
+						return origin[k](self[origin.__name], ...)
+					end
+				elseif current_from.class ~= new_from.class or not current_from.shared or not new_from.shared then
+					inherited[k] = ambiguous
+					table.insert(ambiguous_keys,k)
+					from[k] = nil
+				end
+			end
+		end
+	end
+
+	-- Set the metatable now, it monitors attribute setting and does some
+	-- special processing for some of them.
+	setmetatable(c, class_mt)
+
+	-- Set inherited attributes in the class, they may be redefined afterwards
+	for k, v in pairs(inherited) do c[k] = v end 	-- checked at (1)
+	c.__inherited = inherited
+	c.__from = from
+
+	return c
+end
+
+--[[
+	Create a named class and assign it to a global variable of the same name.
+	Example: class.A(...) is equivalent to (global) A = class('A',...).
+]]
+function mt:__index(name)
+	return function(...)
+		local c = class(name,...)
+		getfenv()[name] = c
+		return c
+	end
+end
+
+--[[
+	Wrap a class for shared derivation.
+]]
+function shared(class)
+	assert(typeof(class) == 'class', 'Argument is not a class')
+	return { __type = 'share', __class = class }
+end
