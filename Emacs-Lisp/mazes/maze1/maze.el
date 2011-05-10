@@ -82,6 +82,7 @@
 (defun draw_maze_grid ()
   (defun draw_maze_grid_iter (n)
     (cond ((< n height)
+	   (princ "|")
 	   (draw_maze_row n)
 	   (draw_maze_grid_iter (+ n 1)))))
   (draw_maze_grid_iter 0))
