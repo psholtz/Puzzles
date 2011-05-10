@@ -35,9 +35,17 @@
 	((= d W) E)))
 	
 ;; set instance variables
+;; (might want to move these guys down)
 (setq width 10)
 (setq height 10)
 
+(defun initialize_maze ()
+  (defun initialize_maze_iter (n g)
+    (if (= n (* width height))
+	g
+      (initialize_maze_iter (+ n 1) (append g (list 0)))))
+  (initialize_maze_iter 0 '()))
+	
 ;;
 ;; Draw top row of the maze.
 ;; Make is "n" units wide.
@@ -47,6 +55,18 @@
 	(t
 	 (princ "_")
 	 (draw_maze_top_row (- n 1)))))
+
+(defun draw_maze_row (i)
+  (defun draw_maze_row_iter (cell)
+    (cond ((= cell width) (princ "x\n"))
+	  (t
+	   (princ "y")
+	   (draw_maze_row_iter (+ cell 1)))))
+  (draw_maze_row_iter 0))
+
+
+(defun draw_maze_grid ()
+  (draw_maze_row 0))
 
 ;;
 ;; Output the metadata about the maze.
@@ -62,6 +82,10 @@
 ;;
 (defun draw_maze ()
   (draw_maze_top_row (- (* 2 width) 1))
+  (draw_maze_grid)
   (draw_maze_metadata))
 
+(setq grid (initialize_maze))
+(princ grid)
+(princ "\n")
 (draw_maze)
