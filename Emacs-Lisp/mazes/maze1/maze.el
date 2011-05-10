@@ -33,14 +33,21 @@
 	((= d S) N)
 	((= d E) W)
 	((= d W) E)))
-	
+
+;; ++++++++++++++ 
+;; "Constructors" 
+;; ++++++++++++++ 
 (defun initialize_maze ()
   (defun initialize_maze_iter (n g)
     (if (= n (* width height))
 	g
       (initialize_maze_iter (+ n 1) (append g (list 0)))))
   (initialize_maze_iter 0 '()))
-	
+
+;; ++++++++++++ 
+;; Drawing APIs 
+;; ++++++++++++ 
+
 ;;
 ;; Draw top row of the maze.
 ;; Make is "n" units wide.
@@ -51,6 +58,9 @@
 	 (princ "_")
 	 (draw_maze_top_row (- n 1)))))
 
+;;
+;; Draw the i-th row of the maze.
+;;
 (defun draw_maze_row (i)
   (defun draw_maze_row_iter (cell)
     (cond ((= cell width) (princ "x\n"))
@@ -59,7 +69,9 @@
 	   (draw_maze_row_iter (+ cell 1)))))
   (draw_maze_row_iter 0))
 
-
+;;
+;; Draw the entire grid of the maze.
+;;
 (defun draw_maze_grid ()
   (defun draw_maze_grid_iter (n)
     (cond ((< n height)
