@@ -34,11 +34,6 @@
 	((= d E) W)
 	((= d W) E)))
 	
-;; set instance variables
-;; (might want to move these guys down)
-(setq width 10)
-(setq height 10)
-
 (defun initialize_maze ()
   (defun initialize_maze_iter (n g)
     (if (= n (* width height))
@@ -66,7 +61,11 @@
 
 
 (defun draw_maze_grid ()
-  (draw_maze_row 0))
+  (defun draw_maze_grid_iter (n)
+    (cond ((< n height)
+	   (draw_maze_row n)
+	   (draw_maze_grid_iter (+ n 1)))))
+  (draw_maze_grid_iter 0))
 
 ;;
 ;; Output the metadata about the maze.
@@ -85,7 +84,14 @@
   (draw_maze_grid)
   (draw_maze_metadata))
 
+;;
+;; Configure user-supplied instance variables
+;;
+(setq width 10)
+(setq height 10)
 (setq grid (initialize_maze))
-(princ grid)
-(princ "\n")
+
+;;
+;; Draw the maze itself.
+;;
 (draw_maze)
