@@ -169,6 +169,7 @@ class BackTracker extends Maze
 // Parse the arguments
 //
 $option_parser = new OptionParser(array("version" => "BackTracker 1.0", "description" => "Recursive Backtracking Maze"));
+$option_parser->set_conflict_handler("resolve");
 
 $option_parser->add_option(array(
 	"-w","--width",
@@ -177,8 +178,8 @@ $option_parser->add_option(array(
 ));
 
 $option_parser->add_option(array(
-	"-y","--height",		// ** NOTE: "-h" switch is hard-coded to "help" in this optparse implementation
-	"dest" => "height",		// ** We will substitute "y" (as in x,y) for the height variable here.
+	"-h","--height",		
+	"dest" => "height",		
 	"type" => "int"
 ));
 
