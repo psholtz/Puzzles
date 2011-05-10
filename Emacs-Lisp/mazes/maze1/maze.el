@@ -47,7 +47,6 @@
 ;; ++++++++++++ 
 ;; Drawing APIs 
 ;; ++++++++++++ 
-
 ;;
 ;; Draw top row of the maze.
 ;; Make is "n" units wide.
@@ -59,14 +58,22 @@
 	 (draw_maze_top_row (- n 1)))))
 
 ;;
+;; Draw the cell of the maze at i-th row, j-th column.
+;;
+(defun draw_maze_cell (i j)
+  (princ "x"))
+
+;;
 ;; Draw the i-th row of the maze.
 ;;
-(defun draw_maze_row (i)
-  (defun draw_maze_row_iter (cell)
-    (cond ((= cell width) (princ "x\n"))
+(defun draw_maze_row (j)
+  (defun draw_maze_row_iter (i)
+    (cond ((= i width)
+	   (draw_maze_cell i j)
+	   (princ "\n"))
 	  (t
-	   (princ "y")
-	   (draw_maze_row_iter (+ cell 1)))))
+	   (draw_maze_cell i j)
+	   (draw_maze_row_iter (+ i 1)))))
   (draw_maze_row_iter 0))
 
 ;;
