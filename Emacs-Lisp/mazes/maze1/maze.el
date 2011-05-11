@@ -44,6 +44,12 @@
       (initialize_maze_iter (+ n 1) (append g (list 0)))))
   (initialize_maze_iter 0 '()))
 
+;;
+;; Given the (i,j) row, column coordinates, return the "n" index.
+;;
+(defun get_n_index (i j)
+  (+ (* j height) i))
+
 ;; ++++++++++++ 
 ;; Drawing APIs 
 ;; ++++++++++++ 
@@ -53,7 +59,15 @@
 ;;
 ;; THIS IS HACKISH -- REDO THIS METHOD
 ;;
-(defun draw_maze_top_row (n)
+(defun draw_maze_top_row ()
+  (defun draw_maze_top_row_iter (c)
+    (cond ((= c 0) (princ "_")))
+    (cond ((= c n) (princ "\n"))
+	  (t
+	   (princ "_")
+	   (draw_maze_top_row_iter (+ n 1)))))
+  (draw_maze_top_row_iter 0)
+	  
   (cond ((= n 0) (princ "\n"))
 	((= n (- (* 2 width) 1))
 	 (princ " _")
@@ -66,7 +80,7 @@
 ;; Draw the cell of the maze at i-th row, j-th column.
 ;;
 (defun draw_maze_cell (i j)
-  (let ((n (+ (* j height) i)))
+  (let ((n (get_n_index i j)))
     (let ((cell (nth n grid)))
       (if (= (logand cell S) 0)
 	  (princ "_")
@@ -114,7 +128,7 @@
 ;; Draw the maze itself.
 ;;
 (defun draw_maze ()
-  (draw_maze_top_row (- (* 2 width) 1))
+  (draw_maze_top_row)
   (draw_maze_grid)
   (draw_maze_metadata))
 
