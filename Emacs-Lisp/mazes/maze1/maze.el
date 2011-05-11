@@ -128,6 +128,7 @@
 (setq width 10)
 (setq height 10)
 (setq grid (initialize_maze))
+(random t)  ;; seed the PRNG (but can we do it better??)
 
 ;;
 ;; Draw the maze itself.
