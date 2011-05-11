@@ -57,25 +57,15 @@
 ;; Draw top row of the maze.
 ;; Make is "n" units wide.
 ;;
-;; THIS IS HACKISH -- REDO THIS METHOD
-;;
 (defun draw_maze_top_row ()
-  (defun draw_maze_top_row_iter (c)
-    (cond ((= c 0) (princ "_")))
+  (defun draw_maze_top_row_iter (c n)
+    (cond ((= c 0) (princ " ")))
     (cond ((= c n) (princ "\n"))
 	  (t
-	   (princ "_")
-	   (draw_maze_top_row_iter (+ n 1)))))
-  (draw_maze_top_row_iter 0)
+	   (princ "-")
+	   (draw_maze_top_row_iter (+ c 1) n))))
+  (draw_maze_top_row_iter 0 (- (* 2 width) 1)))
 	  
-  (cond ((= n 0) (princ "\n"))
-	((= n (- (* 2 width) 1))
-	 (princ " _")
-	 (draw_maze_top_row (- n 1)))
-	(t
-	 (princ "_")
-	 (draw_maze_top_row (- n 1)))))
-
 ;;
 ;; Draw the cell of the maze at i-th row, j-th column.
 ;;
