@@ -70,16 +70,18 @@
 ;; Draw the cell of the maze at i-th row, j-th column.
 ;;
 (defun draw_maze_cell (i j)
-  (let ((n (get_n_index i j)))
-    (let ((cell (nth n grid)))
-      (if (= (logand cell S) 0)
-	  (princ "_")
-	(princ " "))
-      (if (= (logand cell E) 0)
-	  (princ "|")
-	(if t
-	    (princ " ")
-	  (princ "_"))))))
+  (let ((n (get_n_index i j))
+	(n+1 (get_n_index (+ i 1) j)))
+    (let ((cell (nth n grid))
+	  (ncell (nth n+1 grid)))
+      (if (not (= (logand cell S) 0))
+	  (princ " ")
+	(princ "_"))
+      (if (not (= (logand cell E) 0) )
+	  (if (not (= (logand (logor cell ncell) S)))
+	      (princ " ")
+	    (princ "_"))
+	(princ "|")))))
 
 ;;
 ;; Draw the i-th row of the maze.
