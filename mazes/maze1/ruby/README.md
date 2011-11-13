@@ -1,6 +1,3 @@
-Recursive Back-Tracking Maze [Ruby]
-=================================== 
-
 Running the Script
 ------------------ 
 
