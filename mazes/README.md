@@ -3,4 +3,4 @@ Mazes
 
 Implementations of a range of different maze-creation algorithms, including:
 
-* [Recursive Back-Tracking](maze1)
+* [Recursive Back-Tracking](mazes/maze1)
