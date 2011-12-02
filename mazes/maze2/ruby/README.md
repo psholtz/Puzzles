@@ -2,7 +2,9 @@ Running the Script
 ================== 
 
 Run the maze with default settings:
+<pre>
 > ./maze.rb
+</pre>
 
 Run the maze with custom width and height:
 > ./maze.rb -w20 -h25
