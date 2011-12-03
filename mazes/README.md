@@ -3,8 +3,8 @@ Mazes
 
 Implementations of a range of different maze-creation algorithms, including:
 
-* [Recursive Back-Tracking](mazes/maze1)
-* [Binary Tree](mazes/maze2)
+1. [Recursive Back-Tracking](mazes/maze1)
+2. [Binary Tree](mazes/maze2)
 
 These maze puzzles were inspired by the maze algorithms available on buckblogs:
 
