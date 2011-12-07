@@ -1,17 +1,22 @@
-/**
- * Implement the random back-tracking algorithm for drawing ASCII mazes.
- * 
- * @author psholtz
+/*****************************************************************************
+ * Class BackTracker implements a simple recursive back-tracking algorithm
+ * to draw ASCII mazes. The algorithm works as a "depth-first" search of the 
+ * "tree" or "graph" representing the maze.
  *
- */
+ * A possible optimization might be to implement a "breadth-first" search.
+ *
+ * @author psholtz
+ *****************************************************************************/
+
 public class BackTracker extends Maze {
-	/**
+
+        /***************************************************************
 	 * Initialize a new 2D maze with the optional parameters.
 	 * 
 	 * Maze implements the recursive back-tracking algorithm. 
 	 * 
 	 * @author psholtz
-	 */
+	 ***************************************************************/
 	public BackTracker() {
 		super();
 		carvePassageFrom(0,0);
