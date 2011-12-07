@@ -1,7 +1,7 @@
 Prim's Greedy Algorithm
 =======================
 
-Prim's algorithm is a greedy algorithm that finds a minimum spanning tree for a connected weighted unidireted graph. With a few simple modifications, it can also be used to generate some pretty slick ASCII mazes as well. More information on Prim's is available here: http://en.wikipedia.org/wiki/Prim's_algorithm
+Prim's algorithm is a greedy algorithm that finds a minimum spanning tree for a connected weighted unidirected graph. With a few simple modifications, it can also be used to generate some pretty slick ASCII mazes as well. More information on Prim's is available here: http://en.wikipedia.org/wiki/Prim's_algorithm
 
 For the sake of efficiency, we'll label the set of all cells which are _not_ yet in the maze, but which are adjacent to a cell that _is_ in the maze, as "frontier" cells.
 
