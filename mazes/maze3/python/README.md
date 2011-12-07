@@ -1,5 +1,5 @@
 Running the Script
-================== 
+==================  
 
 Run the maze with default settings:
 <pre>
