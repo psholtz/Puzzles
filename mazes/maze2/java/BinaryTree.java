@@ -113,13 +113,13 @@ public class BinaryTree extends Maze {
 	 *******************************************************************/
 	public void draw(boolean update) {
 		if ( update || !_animate ) {
-			System.out.println((char)27+"[H");
+			System.out.print((char)27+"[H");
 			if ( !_animate ) {
-				System.out.println((char)27+"[2J");
+				System.out.print((char)27+"[2J");
 			}
 			super.draw();
 		} else {
-			System.out.println((char)27+"[2J");
+			System.out.print((char)27+"[2J");
 			carvePassages();
 		}
 	}
