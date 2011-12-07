@@ -18,4 +18,4 @@ The algorithm is straightforward, but it tends to leave an abundance of short cu
 Sample Maze
 -----------
 
-[![](http://farm8.staticflickr.com/7001/6472727213_1ee983a591_m.jpg)](http://farm8.staticflickr.com/7001/6472727213_1ee983a591_m.jpg)
+[![](http://farm8.staticflickr.com/7174/6472763263_cbe4dfc036_m.jpg)](http://farm8.staticflickr.com/7174/6472763263_cbe4dfc036_m.jpg)
