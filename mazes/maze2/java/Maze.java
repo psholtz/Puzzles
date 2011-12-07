@@ -1,12 +1,13 @@
-import java.util.Random;
-
-/**
+/*********************************************************************
  * Class Maze defines basic behavior to which a maze should conform.
  * It provides basic initialization/construction for the maze class,
  * and provides a method for drawing ASCII mazes. 
  * 
  * @author psholtz
- */
+ *********************************************************************/
+
+import java.util.Random;
+
 public class Maze {
 	// Define class variables 
 	public static final int N = 1;
@@ -68,12 +69,12 @@ public class Maze {
 	}
 	
 
-	/**
+        /***********************************************************************************
 	 * Initialize a new 2D maze with, optionally supply the width, height and seed.
 	 * 
 	 * Default seed will give "random" behavior.
 	 * User-supplied seed value will give "deterministic" behavior. 
-	 */
+	 ***********************************************************************************/
 	public Maze() {
 		this(DEFAULT_WIDTH,DEFAULT_HEIGHT);
 	}
@@ -96,9 +97,9 @@ public class Maze {
 		}
 	}
 	
-	/**
+        /******************************************************************
 	 * Draw the grid, starting in the upper-left hand corner. 
-	 */
+	 ******************************************************************/
 	public void draw() {
 		// draw the "top" line
 		System.out.print(" ");

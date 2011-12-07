@@ -1,12 +1,11 @@
-/**
- * Implement extremely simple "optparse" algortihm for java.
+/*******************************************************************
+ * Implement an extremely simple "optparse" algortihm for java.
  * 
  * Only programmed to recognize the few switches we are using, and 
  * then only in the "short" form of optparse.
  * 
  * @author psholtz
- *
- */
+ ******************************************************************/
 public class Driver {
 	public static void main(String[] args) {
 		// configure the width and height

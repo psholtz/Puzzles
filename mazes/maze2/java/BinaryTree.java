@@ -1,3 +1,16 @@
+/********************************************************************************************
+ * Class BinaryTree implements a simple binary tree algorithm to draw simple ASCII mazes.
+ * 
+ *  1. Start in the upper-left cell of the maze.
+ *  2. Randomly carve either towards the east or south.
+ * 
+ * And that's it!
+ * 
+ * The algorithm is fast and simple, but has two significant drawbacks: (a) two of the four
+ * sides (in this casse, the north and west) will be spanned by a single corridor; and (b)
+ * the maze will exhibit a strong diagonal bias (in this case, northwest to southeast).
+ ********************************************************************************************/
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +58,13 @@ public class BinaryTree extends Maze {
 		}
 	}
 	
-	/***
+        /****************************************************************************************
 	 * Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
 	 * 
 	 * Because we walk down the maze, cell-by-cell, in a linear fashion, this 
 	 * algorithm is amenable to animation. Animated version is implemented in the 
 	 * overridden draw() method below. 
-	 */
+	 ***************************************************************************************/
 	private void carvePassages() {
 		for ( int y=0; y < _h; ++y ) {
 			for ( int x=0; x < _w; ++x ) {
@@ -91,13 +104,13 @@ public class BinaryTree extends Maze {
 		}
 	}
 	
-	/***
+        /********************************************************************
 	 * Method only needs to be overridden if we are animating.
 	 * 
 	 * If we are drawing the maze statically, defer to superclass. 
 	 * 
 	 * @param update
-	 */
+	 *******************************************************************/
 	public void draw(boolean update) {
 		if ( update || !_animate ) {
 			System.out.println((char)27+"[H");
