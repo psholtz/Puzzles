@@ -259,7 +259,7 @@ class Prim < Maze
 	end
 
 	# ++++++++++++++++++++++++++++++++++++++++++++
-	# Add the grind point (x,y) to the maze, and
+	# Add the grid point (x,y) to the maze, and
 	# add its neighboring points to the frontier.
 	# ++++++++++++++++++++++++++++++++++++++++++++
 	def mark(x,y)
