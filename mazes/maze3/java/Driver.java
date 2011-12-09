@@ -1,5 +1,4 @@
 /**
- * [[WORKING]]
  * Implement extremely simple "optparse" algortihm for java.
  * 
  * Only programmed to recognize the few switches we are using, and 

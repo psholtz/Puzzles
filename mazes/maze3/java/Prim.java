@@ -3,11 +3,11 @@ import java.util.List;
 
 public class Prim extends Maze {
 	
-	// define class variables
+	// Define class variables
 	public static int IN = 0x10;
 	public static int FRONTIER = 0x20;
 	
-	// define instance variables
+	// Define instance variables
 	private boolean _animate = false;
 	private float _delay = 0.0f;
 	private List<Point> _frontier = null;
@@ -46,10 +46,10 @@ public class Prim extends Maze {
 	}
 
 	private void initialize() {
-		// structure to hold the frontier cells
+		// Structure to hold the frontier cells
 		_frontier = new ArrayList<Point>();
 		
-		// only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
+		// Only prepare the maze beforehand if we are doing "static" (i.e., animate = false) drawing
 		if ( !_animate ) {
 			carvePassages(); 
 		}
@@ -60,11 +60,50 @@ public class Prim extends Maze {
 	 ***************************************************************/
 	private void carvePassages() {
 		
-		// if we are animating, display the maze (one last time)
+		// Select random point in the grid to begin carving
+		mark(_random.nextInt(_w),_random.nextInt(_h));
+		
+		// Marking an empty matrix creates a frontier.
+		// Keep going until there is no frontier.
+		Point p = null, q = null;
+		List<Point> n = null;
+		int x,y,dx,dy,dir;
+		while ( _frontier.size() > 0 ) {
+			
+			// Randomly select a frontier point, and 
+			// randomly select one of the neighboring
+			// points to that frontier point.
+			p = _frontier.remove(_random.nextInt(_frontier.size()));
+			/*x = p.getX(); y = p.getY();
+			n = neighbors(x,y);
+			q = n.get(_random.nextInt(n.size()));
+			dx = q.getX(); dy = q.getY();
+			
+			// "Knock down" the wall between the selected
+			// frontier point and its neighbor. 
+			dir = direction(x, y, dx, dy);
+			_grid[y][x] |= dir;
+			_grid[dy][dx] |= Maze.OPPOSITE(dir);
+			
+			// Recursively mark the newly selected point.
+			mark(x,y);
+			
+			// If we are animating, display the maze
+			if ( _animate ) {
+				display();
+				try {
+					Thread.sleep((long)(_delay*1000));
+				} catch ( Exception ex ) {
+					ex.printStackTrace(); 
+				}
+			}*/
+		}
+		
+		// If we are animating, display the maze (one last time)
 		if ( _animate ) {
 			display();
 			
-			// output maze metadata 
+			// Output maze metadata 
 			outputMetadata();
 		}
 	}
