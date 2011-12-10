@@ -14,3 +14,8 @@ For the sake of simplicity, we will represent "sets" as a tree data structure, a
 The algorithm terminates when there are no more unconnected sets.
 
 The algorithm is straightforward, but it tends to leave an abundance of short cul-de-sacs in the maze.
+
+Sample Maze
+----------- 
+
+[![](http://farm8.staticflickr.com/7022/6484512617_eb2df1d1ca_m.jpg)](http://farm8.staticflickr.com/7022/6484512617_eb2df1d1ca_m.jpg)
