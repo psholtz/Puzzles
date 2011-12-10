@@ -5,11 +5,11 @@ Kruskal's algorithm is a greedy algorithm that is able to find a minimum spannin
 
 For the sake of simplicity, we will represent "sets" as a tree data structure, and "connect" graphs by adding subtrees to a root tree.
 
-1. xx
-2. xx
-3. xx
-4. xx
-5. xx
+1. Design the "walls" between cells as edges in the graph.
+2. Randomly select one such edge.
+3. If the selected edge connects two disjoint trees, joint the trees.
+4. Otherwise, throw the edge away.
+5. Repeat at Step 2.
 
 The algorithm terminates when there are no more unconnected sets.
 
