@@ -74,7 +74,7 @@ public class Prim extends Maze {
 			// randomly select one of the neighboring
 			// points to that frontier point.
 			p = _frontier.remove(_random.nextInt(_frontier.size()));
-			/*x = p.getX(); y = p.getY();
+			x = p.getX(); y = p.getY();
 			n = neighbors(x,y);
 			q = n.get(_random.nextInt(n.size()));
 			dx = q.getX(); dy = q.getY();
@@ -96,7 +96,7 @@ public class Prim extends Maze {
 				} catch ( Exception ex ) {
 					ex.printStackTrace(); 
 				}
-			}*/
+			}
 		}
 		
 		// If we are animating, display the maze (one last time)
@@ -114,15 +114,15 @@ public class Prim extends Maze {
 	 * If we are drawing the maze statically, defer to superclass. 
 	 ***************************************************************/
 	public void draw() {
-		// clear the screen
+		// Clear the screen
 		System.out.print((char)27 + "[2J");
 		
 		if ( !_animate ) {
-			// move to upper left and defer to superclass
+			// Move to upper left and defer to superclass
 			System.out.print((char)27 + "[H");
 			super.draw();
 		} else {
-			// if we are animating, clear the screen and start carving
+			// If we are animating, clear the screen and start carving
 			carvePassages(); 
 		}
 	}
@@ -131,13 +131,40 @@ public class Prim extends Maze {
 	 * Invoked to render animated version of the ASCII maze.
 	 *********************************************************/
 	public void display() {
-		// draw the "top raw" of the maze
-		System.out.print((char)27 + "H[");
+		// Draw the "top raw" of the maze
+		System.out.print((char)27 + "[H");
 		System.out.print(" ");
 		for ( int i=0; i < (_w*2) - 1; ++i ) {
 			System.out.print("_");
 		}
 		System.out.println("");
+		
+		// Step through the grid cells of the maze
+		for ( int y=0; y < _grid.length; ++y ) {
+			System.out.print("|");
+			for ( int x=0; x < _grid[y].length; ++x ) {
+				
+				// Color the cell if it is in the frontier
+				int cell = _grid[y][x];
+				if ( cell == Prim.FRONTIER ) 	{ System.out.print((char)27 + "[41m"); }
+				if ( empty(cell) && y+1 < _h && empty(_grid[y+1][x]) ) {
+					System.out.print(" ");
+				} else {
+					System.out.print(((cell & Maze.S) != 0) ? " " : "_");
+				}
+				if ( cell == Prim.FRONTIER ) 	{ System.out.print((char)27 + "[m"); }
+				
+				// Draw the "grid" of the maze
+				if ( empty(cell) && x+1 < _w && empty(_grid[y][x+1]) ) {
+					System.out.print( (y+1 < _h && ((empty(_grid[y+1][x]) || empty(_grid[y+1][x+1])))) ? " " : "_");
+				} else if ( (cell & Maze.E)!= 0 )  {
+					System.out.print( (((cell | _grid[y][x+1]) & Maze.S) != 0 ) ? " " : "_");
+				} else {
+					System.out.print("|");
+				}
+			}
+			System.out.println("");
+		}
 	}
 	
 	/************************************************************************************
@@ -171,12 +198,17 @@ public class Prim extends Maze {
 	/***************************************************************************************
 	 * Find the bounds which are inbounds and which have not yet been added to the matrix.
 	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x x-coord of the argument point, whose neighbors we are seeking.
+	 * @param y y-coord of the argument point, whose neighbors we are seeking.
+	 * @return List<Point> of the points which are neighbors to the argument point.
 	 **************************************************************************************/
 	private List<Point> neighbors(int x,int y) {
 		ArrayList<Point> n = new ArrayList<Point>();
+		
+		if ( x > 0 && ((_grid[y][x-1] & Prim.IN) != 0) ) 				{ n.add(new Point(x-1,y)); }
+		if ( x+1 < _grid[y].length && ((_grid[y][x+1] & Prim.IN) != 0)) { n.add(new Point(x+1,y)); }
+		if ( y > 0 && ((_grid[y-1][x] & Prim.IN) != 0) ) 				{ n.add(new Point(x,y-1)); }
+		if ( y+1 < _grid.length && ((_grid[y+1][x] & Prim.IN) != 0)) 	{ n.add(new Point(x,y+1)); }
 		
 		return n;
 	}
@@ -186,10 +218,10 @@ public class Prim extends Maze {
 	 * 
 	 * The answer will be one of the class variables N, S, E or W.
 	 * 
-	 * @param fx
-	 * @param fy
-	 * @param tx
-	 * @param ty
+	 * @param fx x-coord of current cell
+	 * @param fy y-coord of current cell
+	 * @param tx x-coord of new cell
+	 * @param ty y-coord of new cell 
 	 * @return Maze.N, Maze.S, Maze.E or Maze.W depending on which direction to go. 
 	 ***********************************************************************************/
 	private int direction(int fx, int fy, int tx, int ty) {
@@ -198,7 +230,7 @@ public class Prim extends Maze {
 		if ( fy < ty ) return Maze.S;
 		if ( fy > ty ) return Maze.N;
 		
-		// default case, should not get here.. 
+		// Default case, should not get here.. 
 		return -1;
 	}
 	
