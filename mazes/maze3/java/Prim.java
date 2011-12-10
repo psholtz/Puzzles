@@ -205,10 +205,17 @@ public class Prim extends Maze {
 	private List<Point> neighbors(int x,int y) {
 		ArrayList<Point> n = new ArrayList<Point>();
 		
-		if ( x > 0 && ((_grid[y][x-1] & Prim.IN) != 0) ) 				{ n.add(new Point(x-1,y)); }
-		if ( x+1 < _grid[y].length && ((_grid[y][x+1] & Prim.IN) != 0)) { n.add(new Point(x+1,y)); }
-		if ( y > 0 && ((_grid[y-1][x] & Prim.IN) != 0) ) 				{ n.add(new Point(x,y-1)); }
-		if ( y+1 < _grid.length && ((_grid[y+1][x] & Prim.IN) != 0)) 	{ n.add(new Point(x,y+1)); }
+		if ( x > 0 && ((_grid[y][x-1] & Prim.IN) != 0) ) 				
+                { n.add(new Point(x-1,y)); }
+
+		if ( x+1 < _grid[y].length && ((_grid[y][x+1] & Prim.IN) != 0)) 
+                { n.add(new Point(x+1,y)); }
+
+		if ( y > 0 && ((_grid[y-1][x] & Prim.IN) != 0) ) 				
+                { n.add(new Point(x,y-1)); }
+
+		if ( y+1 < _grid.length && ((_grid[y+1][x] & Prim.IN) != 0)) 	
+                { n.add(new Point(x,y+1)); }
 		
 		return n;
 	}
