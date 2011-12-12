@@ -2,6 +2,7 @@
 
 import random
 import sys
+import time
 from optparse import OptionParser
 
 DEFAULT_WIDTH = 10
@@ -99,6 +100,7 @@ Loosely speaking, the algorithm is implemented as follows:
 Default seed value will give "random" behavior.
 Used-supplied seed value will give "deterministic" behavior.
 """ 
+
     #
     # Invoke super-constructor
     #
@@ -129,11 +131,12 @@ Used-supplied seed value will give "deterministic" behavior.
     self.animate = a
     if not self.animate:
       Kruskal.carve_passages(self)
-
+    
   def draw(self,):
     """Method only needs to be overwridden if we are animating.
 
 If we are drawing the maze statically, defer to the superclass."""
+
     # 
     # Clear the screen.
     #
@@ -152,11 +155,11 @@ If we are drawing the maze statically, defer to the superclass."""
       #
       Kruskal.carve_passages(self)
 
+    
   def display(self,):
     """Very similar, in terms of implementation, to the draw() 
 method in the superclass, the main difference being that 
 here we will color a cell gray if it remains unconnected."""
-    
     # 
     # Draw the "top row" of the maze.
     #
@@ -170,32 +173,33 @@ here we will color a cell gray if it remains unconnected."""
     # Step through the grid/maze, cell-by-cell:
     #
     for y in range(self.height):
-      buffer.append("|")
+      out = "|"
       for x in range(self.width):
-
         #
         # Start coloring, if unconnected
         #
         if self.grid[y][x] == 0:
-          buffer.append("\x1b[47m")
- 
-        buffer.append(" " if ((self.grid[y][x] & Maze.S) != 0) else "_")
-        if (self.grid[y][x] & Maze.E) != 0:
-          buffer.append(" " if (((self.grid[y][x] | self.grid[y][x+1]) & Maze.S) != 0) else "_")
+          out += "\x1b[47m" 
+        
+        out += " " if ((self.grid[y][x] & Maze.S) != 0) else "_"
+        if ( self.grid[y][x] & Maze.E ) != 0:
+          out += " " if (((self.grid[y][x] | self.grid[y][x+1]) & Maze.S) != 0) else "_"
         else:
-          buffer.append("|")
-
+          out += "|"
+        
         #
-        # Stop coloring, if unconnected
+        # Stop coloring, if unconnected.
         #
         if self.grid[y][x] == 0:
-          buffer.append("\x1b[m")
+          out += "\x1b[m"
+
+      buffer.append(out)
 
     # 
     # Output buffer
     #
-    sys.stdout.write("\r\n".join(buffer))
-
+    print "\r\n".join(buffer)
+    
   def carve_passages(self,):
     """Implement Kruskal's algorithm:
 
@@ -229,8 +233,8 @@ here we will color a cell gray if it remains unconnected."""
         # Connect the two sets and "knock down" the wall between them.
         #
         set1.connect(set2)
-        grid[y][x] |= direction
-        grid[dy][dx] |= Maze.OPPOSITE[direction]
+        self.grid[y][x] |= direction
+        self.grid[dy][dx] |= Maze.OPPOSITE[direction]
   
     if self.animate:
       #
@@ -242,26 +246,25 @@ here we will color a cell gray if it remains unconnected."""
       # Output maze metadata.
       #
       print " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
-
+   
 class Tree(object):
   """we will use a tree structure to model the "set" (or "vertex") that is used in Kruskal to build the graph."""
 
   def __init__(self,):
     """Build a new tree object."""
     self.parent = None
-    self.root = None
 
   def root(self,):
     """If we are joined, return the root. Otherwise return self."""
-    return self.parent.root if self.parent else self
+    return self.parent.root() if self.parent else self
 
   def connected(self,tree):
     """Are we connected to this tree?"""
-    return self.root == tree.root
+    return self.root() == tree.root()
 
   def connect(self,tree):
     """Connect to tree"""
-    tree.root.parent = self
+    tree.root().parent = self
 
 #
 # Parse the command line arguments
@@ -289,3 +292,4 @@ d = DEFAULT_DELAY if options.delay is None else float(options.delay)
 #
 m = Kruskal(w,h,s,a,d)
 m.draw()
+
