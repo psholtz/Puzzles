@@ -105,6 +105,24 @@ Used-supplied seed value will give "deterministic" behavior.
     super(Kruskal,self).__init__(w,h,s)
 
     #
+    # Initialize the sets to the same dimension as the maze.
+    # We use Tree objects to represent the sets to be joined.
+    #
+    self.sets = [[Tree() for col in range(self.width)] for row in range(self.height)]
+
+    #
+    # Build the collection of edges and randomize.
+    # Edges are "north" and "west" sides of cell, 
+    # if index is greater than 0.
+    #
+    self.edges = []
+    for y in range(self.height):
+      for x in range(self.width):
+        if y > 0: self.edges.append( [x, y, Maze.N] )
+        if x > 0: self.edges.append( [x, y, Maze.W] )
+    random.shuffle(self.edges)
+
+    #
     # Only prepare the maze beforehand if we are doing "static" (i.e., animate=false) drawing
     #
     self.delay = d
@@ -112,11 +130,8 @@ Used-supplied seed value will give "deterministic" behavior.
     if not self.animate:
       Kruskal.carve_passages(self)
 
-  def carve_passages(self,):
-    pass
-
   def draw(self,):
-    """Methdon ly needs to be overwridden if we are animating.
+    """Method only needs to be overwridden if we are animating.
 
 If we are drawing the maze statically, defer to the superclass."""
     
@@ -137,6 +152,26 @@ If we are drawing the maze statically, defer to the superclass."""
       # If we are animating, clear the screen and start carving:
       #
       Kruskal.carve_passages(self)
+
+  def display(self,):
+    """Very similar, in terms of implementation, to the draw() 
+method in the superclass, the main difference being that 
+here we will color a cell gray if it remains unconnected."""
+    
+    # 
+    # Draw the "top row" of the maze.
+    #
+    pass
+
+  def carve_passages(self,):
+    """Implement Kruskal's algorithm:
+
+(1) Randomly select an edge.
+(2) If the sets are not already connected, then
+(3) Connect the sets; and 
+(4) Knock down the wall between the sets.
+(5) Repeat at Step 1."""
+    pass
 
 class Tree(object):
   """we will use a tree structure to model the "set" (or "vertex") that is used in Kruskal to build the graph."""
