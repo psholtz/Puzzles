@@ -141,6 +141,15 @@ public class Kruskal extends Maze {
 		}
 	}
 	
+	/*************************************************
+	 * Implement Kruskal's algorithm.
+	 * 
+	 * (1) Randomly select an edge.
+	 * (2) If the sets are not already connected, then
+	 * (3) Connect the sets, and 
+	 * (4) Knock down the wall between the sets.
+	 * (5) Repeat at Step 1.
+	 *************************************************/
 	private void carvePassages() {
 		while ( _edges.size() > 0 ) {
 			// Select the next edge, and decide which direction we are going in.
@@ -181,6 +190,11 @@ public class Kruskal extends Maze {
 		}
 	}
 	
+	/**
+	 * Randomly shuffle a List. 
+	 * 
+	 * @param args List (of Edges) to be randomly shuffled.
+	 */
 	private void shuffle(List<Edge> args) {
 		for ( int i=0; i < args.size(); ++i ) {
 			int pos = _random.nextInt(args.size());
