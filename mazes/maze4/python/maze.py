@@ -134,7 +134,6 @@ Used-supplied seed value will give "deterministic" behavior.
     """Method only needs to be overwridden if we are animating.
 
 If we are drawing the maze statically, defer to the superclass."""
-    
     # 
     # Clear the screen.
     #
@@ -161,7 +160,41 @@ here we will color a cell gray if it remains unconnected."""
     # 
     # Draw the "top row" of the maze.
     #
-    pass
+    sys.stdout.write("\x1b[H")
+    buffer = []; out = " "
+    for i in range(2*self.width - 1):
+      out += "_"
+    buffer.append(out)
+
+    # 
+    # Step through the grid/maze, cell-by-cell:
+    #
+    for y in range(self.height):
+      buffer.append("|")
+      for x in range(self.width):
+
+        #
+        # Start coloring, if unconnected
+        #
+        if self.grid[y][x] == 0:
+          buffer.append("\x1b[47m")
+ 
+        buffer.append(" " if ((self.grid[y][x] & Maze.S) != 0) else "_")
+        if (self.grid[y][x] & Maze.E) != 0:
+          buffer.append(" " if (((self.grid[y][x] | self.grid[y][x+1]) & Maze.S) != 0) else "_")
+        else:
+          buffer.append("|")
+
+        #
+        # Stop coloring, if unconnected
+        #
+        if self.grid[y][x] == 0:
+          buffer.append("\x1b[m")
+
+    # 
+    # Output buffer
+    #
+    sys.stdout.write("\r\n".join(buffer))
 
   def carve_passages(self,):
     """Implement Kruskal's algorithm:
@@ -171,7 +204,44 @@ here we will color a cell gray if it remains unconnected."""
 (3) Connect the sets; and 
 (4) Knock down the wall between the sets.
 (5) Repeat at Step 1."""
-    pass
+    while len(self.edges) > 0:
+      
+      # 
+      # Select the next edge, and decide which direction we are going in
+      #
+      x, y, direction = self.edges.pop()
+      dx, dy = x + Maze.DX[direction], y + Maze.DY[direction]
+      
+      #
+      # Pluck out the corresponding sets. 
+      #
+      set1, set2 = self.sets[y][x], self.sets[dy][dx]
+     
+      if not set1.connected(set2):
+        #
+        # If we are animating, display the maze and pause.
+        #
+        if self.animate:
+          Kruskal.display(self,)
+          time.sleep(self.delay)
+
+        #
+        # Connect the two sets and "knock down" the wall between them.
+        #
+        set1.connect(set2)
+        grid[y][x] |= direction
+        grid[dy][dx] |= Maze.OPPOSITE[direction]
+  
+    if self.animate:
+      #
+      # Display the final iteration.
+      #
+      Kruskal.display(self,)
+    
+      #
+      # Output maze metadata.
+      #
+      print " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
 
 class Tree(object):
   """we will use a tree structure to model the "set" (or "vertex") that is used in Kruskal to build the graph."""
