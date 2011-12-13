@@ -43,7 +43,8 @@ class Maze
 	  
 	  srand(@seed)
 	  
-	  # MAY NEED TO INCLUDE GRID HERE??
+	  # TODO --> remove grid??
+	  @grid = Array.new(h) { Array.new(w,0) }
       end
 
       attr_reader :width, :height, :seed
@@ -63,7 +64,16 @@ class Maze
 	  @height.times do |y|
 	  	print "|"
 		@width.times do |x|
+		      # TODO --> remote "grid" references??
+		      # render "bottom" using "S" switch
+		      print( (@grid[y][x] & @@S != 0) ? " " : "_" )
 
+		      # render "side" using "E" switch
+		      if @grid[y][x] & @@E != 0
+		            print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0 ) ? " " : "_" )
+		      else
+		            print "|"
+		      end
 		end
 		puts
 	  end
@@ -75,4 +85,8 @@ class Maze
       end
 end
 
-Maze.new().draw
+class Eller < Maze
+
+end
+
+Eller.new().draw
