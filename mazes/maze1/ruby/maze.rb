@@ -6,7 +6,7 @@ DEFAULT_WIDTH = 10
 DEFAULT_HEIGHT = 10
 DEFAULT_SEED = rand(0xFFFF_FFFF)
 DEFAULT_ANIMATE = false
-DEFAULT_DELAY = 0.04
+DEFAULT_DELAY = 0.02
 
 # ===================================================================
 # Class Maze defines basic behavior to which a maze should conform.
@@ -77,11 +77,6 @@ class Maze
 			end
 			puts
 		end
-
-		#	
-		# Output maze metadata.
-		#
-		puts "#{$0} #{@width} #{@height}  #{@seed}"
 	end
 end
 
@@ -128,7 +123,7 @@ class BackTracker < Maze
 			# Render updates of the maze on a "cell-by-cell" basis
 			#
 			if @animate
-			      draw(update=true)
+			      display(x,y)
 			      sleep @delay
 			end
 
@@ -141,11 +136,52 @@ class BackTracker < Maze
 		end
 
 		# 
-		# Make one final call to "update" to display last cell
+		# Make one final call to "update" to display last cell.
+		# Set the coords to (-1,-1) so the cell is left "blank" with no cursor.
 		#
 		if @animate
-		      draw(update=true)
+		      display(-1,-1)
 		end
+	end
+
+	#
+	# [xx]
+	#
+	def display(i,j)
+ 	      print "\e[H"
+	      puts " " + "_" * (@width * 2 - 1)
+	      
+	      @grid.each_with_index do |row,y|
+	            print "|"
+		    row.each_with_index do |cell,x|
+		          # 
+			  # Color gray if empty, red if "current" cursor
+			  #
+			  if cell == 0
+			        print "\e[47m" 
+			  elsif x == i and y == j
+ 			        print "\e[41m"
+			  end
+
+			  # render "bottom" using "S" switch
+			  print( (@grid[y][x] & @@S != 0) ? " " : "_" )
+			  
+			  # render "side" using "E" switch
+			  if @grid[y][x] & @@E != 0
+			        print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0 ) ? " " : "_" )
+			  else
+			        print "|"
+			  end
+
+			  # 
+			  # Stop coloring
+			  #
+			  if cell == 0 or ( x == i and y == j )
+			        print "\e[m" 
+			  end
+		    end
+		    puts
+	      end
 	end
 
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -153,14 +189,29 @@ class BackTracker < Maze
 	# 
 	# If we are drawing the maze statically, defer to the superclass.
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-	def draw(update=false)
-	    if update or not @animate
+	def draw
+
+	    # 
+	    # Clear the screen.
+	    #
+	    print "\e[2J"
+	    if not @animate
+	       
+	        # 
+		# Move to upper left and defer to superclass
+		#		
 	        print "\e[H"
-		if not @animate; print "\e[2J"; end
 		super()
 	    else
-		print "\e[2J"
+		#
+		# If we are animating, clear the screen and start carving!
+		#
 		carve_passage_from(0,0)
+
+		#
+		# Output maze metadata
+		#
+		puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
 	    end
 	end
 
