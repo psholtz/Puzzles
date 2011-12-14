@@ -133,4 +133,14 @@ public class Maze {
 		}
 		System.out.println(meta);	
 	}
+
+    protected void outputMetadata() {
+	String meta = " " + _w + " " + _h;
+	if ( _seed != null ) {
+	    meta += " " + _seed;
+	} else {
+	    meta += " random";
+	}
+	System.out.println(meta);
+    }
 }
