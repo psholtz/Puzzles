@@ -149,9 +149,10 @@ order to color the "current cursor" cell a different color (in this case,
 red). We've already used the symbols "x" and "y" in a previous implementation
 of this algorithm, so we'll name them "i" and "j" in the method signature instead.
 """
+
         sys.stdout.write("\x1b[H")
         buffer = []; out = " "
-        for i in range(2*self.width - 1):
+        for c in range(2*self.width - 1):
             out += "_"
         buffer.append(out)
 
