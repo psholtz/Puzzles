@@ -144,9 +144,12 @@ class BackTracker < Maze
 		end
 	end
 
-	#
-	# [xx]
-	#
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Display needs the (x,y) coordinates of where it is presently rendering, in 
+	# order to color the "current cursor" cell a different color (in this case, 
+	# red). We've already used the symbols "x" and "y" in a previous implementation
+	# of this algorithm, so we'll name them "i" and "j" in the method signature instead.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def display(i,j)
  	      print "\e[H"
 	      puts " " + "_" * (@width * 2 - 1)
