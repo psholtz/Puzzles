@@ -5,8 +5,6 @@ require 'optparse'
 DEFAULT_WIDTH = 10
 DEFAULT_HEIGHT = 10
 DEFAULT_SEED = rand(0xFFFF_FFFF)
-DEFAULT_ANIMATE = false
-DEFAULT_DELAY = 0.04
 
 # ===================================================================
 # Class Maze defines basic behavior to which a maze should conform.
@@ -100,20 +98,16 @@ class BackTracker < Maze
 	# Default seed value will give "random" behavior.
 	# User-supplied seed value will give "deterministic behavior.
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED, a=DEFAULT_ANIMATE, d=DEFAULT_DELAY )
+	def initialize( w=DEFAULT_WIDTH, h=DEFAULT_HEIGHT, s=DEFAULT_SEED )
 		#
 		# Invoke super-constructor
 		#
-		super(w,h,s)
+		super
 
-		# 
-		# Only prepare the maze beforehand if we are doing "static" (i.e., animate=false) drawing
 		#
-		@delay = d
-		@animate = a
-		if not @animate
-		      carve_passage_from(0,0)
-		end
+		# Carve the grid
+		#
+		carve_passage_from(0,0)
 	end
 
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -124,14 +118,6 @@ class BackTracker < Maze
 	def carve_passage_from(x,y)
 		directions = [@@N,@@S,@@E,@@W].sort_by{rand}
 		directions.each do |direction|
-			#
-			# Render updates of the maze on a "cell-by-cell" basis
-			#
-			if @animate
-			      draw(update=true)
-			      sleep @delay
-			end
-
 			dx,dy = x + @@DX[direction], y + @@DY[direction]
 			if dy.between?(0,@grid.length-1) && dx.between?(0,@grid[dy].length-1) && @grid[dy][dx] == 0
 				@grid[y][x] |= direction			# "open" the wall from current cell;
@@ -139,29 +125,6 @@ class BackTracker < Maze
 				carve_passage_from(dx,dy)
 			end
 		end
-
-		# 
-		# Make one final call to "update" to display last cell
-		#
-		if @animate
-		      draw(update=true)
-		end
-	end
-
-	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-	# Method only needs to be overridden if we are animating.
-	# 
-	# If we are drawing the maze statically, defer to the superclass.
-	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-	def draw(update=false)
-	    if update or not @animate
-	        print "\e[H"
-		if not @animate; print "\e[2J"; end
-		super()
-	    else
-		print "\e[2J"
-		carve_passage_from(0,0)
-	    end
 	end
 
 	protected :carve_passage_from
@@ -173,9 +136,7 @@ end
 OPTIONS  = {
 	:w => DEFAULT_WIDTH,
 	:h => DEFAULT_HEIGHT,
-	:s => DEFAULT_SEED,
-	:a => DEFAULT_ANIMATE,
-	:d => DEFAULT_DELAY
+	:s => DEFAULT_SEED
 }
 
 if __FILE__ == $0
@@ -185,8 +146,6 @@ if __FILE__ == $0
 		o.on("-w","--width=[value]", Integer, "Width of maze (default: " + DEFAULT_WIDTH.to_s + ")") 		{ |OPTIONS[:w]| }
 		o.on("-h","--height=[value]", Integer, "Height of maze (default: " + DEFAULT_HEIGHT.to_s+ ")")		{ |OPTIONS[:h]| }
 		o.on("-s","--seed=[value]", Integer, "User-defined seed will model deterministic behavior (default: " + DEFAULT_SEED.to_s + ")")	{ |OPTIONS[:s]| }
-		o.on("-a","--[no-]animated", true.class, "Animate rendering (default: " + DEFAULT_ANIMATE.to_s + ")") 	{ |OPTIONS[:a]| }
-		o.on("-d","--delay=[value]", Float, "Animation delay (default: " + DEFAULT_DELAY.to_s + ")")   	 	{ |OPTIONS[:d]| }
 		o.separator ""
 		o.parse!
 
@@ -198,13 +157,11 @@ if __FILE__ == $0
 			good = false
 		elsif OPTIONS[:s] == "" or OPTIONS[:s] == nil
 			good = false
-		elsif OPTIONS[:d] == "" or OPTIONS[:d] == nil
-		        good = false
   		end
 
 		if good
 			# build and draw a new back-tracking maze
-			BackTracker.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s], a=OPTIONS[:a], d=OPTIONS[:d]).draw
+			BackTracker.new(w=OPTIONS[:w], h=OPTIONS[:h], s=OPTIONS[:s]).draw
 		else
 			puts o
 		end
