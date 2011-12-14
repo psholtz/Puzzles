@@ -164,13 +164,10 @@ of this algorithm, so we'll name them "i" and "j" in the method signature instea
                 # 
                 # Color gray if empty, red if "current" cursor
                 #
-                print x,i,y,j
                 if self.grid[y][x] == 0:
                     out += "\x1b[47m"
                 elif x == i and y == j:
-                    print "HEREER"
-                    out += "x"
-                    #out += "\x1b[41m"
+                    out += "\x1b[41m"
 
                 # render "bottom" using "S" switch
                 out += " " if ((self.grid[y][x] & Maze.S) != 0) else "_"
@@ -218,7 +215,7 @@ If we are drawing the maze staticially, defer to the superclass.
             #
             # Output maze metadata
             #
-            Maze.metadata(self)
+            print Maze.metadata(self)
 
 # 
 # Parse the command line arguments
