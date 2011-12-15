@@ -111,7 +111,7 @@ User-supplied seed value will give "deterministic" behavior.
 
     def metadata(self,):
         """Generate maze metadata."""
-        return " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed),"[BackTracker]"])
+        return Maze.metadata(self) + " [BackTracker]"
 
     def carve_passage_from(self,x,y):
         """Recursively carve passages through the maze, starting at (x,y).
