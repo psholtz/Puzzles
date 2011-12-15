@@ -79,7 +79,7 @@ User-supplied seed will give deterministic behavior."""
 
     def metadata(self,):
         """Output maze metadata."""
-        return  " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
+        return  " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed),"[BackTracker]"])
 
 class BackTracker(Maze):
     """Class BackTracker implements a simple recursive back-tracking algorithm 

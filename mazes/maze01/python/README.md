@@ -15,3 +15,13 @@ Run the maze with a preset seed, to model deterministic behavior:
 <pre>
 > ./maze.py -s100
 </pre>
+
+Run the maze in animation mode (<-- COOL):
+<pre>
+> ./maze.py -a
+</pre>
+
+Run the maze with a custom animation delay:
+<pre>
+> ./maze.py -a -d0.05
+</pre>
