@@ -125,22 +125,16 @@ public class Maze {
 		}
 		
 		// output maze metadata
-		String meta = " " + _w + " " + _h;
-		if ( _seed != null ) {
-			meta += " " + _seed;
-		} else { 
-			meta += " random";
-		}
-		System.out.println(meta);	
+		System.out.println(metadata());
 	}
 
-    protected void outputMetadata() {
+    protected String metadata() {
 	String meta = " " + _w + " " + _h;
 	if ( _seed != null ) {
 	    meta += " " + _seed;
 	} else {
 	    meta += " random";
 	}
-	System.out.println(meta);
+	return meta;
     }
 }

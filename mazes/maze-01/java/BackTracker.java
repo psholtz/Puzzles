@@ -63,6 +63,26 @@ public class BackTracker extends Maze {
 	}
     }
 	
+    //
+    // Generate metadata
+    //
+    protected String metadata() {
+	// Get main class name
+	StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+	StackTraceElement main = stack[stack.length-1];
+	String mainClass = main.getClassName();
+	
+	// Generate remaining metadata
+	String meta = "main:" + mainClass + " " + _w + " " + _h;
+	if ( _seed != null ) {
+	    meta += " " + _seed;
+	} else {
+	    meta += " random";
+	}
+	meta += " [BackTracker]";
+	return meta;
+    }
+
     /********************************************************************
      * Method only needs to be overridden if we are animating.
      *
@@ -80,7 +100,7 @@ public class BackTracker extends Maze {
 	    carvePassageFrom(0,0);
 
 	    // Output maze metadata
-	    super.outputMetadata();
+	    System.out.println(metadata());
 	}
     }
 
