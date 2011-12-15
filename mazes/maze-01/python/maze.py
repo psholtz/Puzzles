@@ -74,12 +74,12 @@ User-supplied seed will give deterministic behavior."""
         # 
         # Output maze metadata.
         #
-        buffer.append(Maze.metadata(self,))
+        buffer.append(self.metadata())
         print "\r\n".join(buffer)
 
     def metadata(self,):
-        """Output maze metadata."""
-        return  " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed),"[BackTracker]"])
+        """Generate maze metadata."""
+        return  " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
 
 class BackTracker(Maze):
     """Class BackTracker implements a simple recursive back-tracking algorithm 
@@ -108,6 +108,10 @@ User-supplied seed value will give "deterministic" behavior.
         if not self.animate:
             self.carve_passage_from(0,0)
 
+
+    def metadata(self,):
+        """Generate maze metadata."""
+        return " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed),"[BackTracker]"])
 
     def carve_passage_from(self,x,y):
         """Recursively carve passages through the maze, starting at (x,y).
@@ -216,7 +220,7 @@ If we are drawing the maze staticially, defer to the superclass.
             #
             # Output maze metadata
             #
-            print Maze.metadata(self)
+            print self.metadata()
 
 # 
 # Parse the command line arguments
