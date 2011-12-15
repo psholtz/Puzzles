@@ -234,7 +234,8 @@ class BackTracker < Maze
 	# Override metadata to inform what type of maze we are carving
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def metadata
-	    "#{$0} #{@width} #{@height} #{@seed} #{@delay} [BackTracker]"
+	    super() + " [BackTracker]"
+	    #"#{$0} #{@width} #{@height} #{@seed} #{@delay} [BackTracker]"
 	end
 
 	protected :carve_passage_from
