@@ -17,3 +17,13 @@ To run the maze with a preset seed, to model deterministic behavior:
 <pre>
 > java Driver -s100
 </pre>
+
+Run the maze in animation mode (<-- COOL):
+<pre>
+> java Driver -a
+</pre>
+
+Run the maze with a custom animation delay:
+<pre>
+> java Driver -a -d0.05
+</pre>
