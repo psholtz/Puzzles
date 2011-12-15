@@ -235,7 +235,6 @@ class BackTracker < Maze
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def metadata
 	    super() + " [BackTracker]"
-	    #"#{$0} #{@width} #{@height} #{@seed} #{@delay} [BackTracker]"
 	end
 
 	protected :carve_passage_from
