@@ -81,14 +81,14 @@ class Maze
 		# 
 		# Output metadata
 		#
-		output_metadata
+		puts output_metadata
 	end
 
-	# ++++++++++++++++++++++ 
-	# Output maze metadata.
-	# ++++++++++++++++++++++
+	# ++++++++++++++++++++++++++++++ 
+	# Output generic maze metadata.
+	# ++++++++++++++++++++++++++++++ 
 	def output_metadata
-	    puts "#{$0} #{@width} #{@height} #{@seed} #{@delay} [BackTracker]"
+	    "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
 	end
 end
 
@@ -226,8 +226,15 @@ class BackTracker < Maze
 		#
 		# Output maze metadata
 		#
-		output_metadata
+		puts output_metadata
 	    end
+	end
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Override metadata to inform what type of maze we are carving
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def output_metadata
+	    "#{$0} #{@width} #{@height} #{@seed} #{@delay} [BackTracker]"
 	end
 
 	protected :carve_passage_from
