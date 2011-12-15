@@ -84,9 +84,9 @@ class Maze
 		output_metadata
 	end
 
-	# +++++++++++++++++++++ 
-	# Output maze metadata
-	# +++++++++++++++++++++ 
+	# ++++++++++++++++++++++ 
+	# Output maze metadata.
+	# ++++++++++++++++++++++
 	def output_metadata
 	    puts "#{$0} #{@width} #{@height} #{@seed} #{@delay} [BackTracker]"
 	end
@@ -226,7 +226,7 @@ class BackTracker < Maze
 		#
 		# Output maze metadata
 		#
-		output_metadata()
+		output_metadata
 	    end
 	end
 
