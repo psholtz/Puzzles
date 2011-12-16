@@ -73,20 +73,115 @@ class Maze
 	// Draw the grid, starting in the upper-left hand corner.
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function draw() {
-		 echo "here\r\n";
+	    // draw the top row
+	    $buffer = array();
+	    $out = " ";
+	    for ( $i=0; $i < (2 * $this->width - 1); ++$i ) {
+	    	$out .= "_";
+	    }
+	    array_push($buffer,$out);
+
+	    // draw each row of the maze
+	    for ( $j=0; $j < $this->height; ++$j ) {
+	        $out = "|";
+		for ( $i=0; $i < $this->width; ++$i ) {
+		    // render the bottom
+		    $out .= (($this->grid[$j][$i] & self::$S) != 0) ? " " : "_";
+
+		    // render the side
+		    if ( ($this->grid[$j][$i] & self::$E) != 0 ) {
+		        $out .= ( ( $this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$S ) != 0 ? " " : "_";
+		    } else {
+		        $out .= "|";
+		    }
+		}
+		array_push($buffer,$out);
+	    }
+
+	    // add the metadata
+	    array_push($buffer, self::metadata());
+	    
+	    // flush the buffer
+	    echo join($buffer, "\r\n");
 	}
 	
 	// ++++++++++++++++++++++++++++++++
 	// Generate generic maze metadata.
 	// ++++++++++++++++++++++++++++++++ 
 	function metadata() {
-
+	    // take the global arguments
+	    global $argv;
+	    
+	    // used array to buffer output
+	    $buffer = array();
+	    $temp = array($argv[0], $this->width, $this->height, $this-> seed);
+	    array_push($buffer, join($temp," "));
+	    array_push($buffer,"");
+	    
+	    // flush the buffer
+	    return join($buffer,"\r\n");
 	}
 }
 
+// ==========================================================================
+// Class BackTracker implements a simple recursive back-tracking algorithm
+// to draw ASCII mazes. The algorithm works as a "depth-first" search
+// of the "tree" or "graph" representing the maze.
+//
+// A possible optimization might be to implement a "breadth-first" search.
+// ==========================================================================
 class BackTracker extends Maze 
 {
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Initialize a new 2D maze with the given width and height.
+	//
+	// Default seed value will give "random" behavior.
+	// User-supplied seed value will given deterministic behavior.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function __construct($w=NULL, $h=NULL, $s=NULL) {
+	    //
+	    // Invoke super-constructor
+	    //
+	    parent::__construct($w,$h,$s);
 
+	    //
+	    // Carve the grid
+	    //
+	    self::carve_passage_from(0,0);
+	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Recursively carve passages through the maze, starting at (x,y).
+	//
+	// Algorithm halts when all "cells" in the maze have been visited.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function carve_passage_from($x,$y) {
+	    // randomize the directions
+	    $directions = array(self::$N, self::$S, self::$E, self::$W);
+	    shuffle($directions);
+
+	    $DX = self::DX();
+	    $DY = self::DY();
+	    $OPPOSITE = self::OPPOSITE();
+
+	    for ( $i=0; $i < sizeof($directions); ++$i ) {
+	    	$direction = $directions[$i];
+		$dx = $x + $DX[$direction];
+		$dy = $y + $DY[$direction];
+		if ( $dy >= 0 && $dy < $this->height && $dx >= 0 && $dx < $this->width && $this->grid[$y][$x] == 0 ) {
+		   $this->grid[$y][$x] |= $direction;
+		   $this->grid[$dy][$dx] |= $OPPOSITE[$direction];
+		   self::carve_passage_from($dx,$dy);
+		}
+	    }
+	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	// Override metadata to inform what type of maze we are carving.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	function metadata() {
+	    return parent::metadata() . " [BackTracker]";
+	}
 }
 
 //
