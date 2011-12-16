@@ -180,10 +180,8 @@ class BackTracker extends Maze
 	    	// 
 		// Render updates of the maze on a "cell-by-cell" basis
 		//
-		echo "THIS:" . $this->animate . "NOW\r\n";
 		if ( $this->animate ) {
-		echo "animate\r\n";
-		    self::display(x,y);
+		    $this->display($x,$y);
 		    sleep($this->delay);
 		}
 
@@ -193,7 +191,7 @@ class BackTracker extends Maze
 		if ( $dy >= 0 && $dy < $this->height && $dx >= 0 && $dx < $this->width && $this->grid[$dy][$dx] == 0 ) {
 		   $this->grid[$y][$x] |= $direction;
 		   $this->grid[$dy][$dx] |= $OPPOSITE[$direction];
-		   self::carve_passage_from($dx,$dy);
+		   $this->carve_passage_from($dx,$dy);
 		}
 	    }
 
@@ -202,7 +200,7 @@ class BackTracker extends Maze
 	    // Set the coords to (-1,-1) so the cell is left "blank" with no cursor.
 	    //
 	    if ( $this->animate ) {
-	        self::display(-1,-1);
+	        $this->display(-1,-1);
 	    }
 	}
 
