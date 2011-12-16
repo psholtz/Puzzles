@@ -64,7 +64,7 @@ public class BackTracker extends Maze {
     }
 	
     //
-    // Generate metadata
+    // Override metadata to inform what type of maze we are carving.
     //
     protected String metadata() {
 	return super.metadata() + " [BackTracker]";

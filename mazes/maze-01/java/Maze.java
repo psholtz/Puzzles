@@ -129,7 +129,7 @@ public class Maze {
 	}
 
     // 
-    // Generate metadata
+    // Generate generic maze metadata.
     //
     protected String metadata() {
 	// Get main class name
