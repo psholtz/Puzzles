@@ -4,6 +4,8 @@
 $DEFAULT_WIDTH = 10;
 $DEFAULT_HEIGHT = 10;
 $DEFAULT_SEED = make_seed();
+$DEFAULT_ANIMATE = false;
+$DEFAULT_DELAY = 0.02;
 
 // random seed generator for PHP
 function make_seed()
@@ -100,6 +102,7 @@ class Maze
 
 	    // add the metadata
 	    array_push($buffer, self::metadata());
+	    array_push($buffer, "");
 	    
 	    // flush the buffer
 	    echo join($buffer, "\r\n");
@@ -113,13 +116,12 @@ class Maze
 	    global $argv;
 	    
 	    // used array to buffer output
-	    $buffer = array();
+	    $buffer = "";
 	    $temp = array($argv[0], $this->width, $this->height, $this-> seed);
-	    array_push($buffer, join($temp," "));
-	    array_push($buffer,"");
-	    
-	    // flush the buffer
-	    return join($buffer,"\r\n");
+	    $buffer .= join($temp, " ");
+
+	    // return the buffer
+	    return $buffer;	    
 	}
 }
 
@@ -138,16 +140,20 @@ class BackTracker extends Maze
 	// Default seed value will give "random" behavior.
 	// User-supplied seed value will given deterministic behavior.
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	function __construct($w=NULL, $h=NULL, $s=NULL) {
+	function __construct($w=NULL, $h=NULL, $s=NULL, $a=false, $d=NULL) {
 	    //
 	    // Invoke super-constructor
 	    //
 	    parent::__construct($w,$h,$s);
 
 	    //
-	    // Carve the grid
+	    // Only prepare the maze if we are doing "static" (i.e., animate=false) drawing
 	    //
-	    self::carve_passage_from(0,0);
+	    $this->delay = $d;
+	    $this->animate = $a;
+	    if ( !$this->animate ) {
+	        self::carve_passage_from(0,0);
+	    }
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -165,6 +171,14 @@ class BackTracker extends Maze
 	    $OPPOSITE = self::OPPOSITE();
 
 	    for ( $i=0; $i < sizeof($directions); ++$i ) {
+	    	// 
+		// Render updates of the maze on a "cell-by-cell" basis
+		//
+		if ( $this->animate ) {
+		    self::display(x,y);
+		    sleep($this->delay);
+		}
+
 	    	$direction = $directions[$i];
 		$dx = $x + $DX[$direction];
 		$dy = $y + $DY[$direction];
@@ -174,6 +188,14 @@ class BackTracker extends Maze
 		   self::carve_passage_from($dx,$dy);
 		}
 	    }
+
+	    //
+	    // Make one final call to "update" to display the last cell.
+	    // Set the coords to (-1,-1) so the cell is left "blank" with no cursor.
+	    //
+	    if ( $this->animate ) {
+	        self::display(-1,-1);
+	    }
 	}
 
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -182,10 +204,89 @@ class BackTracker extends Maze
 	# If we are drawing the maze statically, defer to the superclass.
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function draw() {
+	
 	    //
-	    // Clear the screen.
+	    // Clear the screen
 	    //
 	    echo sprintf("%c[2J",27);
+	    if ( !$this->animate ) {
+	       
+	        //
+		// Move to upper left and defer to superclass
+		//
+		echo sprintf("%c[H",27);
+
+		parent::draw();
+	    } else {
+	        //
+		// If we are animating, clear the screen and start carving!
+		//
+		self::carve_passage_from(0,0);
+
+		//
+		// Output maze metadata
+		//
+		echo self::metadata();
+		echo "\r\n";
+	    }
+	}
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Display needs the (x,y) coordinates of where it is presently rendering, in 
+	# order to color the "current cursor" cell a different color (in this case, 
+	# red). We've already used the symbols "x" and "y" in a previous implementation
+	# of this algorithm, so we'll name them "i" and "j" in the method signature instead.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function display($i,$j) {
+	    //
+	    // Clear the screen and draw the top row
+	    //
+	    $buffer = array();
+	    array_push($buffer, sprintf("%c[2J",27));
+	    $out = " ";
+	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
+	        $out .= "_";
+	    }
+	    array_push($buffer, $out);
+
+	    // 
+	    // Step through each cell of the array
+	    //
+	    for ( $y=0; $y < $this->height; ++$y ) {
+	    	$out = "|";
+		for ( $x=0; $x < $this->width; ++$x ) {
+		    // 
+		    // Color gray if empty
+		    //
+		    /*if ( $this->grid[$y][$x] == 0 ) {
+		        array_push($buffer, sprintf("%c[47m",27));
+		    } else {
+		        array_push($buffer, sprintf("%c[41m",27));
+		    }*/
+
+		    // render "bottom" using the "S" switch
+		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
+	
+		    // render the side using the "E" switch
+		    if ( false ) {
+		        $out .= ( ( $this->grid[$y][$x] | $this->grid[$y][$x+1] ) & self::$S ) != 0 ? " " : "_";
+		    } else {
+		        $out .= "|";
+		    }
+
+		    // 
+		    // Stop coloring
+		    //
+		    /*if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) {
+		       array_push($buffer, sprintf("%c[m",27));
+		    }*/
+		}	
+		array_push($buffer, $out);
+	    }
+		    
+	    // Flush the buffer
+	    array_push($buffer,"");
+	    echo join($buffer, "\r\n");
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -199,6 +300,6 @@ class BackTracker extends Maze
 //
 // Build and draw a new maze
 //
-$maze = new BackTracker();
+$maze = new BackTracker(10,10,NULL,false,0.02);
 $maze->draw();
 ?>
