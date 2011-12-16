@@ -185,7 +185,7 @@ class BackTracker extends Maze
 	    //
 	    // Clear the screen.
 	    //
-	    echo "\e[2J";
+	    echo sprintf("%c[2J",27);
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
