@@ -168,7 +168,7 @@ class BackTracker extends Maze
 	    	$direction = $directions[$i];
 		$dx = $x + $DX[$direction];
 		$dy = $y + $DY[$direction];
-		if ( $dy >= 0 && $dy < $this->height && $dx >= 0 && $dx < $this->width && $this->grid[$y][$x] == 0 ) {
+		if ( $dy >= 0 && $dy < $this->height && $dx >= 0 && $dx < $this->width && $this->grid[$dy][$dx] == 0 ) {
 		   $this->grid[$y][$x] |= $direction;
 		   $this->grid[$dy][$dx] |= $OPPOSITE[$direction];
 		   self::carve_passage_from($dx,$dy);
