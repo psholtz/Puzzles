@@ -72,7 +72,7 @@ User-supplied seed will give deterministic behavior."""
             buffer.append(out)
 
         # 
-        # Output maze metadata.
+        # Output generic maze metadata.
         #
         buffer.append(self.metadata())
         print "\r\n".join(buffer)
@@ -110,7 +110,7 @@ User-supplied seed value will give "deterministic" behavior.
 
 
     def metadata(self,):
-        """Generate maze metadata."""
+        """Override metadata to inform what type of maze we are carving."""
         return Maze.metadata(self) + " [BackTracker]"
 
     def carve_passage_from(self,x,y):
