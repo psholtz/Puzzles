@@ -1,6 +1,8 @@
 Growing Tree
 ============
 
+[![](http://farm8.staticflickr.com/7173/6518393785_1760fb8a7e.jpg)](http://farm8.staticflickr.com/7173/6518393785_1760fb8a7e.jpg)
+
 Sample Maze
 ----------- 
 
