@@ -182,7 +182,7 @@ class BackTracker extends Maze
 		//
 		if ( $this->animate ) {
 		    $this->display($x,$y);
-		    sleep($this->delay);
+		    usleep(1000000*$this->delay);
 		}
 
 	    	$direction = $directions[$i];
@@ -260,6 +260,14 @@ class BackTracker extends Maze
 	    for ( $y=0; $y < $this->height; ++$y ) {
 	    	$out = "|";
 		for ( $x=0; $x < $this->width; ++$x ) {
+		    // 
+		    // Color gray if empty, red if "current" cursor
+		    // 
+		    if ( $this->grid[$y][$x] == 0 ) {
+		        //$out .= sprintf("%c[47m",27);
+		    } else if ( $x == $i && $y == $j ) {
+		        $out .= sprintf("%c[41m",27);
+		    }
 
 		    // render the bottom using the "S" switch
 		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
@@ -269,6 +277,13 @@ class BackTracker extends Maze
 		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0)  ? " " : "_";
 		    } else {
 		        $out .= "|";
+		    }
+
+		    // 
+		    // Stop coloring
+		    // 
+		    if ( $this->grid[$y][$x] || ( $x == $i && $y == $j ) ) { 
+		        $out .= sprintf("%c[m",27);
 		    }
 		}
 		array_push($buffer,$out);
