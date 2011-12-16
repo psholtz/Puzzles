@@ -176,6 +176,18 @@ class BackTracker extends Maze
 	    }
 	}
 
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Method only needs to be overridden if we are animating.
+	# 
+	# If we are drawing the maze statically, defer to the superclass.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	function draw() {
+	    //
+	    // Clear the screen.
+	    //
+	    echo "\e[2J";
+	}
+
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	// Override metadata to inform what type of maze we are carving.
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
