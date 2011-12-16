@@ -290,6 +290,6 @@ class BackTracker extends Maze
 //
 // Build and draw a new maze
 //
-$maze = new BackTracker(10,10,NULL,false,0.02);
+$maze = new BackTracker(10,10,NULL,true,0.02);
 $maze->draw();
 ?>
