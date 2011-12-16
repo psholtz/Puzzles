@@ -100,8 +100,14 @@ class Maze
 		array_push($buffer,$out);
 	    }
 
-	    // add the metadata
-	    array_push($buffer, self::metadata());
+	    //
+	    // Add the metadata
+	    //
+	    // NOTE: We must call this with $this->metadata() to get the correct OO behavior we expect.
+	    // Calling it with self::metadata() will invoke "this" classes metadata() method, not the 
+	    // child classes, which is *not* the behavior we desire.
+	    //
+	    array_push($buffer, $this->metadata());
 	    array_push($buffer, "");
 	    
 	    // flush the buffer
