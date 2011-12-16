@@ -227,7 +227,6 @@ class BackTracker extends Maze
 	        //
 		// If we are animating, clear the screen and start carving!
 		//
-		echo "NOW!!\r\n";
 		$this->carve_passage_from(0,0);
 
 		//
@@ -248,7 +247,7 @@ class BackTracker extends Maze
 	    //
 	    // Clear the screen and draw the top row
 	    //
-	    //echo sprintf("%c[2J",27);
+	    echo sprintf("%c[2J",27);
 	    $buffer = array();
 	    $out = " ";
 	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
@@ -259,38 +258,23 @@ class BackTracker extends Maze
 	    // 
 	    // Step through each cell of the array
 	    //
-	/*    for ( $y=0; $y < $this->height; ++$y ) {
+	    for ( $y=0; $y < $this->height; ++$y ) {
 	    	$out = "|";
 		for ( $x=0; $x < $this->width; ++$x ) {
-		    // 
-		    // Color gray if empty
-		    //
-		    //if ( $this->grid[$y][$x] == 0 ) {
-		    //    array_push($buffer, sprintf("%c[47m",27));
-		    //} else {
-		    //    array_push($buffer, sprintf("%c[41m",27));
-		    //}
 
-		    // render "bottom" using the "S" switch
+		    // render the bottom using the "S" switch
 		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
-	
+
 		    // render the side using the "E" switch
-		    if ( false ) {
-		        $out .= ( ( $this->grid[$y][$x] | $this->grid[$y][$x+1] ) & self::$S ) != 0 ? " " : "_";
+		    if ( ($this->grid[$y][$x] & self::$E) != 0 ) { 
+		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0)  ? " " : "_";
 		    } else {
 		        $out .= "|";
 		    }
-
-		    // 
-		    // Stop coloring
-		    //
-		    //if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) {
-		    //   array_push($buffer, sprintf("%c[m",27));
-		    //}
-		}	
-		array_push($buffer, $out);
-	    }*/
-		    
+		}
+		array_push($buffer,$out);
+	    }
+			    
 	    // Flush the buffer
 	    array_push($buffer,"");
 	    echo join($buffer, "\r\n");
