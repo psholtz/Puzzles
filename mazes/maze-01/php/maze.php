@@ -47,26 +47,26 @@ class Maze
 	// User-supplied seed value will give deterministic behavior.
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	function __construct($w=NULL, $h=NULL, $s=NULL) {
-		 // import the global variables
-		 global $DEFAULT_WIDTH, $DEFAULT_HEIGHT, $DEFAULT_SEED;
+	    // import the global variables
+	    global $DEFAULT_WIDTH, $DEFAULT_HEIGHT, $DEFAULT_SEED;
 
-		 // configure the instance variables
-		 $this->width = is_null($w) ? $DEFAULT_WIDTH : $w;
-		 $this->height = is_null($h) ? $DEFAULT_HEIGHT : $h;
-		 $this->seed = is_null($s) ? $DEFAULT_SEED : $s;
+	    // configure the instance variables
+	    $this->width = is_null($w) ? $DEFAULT_WIDTH : $w;
+	    $this->height = is_null($h) ? $DEFAULT_HEIGHT : $h;
+	    $this->seed = is_null($s) ? $DEFAULT_SEED : $s;
 
-		 // seed the PRNG
-		 srand($this->seed);
+	    // seed the PRNG
+	    srand($this->seed);
  
-		// initialize two-dimensional grid representing maze 
-		$this->grid = array();
-		for ( $j=0; $j < $this->height; ++$j ) {
-		    $temp = array();
-		    for ( $i=0; $i < $this->width; ++$i ) {
-		    	array_push($temp,0);
-		    }
-		    array_push($this->grid,$temp);
+	    // initialize two-dimensional grid representing maze 
+	    $this->grid = array();
+	    for ( $j=0; $j < $this->height; ++$j ) {
+	    	$temp = array();
+		for ( $i=0; $i < $this->width; ++$i ) {
+		    array_push($temp,0);
 		}
+		array_push($this->grid,$temp);
+	    }
 	}
 	
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++
