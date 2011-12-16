@@ -246,40 +246,76 @@ class BackTracker extends Maze
 	    //
 	    // Clear the screen and draw the top row
 	    //
-	    echo sprintf("%c[H",27);
-	    $buffer = array();
-	    $out = " ";
+//	    echo sprintf("%c[H",27);
+	/*   $buffer = array();
+	    $out = sprintf("%c[H",27);
+	    $out += " ";
 	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
 	        $out .= "_";
 	    }
-	    array_push($buffer, $out);
+	    array_push($buffer, $out);*/
+	    echo sprintf("%c[H",27);
+	    echo " ";
+	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
+	    	echo "_";
+	    }
+	    echo "\r\n";
+	    
 
+	    
 	    // 
 	    // Step through each cell of the array
 	    //
 	    for ( $y=0; $y < $this->height; ++$y ) {
+	    	echo "|";
+		for ( $x=0; $x < $this->width; ++$x ) {
+		    // render the bottom using the "S" switch
+		    echo (($this->grid[$y][$x] & self::$S) != 0 ) ? " " : "_";
+
+		    if ( $this->grid[$y][$x] == 0 ) {
+		        echo sprintf("%c[47m",27);
+		    } else if ( $x == $i && $y == $j ) {
+		        echo sprintf("%c[41m",27);
+		    }
+		    // render the side using the "E" switch
+		    if ( ($this->grid[$y][$x] & self::$E) != 0 ) {
+		        echo ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
+		    } else {
+		        echo "|";
+		    }
+
+		    if ( $this->grid[$y][$x] || ( $x == $i && $y == $j ) ) { 
+		        echo sprintf("%c[m",27);
+		    }
+		}
+		echo "\r\n";
+	    }
+	/*    for ( $y=0; $y < $this->height; ++$y ) {
 	    	$out = "|";
 		for ( $x=0; $x < $this->width; ++$x ) {
 		    // 
 		    // Color gray if empty, red if "current" cursor
 		    // 
+		//    $out .= $this->grid[$y][$x] . " ";
 		    if ( $this->grid[$y][$x] == 0 ) {
-		        //$out .= sprintf("%c[47m",27);
+		       
+		        $out .= sprintf("%c[47m",27);
 		    } else if ( $x == $i && $y == $j ) {
 		        $out .= sprintf("%c[41m",27);
 		    }
 
 		    // render the bottom using the "S" switch
-		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
+	//	    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
+	$out .= $this->grid[$y][$x] . " ";
 
 		    // render the side using the "E" switch
-		    if ( ($this->grid[$y][$x] & self::$E) != 0 ) { 
+	/*	    if ( ($this->grid[$y][$x] & self::$E) != 0 ) { 
 		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0)  ? " " : "_";
 		    } else {
 		        $out .= "|";
-		    }
+		    }*/
 
-		    // 
+/*		    // 
 		    // Stop coloring
 		    // 
 		    if ( $this->grid[$y][$x] || ( $x == $i && $y == $j ) ) { 
@@ -291,7 +327,7 @@ class BackTracker extends Maze
 			    
 	    // Flush the buffer
 	    array_push($buffer,"");
-	    echo join($buffer, "\r\n");
+	    echo join($buffer, "\r\n");*/
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
