@@ -221,7 +221,6 @@ class BackTracker extends Maze
 		// Move to upper left and defer to superclass
 		//
 		echo sprintf("%c[H",27);
-
 		parent::draw();
 	    } else {
 	        //
@@ -247,7 +246,7 @@ class BackTracker extends Maze
 	    //
 	    // Clear the screen and draw the top row
 	    //
-	    echo sprintf("%c[2J",27);
+	    echo sprintf("%c[H",27);
 	    $buffer = array();
 	    $out = " ";
 	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
@@ -291,6 +290,6 @@ class BackTracker extends Maze
 //
 // Build and draw a new maze
 //
-$maze = new BackTracker(10,10,NULL,true,0.02);
+$maze = new BackTracker(10,10,NULL,false,0.02);
 $maze->draw();
 ?>
