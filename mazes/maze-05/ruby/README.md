@@ -16,7 +16,7 @@ Run the maze with a preset seed, to model deterministic behavior:
 > ./maze.rb -s100
 </pre>
 
-Run the maze in animation mode (<-- COOL)
+Run the maze in animation mode:
 <pre>
 > ./maze.rb -a
 </pre>
