@@ -180,7 +180,9 @@ class BackTracker extends Maze
 	    	// 
 		// Render updates of the maze on a "cell-by-cell" basis
 		//
+		echo "THIS:" . $this->animate . "NOW\r\n";
 		if ( $this->animate ) {
+		echo "animate\r\n";
 		    self::display(x,y);
 		    sleep($this->delay);
 		}
@@ -227,12 +229,13 @@ class BackTracker extends Maze
 	        //
 		// If we are animating, clear the screen and start carving!
 		//
-		self::carve_passage_from(0,0);
+		echo "NOW!!\r\n";
+		$this->carve_passage_from(0,0);
 
 		//
 		// Output maze metadata
 		//
-		echo self::metadata();
+		echo $this->metadata();
 		echo "\r\n";
 	    }
 	}
@@ -247,8 +250,8 @@ class BackTracker extends Maze
 	    //
 	    // Clear the screen and draw the top row
 	    //
+	    //echo sprintf("%c[2J",27);
 	    $buffer = array();
-	    array_push($buffer, sprintf("%c[2J",27));
 	    $out = " ";
 	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
 	        $out .= "_";
@@ -258,17 +261,17 @@ class BackTracker extends Maze
 	    // 
 	    // Step through each cell of the array
 	    //
-	    for ( $y=0; $y < $this->height; ++$y ) {
+	/*    for ( $y=0; $y < $this->height; ++$y ) {
 	    	$out = "|";
 		for ( $x=0; $x < $this->width; ++$x ) {
 		    // 
 		    // Color gray if empty
 		    //
-		    /*if ( $this->grid[$y][$x] == 0 ) {
-		        array_push($buffer, sprintf("%c[47m",27));
-		    } else {
-		        array_push($buffer, sprintf("%c[41m",27));
-		    }*/
+		    //if ( $this->grid[$y][$x] == 0 ) {
+		    //    array_push($buffer, sprintf("%c[47m",27));
+		    //} else {
+		    //    array_push($buffer, sprintf("%c[41m",27));
+		    //}
 
 		    // render "bottom" using the "S" switch
 		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
@@ -283,12 +286,12 @@ class BackTracker extends Maze
 		    // 
 		    // Stop coloring
 		    //
-		    /*if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) {
-		       array_push($buffer, sprintf("%c[m",27));
-		    }*/
+		    //if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) {
+		    //   array_push($buffer, sprintf("%c[m",27));
+		    //}
 		}	
 		array_push($buffer, $out);
-	    }
+	    }*/
 		    
 	    // Flush the buffer
 	    array_push($buffer,"");
@@ -306,6 +309,6 @@ class BackTracker extends Maze
 //
 // Build and draw a new maze
 //
-$maze = new BackTracker(10,10,NULL,false,0.02);
+$maze = new BackTracker(10,10,NULL,true,0.02);
 $maze->draw();
 ?>
