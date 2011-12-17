@@ -210,13 +210,11 @@ class BackTracker extends Maze
 	# If we are drawing the maze statically, defer to the superclass.
 	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function draw() {
-	
 	    //
 	    // Clear the screen
 	    //
 	    echo sprintf("%c[2J",27);
 	    if ( !$this->animate ) {
-	       
 	        //
 		// Move to upper left and defer to superclass
 		//
@@ -295,8 +293,26 @@ class BackTracker extends Maze
 }
 
 //
+// Configure default values for the variables
+//
+$_width	  = $DEFAULT_WIDTH;
+$_height  = $DEFAULT_HEIGHT;
+$_seed    = $DEFAULT_SEED;
+$_animate = $DEFAULT_ANIMATE;
+$_delay   = $DEFAULT_DELAY;
+
+//
+// Do extremely simple, "optparse" style parsing of the command line input
+//
+if ( sizeof($argv) > 1 ) {
+   for ( $i=1; $i < sizeof($argv); ++$i ) {
+       $arg = $argv[$i];
+       echo "arg: " . $arg . "\r\n";
+   }
+}
+//
 // Build and draw a new maze
 //
-$maze = new BackTracker(10,10,NULL,true,0.02);
+$maze = new BackTracker( $_width, $_height, $_seed );
 $maze->draw();
 ?>
