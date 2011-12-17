@@ -74,11 +74,13 @@ User-supplied seed will give deterministic behavior."""
         # 
         # Output maze metadata.
         #
-        out = " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
-        buffer.append(out)
+        buffer.append(self.metadata())
 
         print "\r\n".join(buffer)
 
+    def metadata(self,):
+        """Output generic maze metadata."""
+        return " ".join([sys.argv[0],str(self.width),str(self.height),str(self.seed)])
 
 class BinaryTree(Maze):
     """Class BinaryTree implements a simple binary tree algorithm to draw simple ASCII mazes.
@@ -123,7 +125,6 @@ overridden draw() method below."""
             for x in range(self.width):
                 if self.animate:
                     self.display(x,y)
-                    #self.draw(True)
                     time.sleep(self.delay)
 
                 dirs = [] 
@@ -141,7 +142,6 @@ overridden draw() method below."""
 
         if self.animate:
             self.display(-1,-1)
-            #self.draw(True)
 
     def draw(self,update=False):
         """Method only needs to be overridden if we are animated.
@@ -200,8 +200,17 @@ of this algorithm, so we'll name them "i" and "j" in the method signature instea
 
             buffer.append(out)
 
+        # 
+        # Output metadata
+        #
+        buffer.append(self.metadata())
         buffer.append("")
         sys.stdout.write("\r\n".join(buffer))
+
+        
+    def metadata(self,):
+        """Override metadata to inform what type of maze we are carving."""
+        return Maze.metadata(self,) + " [BinaryTree]"
 
 # 
 # Parse the command line arguments
