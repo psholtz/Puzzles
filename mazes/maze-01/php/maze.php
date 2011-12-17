@@ -255,7 +255,7 @@ class BackTracker extends Maze
 	    for ( $y=0; $y < $this->height; ++$y ) {
 	    	$out = "|";
 	    	for ( $x=0; $x < $this->width; ++$x ) {
-	    	
+	    	        // color if necessary
 	    		if ( $this->grid[$y][$x] == 0 ) { 
 	    			$out .= sprintf("%c[47m",27);
 	    		} else if ( $x == $i && $y == $j ) {
