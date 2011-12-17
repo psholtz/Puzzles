@@ -151,6 +151,26 @@ class BinaryTree extends Maze
 	    // Invoke super-constructor
 	    //
 	    parent::__construct($w,$h,$s);
+
+	    //
+	    // Only prepare the maze if we are doing "static" (i.e., animate=false) drawing
+	    //
+	    $this->delay = $d;
+	    $this->animate = $a;
+	    if ( !$this->animate ) {
+	        $this->carve_passages();
+	    }
+	}
+
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
+	//
+	// Because we walk down the maze, cell-by-cell, in a linear fashion, this
+	// algorithm is amenable to animation. Animated version is implemented in ths 
+	// overridden draw() method below.
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	function carve_passages() {
+
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
@@ -190,6 +210,10 @@ if ( sizeof($argv) > 1 ) {
 		    $tmp = intval(substr($arg,2));
 		    $_height = $tmp > 0 ? $tmp : $DEFAULT_HEIGHT;
 		}
+		else if ( $t == "s" ) {
+		    $tmp = intval(substr($arg,2));
+		    $_seed = $tmp > 0 ? $tmp : $DEFAULT_SEED;
+		}
 		else if ( $t == "d" ) {
 		    $tmp = floatval(substr($arg,2));
 		    $_delay = $tmp > 0 ? $tmp : $DEFAULT_DELAY;
@@ -198,7 +222,7 @@ if ( sizeof($argv) > 1 ) {
 	}
 
 	// parse the "no argument" parameters
-	else if ( strlen($atg) > 1 ) {
+	else if ( strlen($arg) > 1 ) {
 	    $s = substr($arg,0,1);
 	    $t = substr($arg,1,1);
 	    if ( $s == "-" ) {
