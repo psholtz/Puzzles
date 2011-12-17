@@ -70,7 +70,7 @@ public class BinaryTree extends Maze {
 			for ( int x=0; x < _w; ++x ) {
 				if ( _animate ) {
 					// draw (using animations)
-					draw(true);
+				    display(x,y);
 					
 					// try to sleep the thread for _delay seconds
 					try {
@@ -100,7 +100,7 @@ public class BinaryTree extends Maze {
 		
 		// make one final call to "update" to display the last cell
 		if ( _animate ) {
-			draw(true);
+		    display(-1,-1);
 		}
 	}
 	
@@ -130,6 +130,55 @@ public class BinaryTree extends Maze {
 	public void draw() {
 		draw(false);
 	}
+
+    /***************************************************************************************
+     * Display needs the (x,y) coordinates of where it is presently rendering, in 
+     * order to color the "Current cursor" cell a different color (in this case, 
+     * red). We've already used the symbols "x" and "y" in a previous implementation
+     * of this algorithm, so we'll name them "i" and "j" in the method signature instead.
+     ***************************************************************************************/
+    protected void display(int i, int j) {
+	// Draw the "top row" of the maze
+	System.out.print((char)27 + "[H");
+	System.out.print(" ");
+	for ( int c=0; c < (_w*2) - 1; ++c ) {
+	    System.out.print("_");
+	}
+	System.out.println("");
+
+	// Step through the cells of the maze
+	for ( int y=0; y < _grid.length; ++y ) {
+	    System.out.print("|");
+	    for ( int x=0; x < _grid[0].length; ++x ) {
+		// Color gray if empty, red if "current" cursor
+		if ( _grid[y][x] == 0 ) {
+		    System.out.print((char)27 + "[47m");
+		}
+		if ( x == i && y == j ) {
+		    System.out.print((char)27 + "[41m");
+		}
+
+		// Render "bottom" using "S" switch
+		System.out.print((_grid[y][x] & Maze.S) != 0 ? " " : "_");
+
+		// Render "side" using "E" switch
+		if ( (_grid[y][x] & Maze.E) != 0 ) {
+		    System.out.print(((_grid[y][x] | _grid[y][x+1]) & Maze.S) != 0 ? " " : "_");
+		} else {
+		    System.out.print("|");
+		}
+		
+		// Stop coloring
+		if ( _grid[y][x] == 0 || ( x == i && y == j ) ) {
+		    System.out.print((char)27 + "[m");
+		}
+	    }
+	    System.out.println("");
+	}
+       
+	// Output metadata
+	System.out.println(metadata());
+    }
 
     // 
     // Override metadata to inform what type of maze we are carving.
