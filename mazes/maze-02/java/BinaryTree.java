@@ -130,4 +130,11 @@ public class BinaryTree extends Maze {
 	public void draw() {
 		draw(false);
 	}
+
+    // 
+    // Override metadata to inform what type of maze we are carving.
+    //
+    protected String metadata() {
+	return super.metadata() + " [BinaryTree]";
+    }
 }
