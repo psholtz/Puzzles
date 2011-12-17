@@ -137,7 +137,7 @@ class BinaryTree < Maze
 				# Render updates of the maze on a "cell-by-cell" basis
 				#
 				if @animate
-					draw(update=true)
+					display(x,y)
 					sleep @delay
 				end
 
@@ -157,7 +157,7 @@ class BinaryTree < Maze
 		# Make one final call to "update" to display last cell
 		#
 		if @animate
-			draw(update=true)
+			display(-1,-1)
 		end
 	end
 
@@ -168,7 +168,6 @@ class BinaryTree < Maze
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def draw(update=false)
 		if update or not @animate
-			#if update; print "\e[H"; end
 			print "\e[H"
 			if not @animate; print "\e[2J"; end
 			super()
@@ -176,6 +175,38 @@ class BinaryTree < Maze
 			print "\e[2J"
 			carve_passages
 		end
+	end
+
+	def display(x,y)
+	    #
+	    # Draw the "top" line.
+	    #
+	    print "\e[H"
+	    puts " " + "_" * (2 * @width - 1)
+
+	    #
+	    # Draw each of the rows.
+	    #
+	    @height.times do |y|
+	        print "|"
+		@width.times do |x|
+		    # render "bottom" using "S" switch
+		    print( (@grid[y][x] & @@S != 0) ? " " : "_" )
+
+		    # render "side" using "E" switch
+		    if @grid[y][x] & @@E != 0
+		        print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0) ? " " : "_")
+		    else
+		        print "|"
+		    end
+		end
+		puts
+	    end	    
+
+	    # 
+	    # Output metadata
+	    # 
+	    #puts metadata
 	end
 end
 
