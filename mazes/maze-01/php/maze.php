@@ -321,6 +321,10 @@ if ( sizeof($argv) > 1 ) {
 	        $tmp = intval(substr($arg,2));
 		$_height = $tmp > 0 ? $tmp : $DEFAULT_HEIGHT;
 	     }
+	     else if ( $t == "s" ) {
+	        $tmp = intval(substr($arg,2));
+		$_seed = $tmp > 0 ? $tmp : $DEFAULT_SEED;
+	     }
  	     else if ( $t == "d" ) {
 	        $tmp = floatval(substr($arg,2));
 		$_delay = $tmp > 0 ? $tmp : $DEFAULT_DELAY;
