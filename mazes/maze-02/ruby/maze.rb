@@ -144,7 +144,7 @@ class BinaryTree < Maze
 				# Render updates of the maze on a "cell-by-cell" basis
 				#
 				if @animate
-					display(x,y)
+					display(x-1,y)
 					sleep @delay
 				end
 
@@ -184,7 +184,13 @@ class BinaryTree < Maze
 		end
 	end
 
-	def display(x,y)
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Display needs the (x,y) coordinates of where it is presently rendering, in 
+	# order to color the "current cursor" cell a different color (in this case, 
+	# red). We've already used the symbols "x" and "y" in a previous implementation
+	# of this algorithm, so we'll name them "i" and "j" in the method signature instead.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def display(i,j)
 	    #
 	    # Draw the "top" line.
 	    #
@@ -197,14 +203,30 @@ class BinaryTree < Maze
 	    @height.times do |y|
 	        print "|"
 		@width.times do |x|
-		    # render "bottom" using "S" switch
+		    #
+		    # Color grey if empty, red if "current" cursor
+		    #
+		    if @grid[y][x] == 0
+		        print "\e[47m"
+		    elsif x == i and y == j
+		        print "\e[41m"
+		    end
+
+		    # Render "bottom" using "S" switch
 		    print( (@grid[y][x] & @@S != 0) ? " " : "_" )
 
-		    # render "side" using "E" switch
+		    # Render "side" using "E" switch
 		    if @grid[y][x] & @@E != 0
 		        print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0) ? " " : "_")
 		    else
 		        print "|"
+		    end
+
+		    #
+		    # Stop coloring
+		    #
+		    if @grid[y][x] == 0 or ( x == i and y == j )
+		        print "\e[m"
 		    end
 		end
 		puts
