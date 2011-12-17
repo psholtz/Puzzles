@@ -81,7 +81,14 @@ class Maze
 		#	
 		# Output maze metadata.
 		#
-		puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
+		puts metadata
+	end
+
+	# ++++++++++++++++++++++++++++++ 
+	# Output generic maze metadata.
+	# ++++++++++++++++++++++++++++++
+	def metadata
+	    "#{$0} #{@width} #{@height} #{@seed} #{@delay}" 
 	end
 end
 
@@ -206,7 +213,14 @@ class BinaryTree < Maze
 	    # 
 	    # Output metadata
 	    # 
-	    #puts metadata
+	    puts metadata
+	end
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Override metadata to inform what type of maze we are carving
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	def metadata
+	    super() + " [BinaryTree]"
 	end
 end
 
