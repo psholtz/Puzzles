@@ -307,12 +307,43 @@ $_delay   = $DEFAULT_DELAY;
 if ( sizeof($argv) > 1 ) {
    for ( $i=1; $i < sizeof($argv); ++$i ) {
        $arg = $argv[$i];
-       echo "arg: " . $arg . "\r\n";
+
+       // parse the "argument" parameters
+       if ( strlen($arg) > 2 ) {
+       	  $s = substr($arg,0,1);
+	  $t = substr($arg,1,1);
+	  if ( $s == "-" ) { 
+	     if ( $t == "w" ) {
+	     	$tmp = intval(substr($arg,2));
+		$_width = $tmp > 0 ? $tmp : $DEFAULT_WIDTH;
+	     } 
+	     else if ( $t == "h" ) {
+	        $tmp = intval(substr($arg,2));
+		$_height = $tmp > 0 ? $tmp : $DEFAULT_HEIGHT;
+	     }
+ 	     else if ( $t == "d" ) {
+	        $tmp = floatval(substr($arg,2));
+		$_delay = $tmp > 0 ? $tmp : $DEFAULT_DELAY;
+	     }
+	  }
+       }
+
+       // parse the "no parameter" arguments
+       else if ( strlen($arg) > 1 ) {
+           $s = substr($arg,0,1);
+	   $t = substr($arg,1,1);
+	   if ( $s == "-" ) {
+	     if ( $t == "a" ) { 
+	        $_animate = true;
+	     }
+	   }
+       }
    }
 }
+
 //
 // Build and draw a new maze
 //
-$maze = new BackTracker( $_width, $_height, $_seed );
+$maze = new BackTracker( $_width, $_height, $_seed, $_animate, $_delay );
 $maze->draw();
 ?>
