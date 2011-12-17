@@ -207,7 +207,6 @@ of this algorithm, so we'll name them "i" and "j" in the method signature instea
         buffer.append("")
         sys.stdout.write("\r\n".join(buffer))
 
-        
     def metadata(self,):
         """Override metadata to inform what type of maze we are carving."""
         return Maze.metadata(self,) + " [BinaryTree]"
@@ -238,4 +237,3 @@ d = DEFAULT_DELAY if options.delay is None else float(options.delay)
 #
 m = BinaryTree(w,h,s,a,d)
 m.draw()
-
