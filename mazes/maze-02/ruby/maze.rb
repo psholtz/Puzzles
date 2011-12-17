@@ -194,69 +194,44 @@ class BinaryTree < Maze
 	    #
 	    # Draw the "top" line
 	    #
-	    #print "\e[H"
+	    print "\e[H"
 	    puts " " + "_" * ( 2 * @width - 1)
 	    @height.times do |y|
 	        print "|"
 	        @width.times do |x|
-                    if x == i and y == j
-		        print "yes: ",x,", ",y
-		        puts ""
-		    end
-		    # Render "bottom" using "S" switch
-		    print( (@grid[y][x] & @@S != 0) ? " " : "_")
-
-		    # Render "side" using "E" switch
-	        end
-		puts
-	    end
-	end
-
-	def display2(i,j)
-	    #
-	    # Draw the "top" line.
-	    #
-	    print "\e[H"
-	    puts " " + "_" * (2 * @width - 1)
-
-	    #
-	    # Draw each of the rows.
-	    #
-	    @height.times do |y|
-	        print "|"
-		@width.times do |x|
-		    #
-		    # Color grey if empty, red if "current" cursor
+		    # 
+		    # Color gray if empty, red if "current" cursor
 		    #
 		    if @grid[y][x] == 0
 		        print "\e[47m"
-		    elsif x == i and y == j
+		    end
+		    if x == i and y == j
 		        print "\e[41m"
 		    end
 
 		    # Render "bottom" using "S" switch
-		    print( (@grid[y][x] & @@S != 0) ? " " : "_" )
+		    print( (@grid[y][x] & @@S != 0) ? " " : "_")
 
 		    # Render "side" using "E" switch
 		    if @grid[y][x] & @@E != 0
-		        print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0) ? " " : "_")
-		    else
+  		        print( ( (@grid[y][x] | @grid[y][x+1]) & @@S != 0 ) ? " " : "_" )
+		    else 
 		        print "|"
 		    end
 
 		    #
 		    # Stop coloring
 		    #
-		    if @grid[y][x] == 0 or ( x == i and y == j )
+		    if @grid[y][x] or ( x == i and y == j ) 
 		        print "\e[m"
 		    end
-		end
+	        end
 		puts
-	    end	    
+	    end
 
-	    # 
+	    #
 	    # Output metadata
-	    # 
+	    #
 	    puts metadata
 	end
 
