@@ -196,6 +196,10 @@ class BinaryTree < Maze
 	    #
 	    print "\e[H"
 	    puts " " + "_" * ( 2 * @width - 1)
+	    
+	    #
+	    # Step through the maze, one cell at a time
+	    #
 	    @height.times do |y|
 	        print "|"
 	        @width.times do |x|
