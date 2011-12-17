@@ -122,7 +122,8 @@ overridden draw() method below."""
         for y in range(self.height):
             for x in range(self.width):
                 if self.animate:
-                    self.draw(True)
+                    self.display(x,y)
+                    #self.draw(True)
                     time.sleep(self.delay)
 
                 dirs = [] 
@@ -139,7 +140,8 @@ overridden draw() method below."""
                         self.grid[dy][dx] |= Maze.OPPOSITE[dir]
 
         if self.animate:
-            self.draw(True)
+            self.display(-1,-1)
+            #self.draw(True)
 
     def draw(self,update=False):
         """Method only needs to be overridden if we are animated.
@@ -154,6 +156,52 @@ If we are drawing the maze statically, defer to the superclass."""
         else:
             sys.stdout.write("\x1b[2J")
             BinaryTree.carve_passages(self)
+
+    def display(self,i,j):
+        """Display needs the (x,y) coordinate of where it is presently rendering, in 
+order to color the "current cursor" cell a different color (in this case, 
+red). We've already used the symbols "x" and "y" in a previous implementation
+of this algorithm, so we'll name them "i" and "j" in the method signature instead.
+"""
+        sys.stdout.write("\x1b[H")
+        buffer = []; out = " "
+        for c in range(2 * self.width - 1):
+            out += "_"
+        buffer.append(out)
+
+        # 
+        # Step through the cells of the maze
+        #
+        for y in range(self.height):
+            out = "|"
+            for x in range(self.width):
+                #
+                # Color gray if empty, red if "current" cursor
+                #
+                if self.grid[y][x] == 0:
+                    out += "\x1b[47m"
+                if x == i and y == j:
+                    out += "\x1b[41m"
+
+                # Render "bottom" using "S" switch
+                out += " " if ((self.grid[y][x] & Maze.S) != 0) else "_"
+
+                # Render "side" using "E" switch
+                if ( self.grid[y][x] & Maze.E ) != 0:
+                    out += " " if (((self.grid[y][x] | self.grid[y][x+1]) & Maze.S) != 0) else "_"
+                else:
+                    out += "|"
+
+                #
+                # Stop coloring
+                #
+                if self.grid[y][x] == 0 or ( x == i and y == j ):
+                    out += "\x1b[m"
+
+            buffer.append(out)
+
+        buffer.append("")
+        sys.stdout.write("\r\n".join(buffer))
 
 # 
 # Parse the command line arguments
