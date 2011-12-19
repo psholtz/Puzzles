@@ -267,35 +267,25 @@ class BinaryTree extends Maze
 	    // Step through the grid, one cell at a time
 	    //
 	    for ( $y=0; $y < $this->height; ++$y ) {
-	        $out = "|";
+	    	$out = "|";
 		for ( $x=0; $x < $this->width; ++$x ) {
-		    // Color if necessary
-		    if ( $this->grid[$y][$x] == 0 ) {
-		        $out .= sprintf("%c[47m",27);
-		    }
-		    if ( $x == $i && $y == $j ) {
-		        $out .= sprintf("%c[41m",27);
-		    }
+		    // render the bottom
+		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
 
-		    // Render "bottom" using "S" switch
-		    $out .= (($this->grid[$y][$x] && self::$S) != 0) ? " " : "_";
-
-		    //  Render "side" using "E" switch
-		    if ( ( $this->grid[$y][$x] & self::$S) != 0 ) {
-		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
+		    // render the side
+		    if ( ( $this->grid[$y][$x] & self::$E ) != 0 ) {
+		       $out .= ( $this->grid[$y][$x] & self::$S ) != 0 ? " " : "_";
 		    } else {
 		        $out .= "|";
 		    }
-
-		    // Stop coloring
-		    if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) {
-		        $out .= sprintf("%c[m",27);
-		    }
 		}
-		array_push($buffer,$out);
+		array_push($buffer, $out);
 	    }
 	    array_push($buffer,"");
 
+	    //
+	    // Flush the buffer
+	    //
 	    echo join($buffer,"\r\n");
 	}
 
