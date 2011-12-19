@@ -122,7 +122,7 @@ public class BackTracker extends Maze {
 
 		// Render "side" using "E" switch
 		if ( (_grid[y][x] & Maze.E) != 0 ) {
-		    System.out.print(((_grid[y][x] | _grid[y][x+1]) & Maze.S) != 0 ? " " : "_");
+		    System.out.print((_grid[y][x] & Maze.S) != 0 ? " " : "_");
 		} else {
 		    System.out.print("|");
 		}
