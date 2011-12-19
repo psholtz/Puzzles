@@ -170,7 +170,121 @@ class BinaryTree extends Maze
 	// overridden draw() method below.
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function carve_passages() {
+	    for ( $y=0; $y < $this->height; ++$y ) {
+	        for ( $x=0; $x < $this->width; ++$x ) {
+		    //
+		    // Render updates of maze on a "cell-by-cell" basis
+		    //
+		    if ( $this->animate ) {
+		        $this->display($x,$y);
+			usleep(1000000*$this->delay);
+		    }
 
+		    $dirs = array();
+		    if ( $y > 0 ) { array_push($dirs,self::$N); }
+		    if ( $x > 0 ) { array_push($dirs,self::$W); }
+
+		    $direction = 0;
+		    if ( $direction > 0 ) {
+		        $direction = 0;
+		        $dx = $x + $DX[$direction];
+			$dy = $y + $DY[$direction];
+			$grid[$y][$x] |= $direction;
+			$grid[$dy][$dx] |= $OPPOSITE[$direction];
+		    }
+		}
+	    }
+
+	    // 
+	    // Make one final call to "update" to display the last cel;
+	    //
+	    if ( $this->animate ) {
+	        $this->display(-1,-1);
+	    }
+	}
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Method only needs to be overridden if we are animating.
+	# 
+	# If we are drawing the maze statically, defer to the superclass.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	function draw() {
+	    //
+	    // Clear the screen
+	    //
+	    echo sprintf("%c[2J",27);
+	    if ( !$this->animate ) {
+	        //
+		// Move to upper left and defer to superclass
+		//
+		echo sprintf("%c[H",27);
+		parent::draw();
+	    } else {
+	        //
+		// If we are animating, clear the screen and start carving:
+		//
+		$this->carve_passages(0,0);
+		
+		//
+		// Output maze metadata
+		//
+		echo $this->metadata();
+		echo "\r\n";
+	    }
+	}
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	# Display needs the (x,y) coordinates of where it is presently rendering, in 
+	# order to color the "current cursor" cell a different color (in this case, 
+	# red). We've already used the symbols "x" and "y" in a previous implementation
+	# of this algorithm, so we'll name them "i" and "j" in the method signature instead.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function display($i,$j) {
+	    //
+	    // Draw the "top" line
+	    //
+	    echo sprintf("%c[H",27);
+	    $buffer = array();
+	    $out = " ";
+	    for ( $c=0; $c < (2 * $this->width -1); ++$c ) {
+	        $out .= "_";
+	    }
+	    array_push($buffer,$out);
+
+	    //
+	    // Step through the grid, one cell at a time
+	    //
+	    for ( $y=0; $y < $this->height; ++$y ) {
+	        $out = "|";
+		for ( $x=0; $x < $this->width; ++$x ) {
+		    // Color if necessary
+		    if ( $this->grid[$y][$x] == 0 ) {
+		        $out .= sprintf("%c[47m",27);
+		    }
+		    if ( $x == $i && $y == $j ) {
+		        $out .= sprintf("%c[41m",27);
+		    }
+
+		    // Render "bottom" using "S" switch
+		    $out .= (($this->grid[$y][$x] && self::$S) != 0) ? " " : "_";
+
+		    //  Render "side" using "E" switch
+		    if ( ( $this->grid[$y][$x] & self::$S) != 0 ) {
+		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
+		    } else {
+		        $out .= "|";
+		    }
+
+		    // Stop coloring
+		    if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) {
+		        $out .= sprintf("%c[m",27);
+		    }
+		}
+		array_push($buffer,$out);
+	    }
+	    array_push($buffer,"");
+
+	    echo join($buffer,"\r\n");
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
