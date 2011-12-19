@@ -269,14 +269,27 @@ class BinaryTree extends Maze
 	    for ( $y=0; $y < $this->height; ++$y ) {
 	    	$out = "|";
 		for ( $x=0; $x < $this->width; ++$x ) {
+		    // color if necessary
+		    if ( $this->grid[$y][$x] == 0 ) {
+		        $out .= sprintf("%c[47m",27);
+		    }
+		    if ( $x == $i && $y == $j ) {
+		        $out .= sprintf("%c[41m",27);
+		    }
+
 		    // render the bottom
 		    $out .= (($this->grid[$y][$x] & self::$S) != 0) ? " " : "_";
 
 		    // render the side
 		    if ( ( $this->grid[$y][$x] & self::$E ) != 0 ) {
-		       $out .= ( $this->grid[$y][$x] & self::$S ) != 0 ? " " : "_";
+		       $out .= ( ($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S ) != 0 ? " " : "_";
 		    } else {
 		        $out .= "|";
+		    }
+
+		    // stop coloring
+		    if ( $this->grid[$y][$x] == 0 || ( $x == $i && $y == $j ) ) { 
+		        $out .= sprintf("%c[m",27);
 		    }
 		}
 		array_push($buffer, $out);
