@@ -92,7 +92,8 @@ class Maze
 
 		    // render the side
 		    if ( ( $this->grid[$j][$i] & self::$S) != 0 ) {
-		        $out .= ( ( $this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$S ) != 0 ? " " : "_";
+		        $out .= "*";
+//		        $out .= ( ( $this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$S ) != 0 ? " " : "_";
 		    } else {
 		        $out .= "|";
 		    }
@@ -171,10 +172,16 @@ class BinaryTree extends Maze
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function carve_passages() {
 
+	    // 
+	    // Get references to static variables/functions that we need
+	    //
 	    $DX = self::DX();
 	    $DY = self::DY();
 	    $OPPOSITE = self::OPPOSITE();
 
+	    // 
+	    // Step through the grid of the maze
+	    //
 	    for ( $y=0; $y < $this->height; ++$y ) {
 	        for ( $x=0; $x < $this->width; ++$x ) {
 		    //
@@ -188,13 +195,15 @@ class BinaryTree extends Maze
 		    $dirs = array();
 		    if ( $y > 0 ) { array_push($dirs,self::$N); }
 		    if ( $x > 0 ) { array_push($dirs,self::$W); }
-		    
+
+		    if ( sizeof($dirs) > 0 ) {		    
 		    $dir = $dirs[rand(0,sizeof($dirs)-1)];
 		    if ( $dir > 0 ) {
 		       $dx = $x + $DX[$dir];
 		       $dy = $y + $DY[$dir];
 		       $this->grid[$y][$x] |= $dir;
 		       $this->grid[$dy][$dx] |= $OPPOSITE[$dir];
+		    }
 		    }
 		}
 	    }
@@ -274,7 +283,8 @@ class BinaryTree extends Maze
 
 		    //  Render "side" using "E" switch
 		    if ( ( $this->grid[$y][$x] & self::$S) != 0 ) {
-		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
+		        $out .= "*";
+//		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
 		    } else {
 		        $out .= "|";
 		    }
