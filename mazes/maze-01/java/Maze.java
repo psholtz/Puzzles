@@ -116,7 +116,7 @@ public class Maze {
 				
 				// render "side" using "E" switch
 				if ( (_grid[j][i] & Maze.E) != 0 ) {
-					System.out.print((_grid[j][i] & Maze.S) != 0 ? " " : "_" );
+				    System.out.print(((_grid[j][i] | _grid[j][i+1]) & Maze.S) != 0 ? " " : "_" );
 				} else {
 					System.out.print("|");
 				}

@@ -65,7 +65,7 @@ User-supplied seed will give deterministic behavior."""
 
                 # draw the "side" using E switch
                 if (self.grid[j][i] & Maze.E) != 0:
-                    out += " " if ((self.grid[j][i] & Maze.S) != 0) else "_"
+                    out += " " if (((self.grid[j][i] | self.grid[j][i+1]) & Maze.S) != 0) else "_"
                 else:
                     out += "|"
      
@@ -179,7 +179,7 @@ of this algorithm, so we'll name them "i" and "j" in the method signature instea
 
                 # render "side" using "E" switch
                 if ( self.grid[y][x] & Maze.E ) != 0:
-                    out += " " if ((self.grid[y][x] & Maze.S) != 0) else "_"
+                    out += " " if (((self.grid[y][x] | self.grid[y][x+1]) & Maze.S) != 0) else "_"
                 else:
                     out += "|"
 
