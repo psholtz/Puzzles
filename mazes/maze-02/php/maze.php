@@ -170,6 +170,11 @@ class BinaryTree extends Maze
 	// overridden draw() method below.
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function carve_passages() {
+
+	    $DX = self::DX();
+	    $DY = self::DY();
+	    $OPPOSITE = self::OPPOSITE();
+
 	    for ( $y=0; $y < $this->height; ++$y ) {
 	        for ( $x=0; $x < $this->width; ++$x ) {
 		    //
@@ -183,14 +188,13 @@ class BinaryTree extends Maze
 		    $dirs = array();
 		    if ( $y > 0 ) { array_push($dirs,self::$N); }
 		    if ( $x > 0 ) { array_push($dirs,self::$W); }
-
-		    $direction = 0;
-		    if ( $direction > 0 ) {
-		        $direction = 0;
-		        $dx = $x + $DX[$direction];
-			$dy = $y + $DY[$direction];
-			$grid[$y][$x] |= $direction;
-			$grid[$dy][$dx] |= $OPPOSITE[$direction];
+		    
+		    $dir = $dirs[rand(0,sizeof($dirs)-1)];
+		    if ( $dir > 0 ) {
+		       $dx = $x + $DX[$dir];
+		       $dy = $y + $DY[$dir];
+		       $this->grid[$y][$x] |= $dir;
+		       $this->grid[$dy][$dx] |= $OPPOSITE[$dir];
 		    }
 		}
 	    }
