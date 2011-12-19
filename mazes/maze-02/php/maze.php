@@ -92,7 +92,7 @@ class Maze
 
 		    // render the side
 		    if ( ($this->grid[$j][$i] & self::$E) != 0 ) {
-		       $out .= ( ($this->grid[$j][$i] | $this->grid[$j][$i+1]) & self::$S ) != 0 ? " " : "_";
+		       $out .= ( ($this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$S ) != 0 ? " " : "_";
 		    } else {
 		       $out .= "|";
 		    }
@@ -282,8 +282,7 @@ class BinaryTree extends Maze
 
 		    //  Render "side" using "E" switch
 		    if ( ( $this->grid[$y][$x] & self::$S) != 0 ) {
-		        $out .= "*";
-//		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
+		        $out .= ((($this->grid[$y][$x] | $this->grid[$y][$x+1]) & self::$S) != 0) ? " " : "_";
 		    } else {
 		        $out .= "|";
 		    }
