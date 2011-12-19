@@ -91,11 +91,10 @@ class Maze
 		    $out .= (($this->grid[$j][$i] & self::$S) != 0) ? " " : "_";
 
 		    // render the side
-		    if ( ( $this->grid[$j][$i] & self::$S) != 0 ) {
-		        $out .= "*";
-//		        $out .= ( ( $this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$S ) != 0 ? " " : "_";
+		    if ( ($this->grid[$j][$i] & self::$E) != 0 ) {
+		       $out .= ( ($this->grid[$j][$i] | $this->grid[$j][$i+1]) & self::$S ) != 0 ? " " : "_";
 		    } else {
-		        $out .= "|";
+		       $out .= "|";
 		    }
 		}
 		array_push($buffer, $out);
