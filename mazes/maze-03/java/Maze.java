@@ -125,16 +125,18 @@ public class Maze {
 		}
 
 		// output maze metadata
-		outputMetadata();
+		System.out.println(metadata());
 	}
 	
-	protected void outputMetadata() {
-		String meta = " " + _w + " " + _h;
-		if ( _seed != null ) {
-			meta += " " + _seed;
-		} else { 
-			meta += " random";
-		}
-		System.out.println(meta);	
+	protected String metadata() {
+	    // Get main class name
+	    StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+	    StackTraceElement main = stack[stack.length-1];
+	    String mainClass = main.getClassName();
+
+	    // Generate remaining metadata
+	    String meta = "main: " + mainClass + " " + _w + " " + _h;
+	    meta += ( _seed != null ) ? " " + _seed : " random";
+	    return meta;
 	}
 }

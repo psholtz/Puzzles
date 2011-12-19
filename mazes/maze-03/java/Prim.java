@@ -104,7 +104,7 @@ public class Prim extends Maze {
 			display();
 			
 			// Output maze metadata 
-			outputMetadata();
+			System.out.println(metadata());
 		}
 	}
 	
@@ -251,6 +251,13 @@ public class Prim extends Maze {
 	private boolean empty(int cell) {
 		return cell == 0 || cell == Prim.FRONTIER;
 	}
+
+    // 
+    // Override metadata to inform what type of maze we are carving.
+    //
+    protected String metadata() {
+	return super.metadata() + " [Prim]";
+    }
 }
 
 /********************************************************************************************
