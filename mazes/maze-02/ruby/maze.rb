@@ -88,7 +88,7 @@ class Maze
 	# Output generic maze metadata.
 	# ++++++++++++++++++++++++++++++
 	def metadata
-	    "#{$0} #{@width} #{@height} #{@seed} #{@delay}" 
+	    "#{$0} #{@width} #{@height} #{@seed}" 
 	end
 end
 

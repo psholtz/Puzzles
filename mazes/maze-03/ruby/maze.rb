@@ -65,7 +65,14 @@ class Maze
 		#
 		# Output maze metadata.
 		#
-		puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
+		puts metadata
+	end
+
+	# ++++++++++++++++++++++++++++++ 
+	# Output generic maze metadata.
+	# ++++++++++++++++++++++++++++++ 
+	def metadata
+	    "#{$0} #{@width} #{@height} #{@seed}"
 	end
 end
 
@@ -243,7 +250,7 @@ class Prim < Maze
 			# 
 			# Output maze metadata.
 			#
-			puts "#{$0} #{@width} #{@height} #{@seed} #{@delay}"
+			puts metadata
 		end
 	end
 
@@ -304,6 +311,13 @@ class Prim < Maze
 	# ++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def empty?(cell)
 		cell == 0 || cell == @@FRONTIER
+	end
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Override metadata to inform what type of maze we are carving
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def metadata
+	    super() + " [Prim]"
 	end
 end
 
