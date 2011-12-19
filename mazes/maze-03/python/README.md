@@ -16,7 +16,7 @@ Run the maze with a preset seed, to model deterministic behavior:
 > ./maze.py -s100
 </pre>
 
-Run the maze in animation mode (<-- VERY COOL):
+Run the maze in animation mode:
 <pre>
 > ./maze.py -a
 </pre>
