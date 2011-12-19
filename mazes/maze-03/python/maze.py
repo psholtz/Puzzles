@@ -74,7 +74,7 @@ User-supplied seed will give deterministic behavior."""
         # 
         # Output maze metadata.
         #
-        buffer.append(Maze.metadata(self,))
+        buffer.append(self.metadata())
         print "\r\n".join(buffer)
 
     def metadata(self,):
@@ -174,7 +174,7 @@ User-supplied seed value will give "deterministic" behavior.
             #
             # Output maze metadata.
             #
-            print Maze.metadata(self,)
+            print self.metadata()
 
           
     def display(self,):
@@ -296,6 +296,11 @@ Answer will be one of the class variables N, S, E or W."""
 
 	return ( self.grid[y][x] == 0 ) or ( self.grid[y][x] == Prim.FRONTIER )
         
+
+    def metadata(self,):
+        """Override metadata to inform what type of maze we are carving"""
+        return Maze.metadata(self,) + " [Prim]"
+
 # 
 # Parse the command line arguments
 #
