@@ -128,7 +128,134 @@ class Maze
 }
 
 class Prim extends Maze
-{
+{     
+	// +++++++++++++++++++++++++++ 
+	// Configure class variables
+	// +++++++++++++++++++++++++++ 
+	public static $IN = 0x10;
+	public static $FRONTIER = 0x20;
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Initialize a new 2D maze with the given width and height.
+	//
+	// Default seed value will give "random" behavior.
+	// User-supplied seed value will given deterministic behavior.
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function __construct($w=NULL, $h=NULL, $s=NULL, $a=false, $d=NULL) {
+	    // 
+	    // Invoke super-constructor
+	    //
+	    parent::__construct($w,$h,$s);
+
+	    // 
+	    // Only prepare the maze if we are doing "static" (i.e., animate=false) drawing
+	    //
+	    $this->delay = $d;
+	    $this->animate = $a;
+	    if ( !$this->animate ) { 
+	       $this->carve_passages();
+	    }
+	}
+
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	# Method only needs to be overridden if we are animating.
+	# 
+	# If we are drawing the maze statically, defer to the superclass.
+	# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	function draw() {
+	   //
+	   // Clear the screen	
+	   //
+	   echo sprintf("%c[2J",27);
+
+	   if ( !$this->animate ) {
+	      // 
+	      // Move to upper left and defer to superclass
+	      //
+	      echo sprintf("%c[H",27);
+	      parent::draw();
+	   } else {
+	     //
+	     // If we are animating, clear the screen adn start carving!
+	     //
+	     $this->carve_passages(); 
+	   }
+	}
+
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Walk down the maze, cell-by-cell, carving a maze using the binary tree algorithm.
+	//
+	// Because we walk down the maze, cell-by-cell, in a linear fashion, this
+	// algorithm is amenable to animation. Animated version is implemented in ths 
+	// overridden draw() method below.
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	function carve_passages() {
+
+	}
+
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Invoked to render animated version of the ASCII maze
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function display() {
+	    //
+	    // Draw the "top row" of the maze
+	    //
+	    echo sprintf("%c[H",27);
+	    $buffer = array();
+	    $out = " ";
+	    for ( $c=0; $c < (2 * $this->width - 1); ++$c ) {
+	        $out .= "_";
+	    }
+	    array_push($buffer, $out);
+
+	    // 
+	    // Step through the grid cells of the maze
+	    //
+	    for ( $y=0; $y < $this->height; ++$y ) {
+	    	$out = "|";
+		for ( $x=0 ; $x < $this->width; ++$x ) {
+		    // 
+		    // Color the cell if it is frontier
+		    //
+		    $cell = $this->grid[$y][$x];
+		    if ( $cell == self::$FRONTIER ) { $out .= sprintf("%c[41m",27); }
+		    if ( isEmpty($cell) && $y+1 < $this->height && isEmpty($this->grid[$y+1][$x]) ) {
+		       $out .= " ";
+		    } else {
+		       $out .= (($cell & self::$S) != 0) ? " " : "_";
+		    }
+		    if ( $cell == self::$FRONTIER ) { $out .= sprintf("%c[m",27); }
+		    
+		    // 
+		    // Draw the "grid" of the maze
+		    //
+		    if ( isEmpty($cell) && $x+1 < $this->width && isEmpty($this->grid[$y][$x+1]) ) {
+		        $out .= "";
+		    } else if ( ($cell & self::$E) != 0 ) {
+		        $out .= "";
+		    } else {
+		        $out .= "|";
+		    }
+		}
+		array_push($buffer, $out);
+	    }
+	    array_push($buffer, "");
+
+	    //
+	    // Flush the buffer
+	    //
+	    echo join($buffer, "\r\n");
+	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// If the cell is empty (i.e., 0) or has been selected
+	// as a "frontier" point, we treat it is being empty.
+	// (Note: "empty" is a reserved keyword/function in PHP)
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	function isEmpty($cell) { 
+	    return $cell == 0 || $cell == self::$FRONTIER;
+	}
+
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
 	// Override metadata to inform what type of maze we are carving.
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
