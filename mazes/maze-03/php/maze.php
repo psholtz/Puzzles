@@ -147,6 +147,8 @@ class Prim extends Maze
 	    //
 	    parent::__construct($w,$h,$s);
 
+	    $this->frontier = array();
+
 	    // 
 	    // Only prepare the maze if we are doing "static" (i.e., animate=false) drawing
 	    //
@@ -230,9 +232,9 @@ class Prim extends Maze
 		    // Draw the "grid" of the maze
 		    //
 		    if ( isEmpty($cell) && $x+1 < $this->width && isEmpty($this->grid[$y][$x+1]) ) {
-		        $out .= "";
+		        $out .= ($y+1 < $this->height) && ( isEmpty($this->grid[$y+1][$s]) || isEmpty($this->grid[$y+1][$x+1]) )  ? " " : "_";
 		    } else if ( ($cell & self::$E) != 0 ) {
-		        $out .= "";
+		        $out .= (($cell | $this->grid[$y][$x+1]) & self::$S) != 0 ? " " : "_";
 		    } else {
 		        $out .= "|";
 		    }
@@ -245,6 +247,33 @@ class Prim extends Maze
 	    // Flush the buffer
 	    //
 	    echo join($buffer, "\r\n");
+	}
+	
+	function add_to_frontier($x, $y) {
+
+	}
+	
+	function mark($x, $y) {
+
+	}
+
+	// +++++++++++++++++++++++++++++++++++++++++++++
+	// Find the points which are inbounds and which	
+	// have not yet been added to the matrix.
+	// +++++++++++++++++++++++++++++++++++++++++++++ 
+	function neighbors($x, $y) {
+	    $n = array();
+
+	    if ( $x > 0 && ($this->grid[$y][$x-1] & self::$IN) != 0 )		       { array_push($n, array($x-1,$y)); }
+	    if ( $x+1 < $this->width && ($this->grid[$y][$x+1] & self::$IN) != 0 )     { array_push($n, array($x+1,$y)); }
+	    if ( $y > 0 && ($this->grid[$y-1][$x] & self::$IN) != 0 )	       	       { array_push($n, array($x,$y-1)); }
+	    if ( $y+1 < $this->height && ($this->grid[$y+1][$x] & self::$IN) != 0 )    { array_push($n, array($x,$y+1)); }
+
+	    return $n;
+	}
+
+	function direction($fx, $fy, $tx, $ty) {
+
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
