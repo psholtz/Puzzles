@@ -194,6 +194,62 @@ class Prim extends Maze
 	function carve_passages() {
 
 	    //
+	    // Select random point in the grid to begin carving
+	    //
+	    $this->mark( rand(0, $this->width), rand(0, $this->height) );
+
+	    $OPPOSITE = self::OPPOSITE();
+
+	    //
+	    // Marking an empty matrix creates a front.
+	    // Keep going until there is no frontier.
+	    //
+	    //while ( sizeof($this->frontier) > 0 ) {
+	        //
+   		// Randomly select a frontier point, and 
+		// randomly select one of the neighboring
+		// points to that frontier piece.
+		//
+
+	        //
+		// Pluck the point from the frontier
+		//
+	        $index = rand(0, sizeof($this->frontier) );	
+		$point = $this->frontier[$index];
+		unset($this->frontier[$index]);
+		$x = $point[0]; $y = $point[1];
+		
+		//
+		// Pluck the point from the neighbhors 
+		//
+		$n = $this->neighbors($x, $y);
+		$index = rand(0, sizeof($n)); 
+		$point = $n[$index]; 
+		$nx = $point[0]; $ny = $point[1];
+
+		//
+		// Knock down the wall between the selected
+		// frontier point and its neighbor.
+		//
+		$dir = $this->direction($x, $y, $nx, $ny);
+		$this->grid[$y][$x] |= $dir;
+		$this->grid[$ny][$nx] |= $OPPOSITE[$dir];
+		
+		// 
+		// Recursively mark the newly selected point.
+		//
+		$this->mark($x, $y);
+		
+		//
+		// If we are animating, display the maze
+		//
+		if ( $this->animate ) {
+		   $this->display();
+		   usleep(1000000*$this->delay);
+		}
+	    //}
+	  
+	    //
 	    // If we are animating, display the maze (one last time)
 	    //
 	    if ( $this->animate ) {
@@ -279,10 +335,10 @@ class Prim extends Maze
 	function mark($x, $y) {
 	    $this->grid[$y][$x] |= self::$IN; 
 
-	    add_to_frontier( $x-1, $y );
-	    add_to_frontier( $x+1, $y );
-	    add_to_frontier( $x, $y-1 );
-	    add_to_frontier( $x, $y+1 );
+	    $this->add_to_frontier( $x-1, $y );
+	    $this->add_to_frontier( $x+1, $y );
+	    $this->add_to_frontier( $x, $y-1 );
+	    $this->add_to_frontier( $x, $y+1 );
 	}
 
 	// +++++++++++++++++++++++++++++++++++++++++++++
