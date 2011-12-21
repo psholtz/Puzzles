@@ -94,7 +94,7 @@ class Maze
 
 		 // render the side
 		 if ( ( $this->grid[$j][$i] & self::$E ) != 0 ) { 
-		     $out .= ( ( $this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$s ) != 0 ? " " : "_";
+		     $out .= ( ( $this->grid[$j][$i] | $this->grid[$j][$i+1] ) & self::$S ) != 0 ? " " : "_";
 		 } else {
 		     $out .= "|";
 		 } 
@@ -205,6 +205,7 @@ class Prim extends Maze
 	    // Keep going until there is no frontier.
 	    //
 	    //while ( sizeof($this->frontier) > 0 ) {
+	    for ( $qq =0 ; $qq < 150; $qq++ ) {
 	        //
    		// Randomly select a frontier point, and 
 		// randomly select one of the neighboring
@@ -247,6 +248,7 @@ class Prim extends Maze
 		   $this->display();
 		   usleep(1000000*$this->delay);
 		}
+}
 	    //}
 	  
 	    //
