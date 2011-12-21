@@ -193,6 +193,18 @@ class Prim extends Maze
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function carve_passages() {
 
+	    //
+	    // If we are animating, display the maze (one last time)
+	    //
+	    if ( $this->animate ) {
+	        $this->display();
+
+		//
+		// Output maze metadata
+		//
+		echo $this->metadata();
+		echo "\r\n";
+	    }
 	}
 
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -221,7 +233,7 @@ class Prim extends Maze
 		    //
 		    $cell = $this->grid[$y][$x];
 		    if ( $cell == self::$FRONTIER ) { $out .= sprintf("%c[41m",27); }
-		    if ( isEmpty($cell) && $y+1 < $this->height && isEmpty($this->grid[$y+1][$x]) ) {
+		    if ( $this->isEmpty($cell) && $y+1 < $this->height && $this->isEmpty($this->grid[$y+1][$x]) ) {
 		       $out .= " ";
 		    } else {
 		       $out .= (($cell & self::$S) != 0) ? " " : "_";
@@ -231,8 +243,8 @@ class Prim extends Maze
 		    // 
 		    // Draw the "grid" of the maze
 		    //
-		    if ( isEmpty($cell) && $x+1 < $this->width && isEmpty($this->grid[$y][$x+1]) ) {
-		        $out .= ($y+1 < $this->height) && ( isEmpty($this->grid[$y+1][$s]) || isEmpty($this->grid[$y+1][$x+1]) )  ? " " : "_";
+		    if ( $this->isEmpty($cell) && $x+1 < $this->width && $this->isEmpty($this->grid[$y][$x+1]) ) {
+		        $out .= ($y+1 < $this->height) && ( $this->isEmpty($this->grid[$y+1][$s]) || $this->isEmpty($this->grid[$y+1][$x+1]) )  ? " " : "_";
 		    } else if ( ($cell & self::$E) != 0 ) {
 		        $out .= (($cell | $this->grid[$y][$x+1]) & self::$S) != 0 ? " " : "_";
 		    } else {
@@ -249,12 +261,28 @@ class Prim extends Maze
 	    echo join($buffer, "\r\n");
 	}
 	
+	// +++++++++++++++++++++++++++++++++++++++++ 
+	// Add the grid point (x,y) to the frontier 
+	// so long as its within bounds and empty.
+	// +++++++++++++++++++++++++++++++++++++++++ 
 	function add_to_frontier($x, $y) {
-
+	    if ( $x >= 0 && $y >= 0 && $y <= $this->height && $x <= $this->width && $this->grid[$y][$x] == 0 ) { 
+	        $this->grid[$y][$x] |= self::$FRONTIER;
+		array_push($this->frontier,array($x,$y));
+	    }
 	}
-	
-	function mark($x, $y) {
 
+	// +++++++++++++++++++++++++++++++++++++++++++ 
+	// Add the grid point (x,y) to the maze, and
+	// add its neighboring points to the frontier
+	// +++++++++++++++++++++++++++++++++++++++++++ 
+	function mark($x, $y) {
+	    $this->grid[$y][$x] |= self::$IN; 
+
+	    add_to_frontier( $x-1, $y );
+	    add_to_frontier( $x+1, $y );
+	    add_to_frontier( $x, $y-1 );
+	    add_to_frontier( $x, $y+1 );
 	}
 
 	// +++++++++++++++++++++++++++++++++++++++++++++
@@ -272,8 +300,16 @@ class Prim extends Maze
 	    return $n;
 	}
 
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Decide the direction we are moving in.
+	//
+	// Answer will be one of the class variables N, S, E and W.
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 	function direction($fx, $fy, $tx, $ty) {
-
+	    if ( $fx < $tx ) { return self::$E; }
+	    if ( $fx > $tx ) { return self::$W; }
+	    if ( $fy < $ty ) { return self::$S; }
+	    if ( $fy > $ty ) { return self::$N; }
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
