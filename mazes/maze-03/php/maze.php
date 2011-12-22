@@ -205,7 +205,6 @@ class Prim extends Maze
 	    // Keep going until there is no frontier.
 	    //
 	    while ( sizeof($this->frontier) > 0 ) {
-//	    for ( $c=0; $c < 10; ++$c) { 
 	        //
 		// Randomly select a frontier point, and 
 		// randomly select one of the neighboring
@@ -217,7 +216,6 @@ class Prim extends Maze
 		//
 		$index = rand(0, sizeof($this->frontier) - 1);
 		$point = $this->frontier[$index];
-		unset($this->frontier[$index]);
 		array_splice($this->frontier,$index,1);
 		$x = $point[0]; $y = $point[1];
 
@@ -327,7 +325,7 @@ class Prim extends Maze
 	    if ( $x >=0 && $y >= 0 && $x < $this->width && $y < $this->height && $this->grid[$y][$x] == 0 ) {
 	        $this->grid[$y][$x] |= self::$FRONTIER;
 		array_push($this->frontier,array($x,$y));
-	    }
+	    } 
 	}
 
 	// +++++++++++++++++++++++++++++++++++++++++++ 
