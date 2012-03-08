@@ -119,7 +119,7 @@ class Maze
 
 	   // use array to buffer output
 	   $buffer = "";
-	   $tmp = array($argv[0], $this-width, $this->height, $this->seed);
+	   $tmp = array($argv[0], $this->width, $this->height, $this->seed);
 	   $buffer .= join($tmp, " ");
 
 	   // return the buffer
