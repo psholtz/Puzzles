@@ -248,16 +248,29 @@ if __FILE__ == $0
 	o.separator ""
 	o.on("-e", "--encode=[value]", String, "Encrypt a plaintext message" ) { |OPTIONS[:encode]| }
 	o.on("-d", "--decode=[value]", String, "Decrypt an encoded message" ) { |OPTIONS[:decode]| }
+	o.on("-n", "--block=[value]", Integer, "Encryption block size" ) { |OPTIONS[:block]| }
 	o.separator ""
 	o.parse!
 
-	# run the actual script
+	# run the actual script (encode)
 	if OPTIONS[:encode] != "" and OPTIONS[:encode] != nil
-	    puts Cipher.new.encode(OPTIONS[:encode])
+            if OPTIONS[:block] 
+                puts Cipher.new(OPTIONS[:block]).encode(OPTIONS[:encode])
+            else  
+                puts Cipher.new.encode(OPTIONS[:encode])
+            end
+
+        # run the actual script (decode)
      	elsif OPTIONS[:decode] != "" and OPTIONS[:decode] != nil
-	    puts Cipher.new.decode(OPTIONS[:decode])
+            if OPTIONS[:block]
+                puts Cipher.new(OPTIONS[:block]).decode(OPTIONS[:decode])
+            else 
+	        puts Cipher.new.decode(OPTIONS[:decode])
+            end
+
+        # output usage information
 	else
 	    puts o
 	end
-    end
+       end
 end
