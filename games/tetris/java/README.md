@@ -12,4 +12,10 @@ Compiling the Program
 Running the Program
 -------------------
 
-1. xx 
+1. cd back up to top-level directory (i.e., cd "../../..")
+
+2. Run the Tetris driver loop:
+
+<pre>
+java com.sholtz9421.tetris.Tetris
+</pre>
